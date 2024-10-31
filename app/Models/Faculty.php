@@ -10,7 +10,7 @@ class Faculty extends Model
     //
     use HasFactory;
 
-    public function courses() {
-
+    public function careers() {
+        return $this->hasMany(Career::class);
     }
 }
