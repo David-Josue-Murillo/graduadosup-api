@@ -10,5 +10,7 @@ class Faculty extends Model
     //
     use HasFactory;
 
-    
+    public function courses() {
+
+    }
 }
