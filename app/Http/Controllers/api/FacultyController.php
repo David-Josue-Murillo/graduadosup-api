@@ -17,21 +17,9 @@ class FacultyController extends Controller
         //
         $faculties = Faculty::all();
 
-        if($faculties->isEmpty()){
-            $data = [
-                'message' => 'No hay facultades',
-                'status' => 200 // 200: Indica que la solicitud fue realizada con exito
-            ];
-
-            return response()->json($data, 200);
-        }
-
-        $data = [
-            'mesage' => $faculties,
-            'status' => 201 // 201: Indica que la solicitud fue realizada con exito y se ha creado un nuevo recurso
-        ];
-
-        return response()->json($data, 201);
+        return $faculties->isEmpty()
+        ? $this->jsonResponse('No se encontraron facultades', [], 404)
+        : $this->jsonResponse('Facultades encontradas exitosamente', $faculties, 201);
     }
 
     /**
@@ -46,37 +34,16 @@ class FacultyController extends Controller
 
         // Validando datos
         if($validator->fails()){
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors'=> $validator->errors(),
-                'status' => 400
-            ];
-
-            return response()->json($data, 400);
+            return $this->jsonResponse('Error en la validación de los datos', $validator->errors(), 400);
         }
         
         $faculty = Faculty::create([
             'name' => $request->name
         ]);
 
-        // Si no se pudo crear la facultad
-        if(!$faculty){
-            $data = [
-                'message' => 'Error al crear la facultad',
-                'status' => 400
-            ];
-
-            return response()->json($data, 400);
-        }
-
-        // Datos de respuesta
-        $data = [
-            'message' => 'Nueva facultad creada',
-            'facultad' => $faculty,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        return !$faculty
+        ? $this->jsonResponse('Error al crear la facultad', [], 404)
+        : $this->jsonResponse('La facultudad fue creada con exito', $faculty, 201);
     }
 
     /**
@@ -86,22 +53,9 @@ class FacultyController extends Controller
     {
         $faculty = Faculty::find($id);
 
-        if(!$faculty){
-            $data = [
-                'message' => 'La facultad no se encuentra o no existe',
-                'status' => 200
-            ];
-
-            return response()->json($data, 200);
-        }
-
-        $data = [
-            'message' => 'Facultad encontrada exitosamente',
-            'facultad' => $faculty,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        return !$faculty
+        ? $this->jsonResponse('La facultad no se encuentra o no existe', [], 404)
+        : $this->jsonResponse('Facultad encontrada exitosamente', $faculty, 201);
     }
 
     /**
@@ -162,7 +116,8 @@ class FacultyController extends Controller
         return response()->json($data, 200);
     }
 
-    private function jsonResponse($message, $data = [], $status){
+    private function jsonResponse($message, $data = [], $status)
+    {
         return response()->json([
             'message' => $message,
             'data' => $data,
