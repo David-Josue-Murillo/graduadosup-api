@@ -13,4 +13,5 @@ Route::prefix('faculties')->group(function () {
     Route::post('/', [FacultyController::class, 'store']);          // POST /faculties - Crea una nueva facultad
     Route::get('/{faculty}', [FacultyController::class, 'show']);   // GET /faculties/{id} - Muestra una facultad específica
     Route::put('/{faculty}', [FacultyController::class, 'update']); // PUT /faculties/{id} - Actualiza una facultad específica
+    Route::delete('/{faculty}', [FacultyController::class, 'destroy']); // DELETE /faculties/{id} - Elimina una facultad específica
 });
