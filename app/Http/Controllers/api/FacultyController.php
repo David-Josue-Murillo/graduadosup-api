@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
+use Validator;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
-use Validator;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreFacultyRequest;
 
 class FacultyController extends Controller
 {
@@ -25,25 +26,14 @@ class FacultyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreFacultyRequest $request)
     {
-        //
-        $validator =  Validator::make($request->all(), [
-            'name' => 'required|max:100'
-        ]);
-
-        // Validando datos
-        if($validator->fails()){
-            return $this->jsonResponse('Error en la validación de los datos', $validator->errors(), 400);
-        }
-        
+        //Los datos ya estan validados
         $faculty = Faculty::create([
             'name' => $request->name
         ]);
 
-        return !$faculty
-        ? $this->jsonResponse('Error al crear la facultad', [], 500)
-        : $this->jsonResponse('La facultudad fue creada con éxito', $faculty, 201);
+        return $this->jsonResponse('Facultudad creada con éxito', $faculty, 201);
     }
 
     /**
@@ -90,13 +80,13 @@ class FacultyController extends Controller
     }
 
     /**
-     * Genera una respuesta JSON estandarizada para la API.
+     * Generates a standardized JSON response for the API.
      * 
-     * @param string $message Mensaje principal que describe el estado de la respuesta.
-     * @param mixed $data Datos adicionales que se devuelven en la respuesta (puede ser un array o un objeto).
-     * @param int $status Código de estado HTTP asociado a la respuesta (200 por defecto).
+     * @param string $message Main message describing the status of the response.
+     * @param mixed $data Additional data to be returned in the response (can be an array or an object).
+     * @param int $status HTTP status code associated with the response (200 by default).
      * 
-     * @return \Illuminate\Http\JsonResponse Respuesta JSON con el mensaje, los datos y el código de estado.
+     * @return \Illuminate\Http\JsonResponse JSON response with the message, data, and status code.
      */
     private function jsonResponse($message, $data = [], $status = 200)
     {
