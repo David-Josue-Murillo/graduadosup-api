@@ -18,8 +18,8 @@ class FacultyController extends Controller
         $faculties = Faculty::all();
 
         return $faculties->isEmpty()
-        ? $this->jsonResponse('No se encontraron facultades', [], 404)
-        : $this->jsonResponse('Facultades encontradas exitosamente', $faculties, 201);
+            ? $this->jsonResponse('No se encontraron facultades', [], 404)
+            : $this->jsonResponse('Facultades encontradas exitosamente', $faculties, 200);
     }
 
     /**
@@ -42,8 +42,8 @@ class FacultyController extends Controller
         ]);
 
         return !$faculty
-        ? $this->jsonResponse('Error al crear la facultad', [], 404)
-        : $this->jsonResponse('La facultudad fue creada con exito', $faculty, 201);
+        ? $this->jsonResponse('Error al crear la facultad', [], 500)
+        : $this->jsonResponse('La facultudad fue creada con éxito', $faculty, 201);
     }
 
     /**
@@ -55,7 +55,7 @@ class FacultyController extends Controller
 
         return !$faculty
         ? $this->jsonResponse('La facultad no se encuentra o no existe', [], 404)
-        : $this->jsonResponse('Facultad encontrada exitosamente', $faculty, 201);
+        : $this->jsonResponse('Facultad encontrada', $faculty, 200);
     }
 
     /**
@@ -76,7 +76,7 @@ class FacultyController extends Controller
             'name' => $request->name
         ]);
 
-        return $this->jsonResponse('Facultasd actualizada exitosamente', $faculty, 201);
+        return $this->jsonResponse('Facultasd actualizada exitosamente', $faculty, 200);
     }
 
     /**
@@ -86,10 +86,19 @@ class FacultyController extends Controller
     {
         //
         $faculty->delete();
-        return $this->jsonResponse('Facultad eliminada exitosamente', [], 200);
+        return $this->jsonResponse('Facultad eliminada con éxito', [], 200);
     }
 
-    private function jsonResponse($message, $data = [], $status)
+    /**
+     * Genera una respuesta JSON estandarizada para la API.
+     * 
+     * @param string $message Mensaje principal que describe el estado de la respuesta.
+     * @param mixed $data Datos adicionales que se devuelven en la respuesta (puede ser un array o un objeto).
+     * @param int $status Código de estado HTTP asociado a la respuesta (200 por defecto).
+     * 
+     * @return \Illuminate\Http\JsonResponse Respuesta JSON con el mensaje, los datos y el código de estado.
+     */
+    private function jsonResponse($message, $data = [], $status = 200)
     {
         return response()->json([
             'message' => $message,
