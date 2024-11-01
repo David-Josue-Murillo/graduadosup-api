@@ -105,19 +105,36 @@ class FacultyController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Faculty $faculty)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Faculty $faculty)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:100'
+        ]);
+
+        if($validator->fails()){
+            $data = [
+                'message' => 'Error en la validación de los datos',
+                'errors'=> $validator->errors(),
+                'status' => 400
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        $faculty->update([
+            'name' => $request->name
+        ]);
+
+        $data = [
+            'message' => 'Facultad actualizada exitosamente',
+            'facultad' => $faculty,
+            'status' => 201
+        ];
+
+        return response()->json($data, 201);
     }
 
     /**
