@@ -14,6 +14,23 @@ class FacultyController extends Controller
     public function index()
     {
         //
+        $faculties = Faculty::all();
+
+        if($faculties->isEmpty()){
+            $data = [
+                'message' => 'No hay facultades',
+                'status' => 200 // 200: Indica que la solicitud fue realizada con exito
+            ];
+
+            return response()->json($data, 200);
+        }
+
+        $data = [
+            'mesage' => $faculties,
+            'status' => 201 // 201: Indica que la solicitud fue realizada con exito y se ha creado un nuevo recurso
+        ];
+
+        return response()->json($data, 201);
     }
 
     /**
