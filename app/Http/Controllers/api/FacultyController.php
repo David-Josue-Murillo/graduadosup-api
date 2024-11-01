@@ -82,9 +82,26 @@ class FacultyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Faculty $faculty)
+    public function show($id)
     {
-        //
+        $faculty = Faculty::find($id);
+
+        if(!$faculty){
+            $data = [
+                'message' => 'La facultad no se encuentra o no existe',
+                'status' => 200
+            ];
+
+            return response()->json($data, 200);
+        }
+
+        $data = [
+            'message' => 'Facultad encontrada exitosamente',
+            'facultad' => $faculty,
+            'status' => 201
+        ];
+
+        return response()->json($data, 201);
     }
 
     /**
