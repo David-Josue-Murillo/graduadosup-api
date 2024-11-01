@@ -69,26 +69,14 @@ class FacultyController extends Controller
         ]);
 
         if($validator->fails()){
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors'=> $validator->errors(),
-                'status' => 400
-            ];
-
-            return response()->json($data, 400);
+            return $this->jsonResponse('Error en la validación de los datos', $validator->errors(), 400);
         }
 
         $faculty->update([
             'name' => $request->name
         ]);
 
-        $data = [
-            'message' => 'Facultad actualizada exitosamente',
-            'facultad' => $faculty,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        return $this->jsonResponse('Facultasd actualizada exitosamente', $faculty, 201);
     }
 
     /**
@@ -97,23 +85,8 @@ class FacultyController extends Controller
     public function destroy(Faculty $faculty)
     {
         //
-        if(!$faculty) {
-            $data = [
-                'message' => 'La facultad no se encuentra o no existe',
-                'status' => 200
-            ];
-
-            return response()->json($data, 200);
-        }
-
         $faculty->delete();
-
-        $data = [
-            'message' => 'Facultad eliminada exitosamente',
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
+        return $this->jsonResponse('Facultad eliminada exitosamente', [], 200);
     }
 
     private function jsonResponse($message, $data = [], $status)
