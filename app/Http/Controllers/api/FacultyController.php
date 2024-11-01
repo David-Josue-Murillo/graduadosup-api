@@ -6,7 +6,7 @@ use Validator;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreFacultyRequest;
+use App\Http\Requests\FacultyRequest;
 
 class FacultyController extends Controller
 {
@@ -26,7 +26,7 @@ class FacultyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFacultyRequest $request)
+    public function store(FacultyRequest $request)
     {
         //Los datos ya estan validados
         $faculty = Faculty::create([
@@ -51,17 +51,9 @@ class FacultyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Faculty $faculty)
+    public function update(FacultyRequest $request, Faculty $faculty)
     {
         //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:100'
-        ]);
-
-        if($validator->fails()){
-            return $this->jsonResponse('Error en la validación de los datos', $validator->errors(), 400);
-        }
-
         $faculty->update([
             'name' => $request->name
         ]);
