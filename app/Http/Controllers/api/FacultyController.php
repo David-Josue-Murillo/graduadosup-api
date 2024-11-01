@@ -161,4 +161,12 @@ class FacultyController extends Controller
 
         return response()->json($data, 200);
     }
+
+    private function jsonResponse($message, $data = [], $status){
+        return response()->json([
+            'message' => $message,
+            'data' => $data,
+            'status' => $status
+        ], $status);
+    }
 }
