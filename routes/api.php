@@ -8,6 +8,9 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/faculties', [FacultyController::class, 'index']);
-Route::post('/faculty/create', [FacultyController::class, 'store']);
-Route::get('/faculty/{id}', [FacultyController::class, 'show']);
+Route::prefix('faculty')->group(function () {
+    Route::get('/all', [FacultyController::class, 'index']);
+    Route::post('/create', [FacultyController::class, 'store']);
+    Route::get('/search/{id}', [FacultyController::class, 'show']);
+    Route::put('/update/{faculty}', [FacultyController::class, 'update']);
+});
