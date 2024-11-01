@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/faculties', [FacultyController::class, 'index']);
+Route::get('/faculty/create', [FacultyController::class, 'store']);
