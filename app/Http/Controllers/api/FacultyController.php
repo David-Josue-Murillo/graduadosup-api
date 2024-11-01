@@ -143,5 +143,22 @@ class FacultyController extends Controller
     public function destroy(Faculty $faculty)
     {
         //
+        if(!$faculty) {
+            $data = [
+                'message' => 'La facultad no se encuentra o no existe',
+                'status' => 200
+            ];
+
+            return response()->json($data, 200);
+        }
+
+        $faculty->delete();
+
+        $data = [
+            'message' => 'Facultad eliminada exitosamente',
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
     }
 }
