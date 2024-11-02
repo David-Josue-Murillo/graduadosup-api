@@ -80,12 +80,4 @@ class FacultyController extends Controller
      * 
      * @return \Illuminate\Http\JsonResponse JSON response with the message, data, and status code.
      */
-    private function jsonResponse($message, $data = [], $statusCode = 200)
-    {
-        return response()->json([
-            'message' => $message,
-            'data' => $data,
-            'status' => $statusCode
-        ], $statusCode);
-    }
 }
