@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CareerRequest;
 use App\Models\Career;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,13 @@ class CareerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CareerRequest $request)
     {
-        //
+        $career = Career::create([
+            'name' => $request->name,
+            'faculty_id' => $request->faculty_id
+        ]);
+        return $this->jsonResponse('Carrera creada con éxito', $career, 201);
     }
 
     /**
@@ -32,23 +37,20 @@ class CareerController extends Controller
      */
     public function show(Career $career)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Career $career)
-    {
-        //
+        $career = Career::findOrFail($career);
+        return $this->jsonResponse('Carrera encontrada', $career, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Career $career)
+    public function update(CareerRequest $request, Career $career)
     {
-        //
+        $career->update([
+            'name' => $request->name,
+            'faculty_id' => $request->faculty_id
+        ]);
+        return $this->jsonResponse('Carrera actualizada exitosamente', $career, 200);
     }
 
     /**
@@ -56,7 +58,8 @@ class CareerController extends Controller
      */
     public function destroy(Career $career)
     {
-        //
+        $career->delete();
+        return $this->jsonResponse('Carrera eliminada con éxito', [], 200);
     }
 
     /**
