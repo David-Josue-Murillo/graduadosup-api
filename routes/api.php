@@ -12,7 +12,7 @@ Route::get('/user', function (Request $request) {
 Route::prefix('faculties')->group(function () {
     Route::get('/', [FacultyController::class, 'index']);           // GET /faculties - Lista todas las facultades
     Route::post('/', [FacultyController::class, 'store']);          // POST /faculties - Crea una nueva facultad
-    Route::get('/{faculty}', [FacultyController::class, 'show']);   // GET /faculties/{id} - Muestra una facultad específica
+    Route::get('/{id}', [FacultyController::class, 'show']);   // GET /faculties/{id} - Muestra una facultad específica
     Route::put('/{faculty}', [FacultyController::class, 'update']); // PUT /faculties/{id} - Actualiza una facultad específica
     Route::delete('/{faculty}', [FacultyController::class, 'destroy']); // DELETE /faculties/{id} - Elimina una facultad específica
 });
@@ -20,7 +20,7 @@ Route::prefix('faculties')->group(function () {
 Route::prefix('careers')->group(function () {
     Route::get('/', [CareerController::class, 'index']);           // GET /career - Lista todas las carreras
     Route::post('/', [CareerController::class, 'store']);          // POST /career - Crea una nueva carrera
-    Route::get('/{career}', [CareerController::class, 'show']);   // GET /career/{id} - Muestra una carrera específica
+    Route::get('/{id}', [CareerController::class, 'show']);   // GET /career/{id} - Muestra una carrera específica
     Route::put('/{career}', [CareerController::class, 'update']); // PUT /career/{id} - Actualiza una carrera específica
     Route::delete('/{career}', [CareerController::class, 'destroy']); // DELETE /career/{id} - Elimina una carrera específica
 });

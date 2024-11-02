@@ -35,9 +35,9 @@ class CareerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Career $career)
+    public function show(int $id)
     {
-        $career = Career::findOrFail($career);
+        $career = Career::findOrFail($id);
         return $this->jsonResponse('Carrera encontrada', $career, 200);
     }
 
