@@ -10,11 +10,16 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('faculties')->group(function () {
+
+    // CRUD Operation
     Route::get('/', [FacultyController::class, 'index']);           // GET /faculties - Lista todas las facultades
     Route::post('/', [FacultyController::class, 'store']);          // POST /faculties - Crea una nueva facultad
     Route::get('/{id}', [FacultyController::class, 'show']);   // GET /faculties/{id} - Muestra una facultad específica
     Route::put('/{faculty}', [FacultyController::class, 'update']); // PUT /faculties/{id} - Actualiza una facultad específica
     Route::delete('/{faculty}', [FacultyController::class, 'destroy']); // DELETE /faculties/{id} - Elimina una facultad específica
+
+    // Relations operations
+    Route::get('/{faculty}/careers', [FacultyController::class, 'displayCareers']); // GET /faculties/{id}/careers - Muestra las carreras de una facultad específica
 });
 
 Route::prefix('careers')->group(function () {
