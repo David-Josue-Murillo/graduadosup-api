@@ -13,15 +13,10 @@ class CareerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $careers = Career::all();
+        return $careers->isEmpty() 
+        ? $this->jsonResponse('No se encontraron carreras', [], 200)
+        : $this->jsonResponse('Carreras encontradas exitosamente', $careers, 200);
     }
 
     /**
@@ -62,5 +57,23 @@ class CareerController extends Controller
     public function destroy(Career $career)
     {
         //
+    }
+
+    /**
+     * Generates a standardized JSON response for the API.
+     * 
+     * @param string $message Main message describing the status of the response.
+     * @param mixed $data Additional data to be returned in the response (can be an array or an object).
+     * @param int $statusCode HTTP status code associated with the response (200 by default).
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response with the message, data, and status code.
+     */
+    private function jsonResponse($message, $data = [], $statusCode = 200)
+    {
+        return response()->json([
+            'message' => $message,
+            'data' => $data,
+            'status' => $statusCode
+        ], $statusCode);
     }
 }
