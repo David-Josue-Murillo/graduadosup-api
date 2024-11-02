@@ -63,6 +63,15 @@ class CareerController extends Controller
     }
 
     /**
+     * Display faculty from this career
+     */
+    public function displayFaculty(Career $career)
+    {
+        $faculty = $career->faculty()->get();
+        return $this->jsonResponse('Obteniendo Facultad', $faculty, 200);
+    }
+
+    /**
      * Generates a standardized JSON response for the API.
      * 
      * @param string $message Main message describing the status of the response.

@@ -28,5 +28,8 @@ Route::prefix('careers')->group(function () {
     Route::get('/{id}', [CareerController::class, 'show']);   // GET /career/{id} - Muestra una carrera específica
     Route::put('/{career}', [CareerController::class, 'update']); // PUT /career/{id} - Actualiza una carrera específica
     Route::delete('/{career}', [CareerController::class, 'destroy']); // DELETE /career/{id} - Elimina una carrera específica
+
+    // Relations operations 
+    Route::get('/{career}/faculty', [CareerController::class, 'displayFaculty']); // Muestra la facultad a que pertenece
 });
 
