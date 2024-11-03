@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Campu;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CampuRequest;
 
 class CampuController extends Controller
 {
@@ -22,25 +23,22 @@ class CampuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CampuRequest $request)
     {
-        //
+        $campu = Campu::create([
+            'name' => $request->name
+        ]);
+
+        return $this->jsonResponse('Campus creado con éxito', $campu, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Campu $campu)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Campu $campu)
-    {
-        //
+    public function show(int $campu_id)
+    {   
+        $campu = Campu::findOrFail($campu_id);
+        return $this->jsonResponse('Campus encontrado', $campu, 200);
     }
 
     /**
@@ -48,7 +46,10 @@ class CampuController extends Controller
      */
     public function update(Request $request, Campu $campu)
     {
-        //
+        $campu->update([
+            'name' => $request->name
+        ]);
+        return $this->jsonResponse('Campus actualizado exitosamente', $campu, 200);
     }
 
     /**
@@ -56,6 +57,7 @@ class CampuController extends Controller
      */
     public function destroy(Campu $campu)
     {
-        //
+        $campu->delete();
+        return $this->jsonResponse('Campus eliminado con éxito', [], 200);
     }
 }
