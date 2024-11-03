@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\CampuController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\CareerController;
@@ -10,26 +11,38 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::prefix('faculties')->group(function () {
-
     // CRUD Operation
-    Route::get('/', [FacultyController::class, 'index']);           // GET /faculties - Lista todas las facultades
-    Route::post('/', [FacultyController::class, 'store']);          // POST /faculties - Crea una nueva facultad
-    Route::get('/{id}', [FacultyController::class, 'show']);   // GET /faculties/{id} - Muestra una facultad específica
-    Route::put('/{faculty}', [FacultyController::class, 'update']); // PUT /faculties/{id} - Actualiza una facultad específica
-    Route::delete('/{faculty}', [FacultyController::class, 'destroy']); // DELETE /faculties/{id} - Elimina una facultad específica
+    Route::get('/', [FacultyController::class, 'index']);           
+    Route::post('/', [FacultyController::class, 'store']);          
+    Route::get('/{id}', [FacultyController::class, 'show']);   
+    Route::put('/{faculty}', [FacultyController::class, 'update']); 
+    Route::delete('/{faculty}', [FacultyController::class, 'destroy']); 
 
     // Relations operations
-    Route::get('/{faculty}/careers', [FacultyController::class, 'displayCareers']); // GET /faculties/{id}/careers - Muestra las carreras de una facultad específica
+    Route::get('/{faculty}/careers', [FacultyController::class, 'displayCareers']); 
 });
 
 Route::prefix('careers')->group(function () {
-    Route::get('/', [CareerController::class, 'index']);           // GET /career - Lista todas las carreras
-    Route::post('/', [CareerController::class, 'store']);          // POST /career - Crea una nueva carrera
-    Route::get('/{id}', [CareerController::class, 'show']);   // GET /career/{id} - Muestra una carrera específica
-    Route::put('/{career}', [CareerController::class, 'update']); // PUT /career/{id} - Actualiza una carrera específica
-    Route::delete('/{career}', [CareerController::class, 'destroy']); // DELETE /career/{id} - Elimina una carrera específica
+    // CRUD Operation
+    Route::get('/', [CareerController::class, 'index']);           
+    Route::post('/', [CareerController::class, 'store']);         
+    Route::get('/{id}', [CareerController::class, 'show']);   
+    Route::put('/{career}', [CareerController::class, 'update']); 
+    Route::delete('/{career}', [CareerController::class, 'destroy']); 
 
     // Relations operations 
-    Route::get('/{career}/faculty', [CareerController::class, 'displayFaculty']); // Muestra la facultad a que pertenece
+    Route::get('/{career}/faculty', [CareerController::class, 'displayFaculty']); 
+});
+
+Route::prefix('campus')->group(function () {
+    // CRUD Operation
+    Route::get('/', [CampuController::class, 'index']);          
+    Route::post('/', [CampuController::class, 'store']);          
+    Route::get('/{id}', [CampuController::class, 'show']);   
+    Route::put('/{campu}', [CampuController::class, 'update']); 
+    Route::delete('/{campu}', [CampuController::class, 'destroy']); 
+
+    // Relations operations 
+    Route::get('/{campu}/faculty', [CampuController::class, 'displayFaculty']); 
 });
 
