@@ -13,15 +13,10 @@ class CampuController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $campus = Campu::all();
+        return $campus->isEmpty() 
+        ? $this->jsonResponse('No se encontro campus', [], 200)
+        : $this->jsonResponse('Campus encontrados con éxitos', $campus, 200);
     }
 
     /**
