@@ -12,13 +12,15 @@ class GraduateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $num_graduates = NumGraduate::all();
+        // Cargar relaciones
+        $num_graduates = NumGraduate::with(['campus', 'career', 'faculty'])->get();
+
         return $num_graduates->isEmpty()
-        ? $this->jsonResponse('No hay datos', [], 200)
-        : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
-    }
+            ? $this->jsonResponse('No hay datos', [], 200)
+            : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
+     }
 
     /**
      * Store a newly created resource in storage.
