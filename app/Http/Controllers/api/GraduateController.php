@@ -75,9 +75,9 @@ class GraduateController extends Controller
      * @param \App\Models\NumGraduate $graduate
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function displayCampus(NumGraduate $graduate) {
-        $campu = $graduate->campus()->get();
-        return $this->jsonResponse('Campu obtenido exitosamente', $campu, 200);
+    public function displayCampus(int $graduate_id) {
+        $graduate = NumGraduate::with('campus')->findOrFail($graduate_id);
+        return $this->jsonResponse('Campu obtenido exitosamente', $graduate->campus()->get(), 200);
     }
 
     /**
@@ -85,9 +85,9 @@ class GraduateController extends Controller
      * @param \App\Models\NumGraduate $graduate
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function displayCareer(NumGraduate $graduate) {
-        $career = $graduate->career()->get();
-        return $this->jsonResponse('Carrera obtenido exitosamente', $career, 200);
+    public function displayCareer(int $graduate_id) {
+        $graduate = NumGraduate::with('career')->findOrFail($graduate_id);
+        return $this->jsonResponse('Carrera obtenido exitosamente', $graduate->career()->get(), 200);
     }
 
     /**
@@ -96,7 +96,7 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayFaculty(int $graduate_id) {
-        $graduate = NumGraduate::findOrFail($graduate_id);
-        return $this->jsonResponse('Facultad obtenido exitosamente', $graduate, 200);
+        $graduate = NumGraduate::with('faculty')->findOrFail($graduate_id);
+        return $this->jsonResponse('Facultad obtenido exitosamente', $graduate->faculty()->get(), 200);
     }
 }
