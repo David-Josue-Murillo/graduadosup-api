@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Faculty;
-use Illuminate\Http\Request;
-use Validator;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\FacultyRequest;
 
 class FacultyController extends Controller
 {
@@ -14,69 +13,23 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        //
         $faculties = Faculty::all();
 
-        if($faculties->isEmpty()){
-            $data = [
-                'message' => 'No hay facultades',
-                'status' => 200 // 200: Indica que la solicitud fue realizada con exito
-            ];
-
-            return response()->json($data, 200);
-        }
-
-        $data = [
-            'mesage' => $faculties,
-            'status' => 201 // 201: Indica que la solicitud fue realizada con exito y se ha creado un nuevo recurso
-        ];
-
-        return response()->json($data, 201);
+        return $faculties->isEmpty()
+            ? $this->jsonResponse('No se encontraron facultades', [], 200)
+            : $this->jsonResponse('Facultades encontradas exitosamente', $faculties, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FacultyRequest $request)
     {
-        //
-        $validator =  Validator::make($request->all(), [
-            'name' => 'required|max:100'
-        ]);
-
-        // Validando datos
-        if($validator->fails()){
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors'=> $validator->errors(),
-                'status' => 400
-            ];
-
-            return response()->json($data, 400);
-        }
-        
         $faculty = Faculty::create([
             'name' => $request->name
         ]);
 
-        // Si no se pudo crear la facultad
-        if(!$faculty){
-            $data = [
-                'message' => 'Error al crear la facultad',
-                'status' => 400
-            ];
-
-            return response()->json($data, 400);
-        }
-
-        // Datos de respuesta
-        $data = [
-            'message' => 'Nueva facultad creada',
-            'facultad' => $faculty,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        return $this->jsonResponse('Facultad creada con éxito', $faculty, 201);
     }
 
     /**
@@ -84,57 +37,20 @@ class FacultyController extends Controller
      */
     public function show($id)
     {
-        $faculty = Faculty::find($id);
-
-        if(!$faculty){
-            $data = [
-                'message' => 'La facultad no se encuentra o no existe',
-                'status' => 200
-            ];
-
-            return response()->json($data, 200);
-        }
-
-        $data = [
-            'message' => 'Facultad encontrada exitosamente',
-            'facultad' => $faculty,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        $faculty = Faculty::findOrFail($id);
+        return $this->jsonResponse('Facultad encontrada', $faculty, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Faculty $faculty)
+    public function update(FacultyRequest $request, Faculty $faculty)
     {
-        //
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:100'
-        ]);
-
-        if($validator->fails()){
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors'=> $validator->errors(),
-                'status' => 400
-            ];
-
-            return response()->json($data, 400);
-        }
-
         $faculty->update([
             'name' => $request->name
         ]);
 
-        $data = [
-            'message' => 'Facultad actualizada exitosamente',
-            'facultad' => $faculty,
-            'status' => 201
-        ];
-
-        return response()->json($data, 201);
+        return $this->jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
     }
 
     /**
@@ -142,23 +58,26 @@ class FacultyController extends Controller
      */
     public function destroy(Faculty $faculty)
     {
-        //
-        if(!$faculty) {
-            $data = [
-                'message' => 'La facultad no se encuentra o no existe',
-                'status' => 200
-            ];
-
-            return response()->json($data, 200);
-        }
-
         $faculty->delete();
-
-        $data = [
-            'message' => 'Facultad eliminada exitosamente',
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
+        return $this->jsonResponse('Facultad eliminada con éxito', [], 200);
     }
+
+    /**
+     * Display careers from this faculty
+     */
+    public function displayCareers(Faculty $faculty)
+    {
+        $careers = $faculty->careers()->get();
+        return $this->jsonResponse('Lista de carreras', $careers, 200);
+    }
+
+    /**
+     * Generates a standardized JSON response for the API.
+     * 
+     * @param string $message Main message describing the status of the response.
+     * @param mixed $data Additional data to be returned in the response (can be an array or an object).
+     * @param int $statusCode HTTP status code associated with the response (200 by default).
+     * 
+     * @return \Illuminate\Http\JsonResponse JSON response with the message, data, and status code.
+     */
 }
