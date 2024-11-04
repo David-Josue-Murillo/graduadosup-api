@@ -24,6 +24,6 @@ class Campu extends Model
     ];
 
     public function graduates() {
-        return $this->hasMany(Graduate::class);
+        return $this->hasMany(NumGraduate::class);
     }
 }

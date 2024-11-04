@@ -32,7 +32,7 @@ class GraduateController extends Controller
             'career_id' => $request->career_id
         ]);
 
-        return $this->jsonResponse("Datos guardados exitosamente", $graduates, 201);
+        return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
     }
 
     /**
@@ -41,7 +41,7 @@ class GraduateController extends Controller
     public function show(int $graduate_id)
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
-        return $this->jsonResponse('Datos obtenido exitosamente', $graduate, 200);
+        return $this->jsonResponse('Dato obtenido exitosamente', $graduate, 200);
     }
 
     /**
