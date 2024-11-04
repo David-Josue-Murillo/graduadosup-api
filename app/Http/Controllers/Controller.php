@@ -13,4 +13,9 @@ abstract class Controller
             'status' => $statusCode
         ], $statusCode);
     }
+
+    public function displayByTable($model, $table, $id) {
+        $data = $model::with($table)->findOrFail($id);
+        return $data->$table()->get();
+    }
 }
