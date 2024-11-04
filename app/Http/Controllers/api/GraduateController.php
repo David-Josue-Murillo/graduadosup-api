@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
-use App\Models\Graduate;
+use App\Models\NumGraduate;
 use Illuminate\Http\Request;
 
 class GraduateController extends Controller
@@ -14,7 +14,7 @@ class GraduateController extends Controller
      */
     public function index()
     {
-        $num_graduates = Graduate::all();
+        $num_graduates = NumGraduate::all();
         return $num_graduates->isEmpty()
         ? $this->jsonResponse('No hay datos', [], 200)
         : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
@@ -25,7 +25,7 @@ class GraduateController extends Controller
      */
     public function store(NumGraduatesRequest $request)
     {
-        $graduates = Graduate::create([
+        $graduates = NumGraduate::create([
             'quantity' => $request->quantity,
             'year' => $request->year,
             'campus_id' => $request->campus_id,
@@ -40,14 +40,14 @@ class GraduateController extends Controller
      */
     public function show(int $graduate_id)
     {
-        $graduate = Graduate::findOrFail($graduate_id);
+        $graduate = NumGraduate::findOrFail($graduate_id);
         return $this->jsonResponse('Datos obtenido exitosamente', $graduate, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(NumGraduatesRequest $request, Graduate $graduate)
+    public function update(NumGraduatesRequest $request, NumGraduate $graduate)
     {
         $graduate->update([
             'quantity' => $request->quantity,
@@ -68,17 +68,17 @@ class GraduateController extends Controller
         return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
     }
 
-    public function displayCampu(Graduate $graduate) {
+    public function displayCampu(NumGraduate $graduate) {
         $campu = $graduate->campu()->get();
         return $this->jsonResponse('Campu obtenido exitosamente', $campu, 200);
     }
 
-    public function displyaCareer(Graduate $graduate) {
+    public function displyaCareer(NumGraduate $graduate) {
         $career = $graduate->career()->get();
         return $this->jsonResponse('Carrera obtenido exitosamente', $career, 200);
     }
 
-    public function displayFaculty(Graduate $graduate) {
+    public function displayFaculty(NumGraduate $graduate) {
         $faculty = $graduate->career()->faculty()->get();
         return $this->jsonResponse('Facultad obtenido exitosamente', $faculty, 200);
     }
