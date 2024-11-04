@@ -63,8 +63,9 @@ class GraduateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(NumGraduatesRequest $graduate)
+    public function destroy(int $graduate_id)
     {
+        $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->delete();
         return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
     }
@@ -74,13 +75,13 @@ class GraduateController extends Controller
         return $this->jsonResponse('Campu obtenido exitosamente', $campu, 200);
     }
 
-    public function displyaCareer(NumGraduate $graduate) {
+    public function displayCareer(NumGraduate $graduate) {
         $career = $graduate->career()->get();
         return $this->jsonResponse('Carrera obtenido exitosamente', $career, 200);
     }
 
-    public function displayFaculty(NumGraduate $graduate) {
-        $faculty = $graduate->career()->faculty()->get();
-        return $this->jsonResponse('Facultad obtenido exitosamente', $faculty, 200);
+    public function displayFaculty(int $graduate_id) {
+        $graduate = NumGraduate::findOrFail($graduate_id);
+        return $this->jsonResponse('Facultad obtenido exitosamente', $graduate, 200);
     }
 }
