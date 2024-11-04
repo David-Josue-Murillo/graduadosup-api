@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\CampuController;
+use App\Http\Controllers\api\GraduateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\CareerController;
@@ -44,5 +45,19 @@ Route::prefix('campus')->group(function () {
 
     // Relations operations 
     Route::get('/{campu}/faculty', [CampuController::class, 'displayFaculty']); 
+});
+
+Route::prefix('graduates')->group(function () {
+    // CRUD Operation
+    Route::get('/', [GraduateController::class, 'index']);          
+    Route::post('/', [GraduateController::class, 'store']);          
+    Route::get('/{id}', [GraduateController::class, 'show']);   
+    Route::put('/{graduates}', [GraduateController::class, 'update']); 
+    Route::delete('/{graduates}', [GraduateController::class, 'destroy']); 
+
+    // Relations operations 
+    Route::get('/{graduates}/campu', [GraduateController::class, 'displayCampu']); 
+    Route::get('/{graduates}/career', [GraduateController::class, 'displayCareer']); 
+    Route::get('/{graduates}/faculty', [GraduateController::class, 'displayFaculty']); 
 });
 

@@ -68,7 +68,7 @@ class GraduateController extends Controller
         return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
     }
 
-    public function displayCampus(Graduate $graduate) {
+    public function displayCampu(Graduate $graduate) {
         $campu = $graduate->campu()->get();
         return $this->jsonResponse('Campu obtenido exitosamente', $campu, 200);
     }
