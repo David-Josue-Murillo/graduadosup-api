@@ -28,11 +28,16 @@ class NumGraduate extends Model
         'updated_at'
     ];
 
-    public function campu() {
-        return $this->belongsTo(Campu::class);
+    public function campus() {
+        return $this->belongsTo(Campu::class, 'campus_id');
     }
 
     public function career() {
-        return $this->belongsTo(Career::class);
+        return $this->belongsTo(Career::class, 'career_id');
     }
+
+    public function faculty() {
+        return $this->hasOneThrough(Faculty::class, Career::class, 'id', 'id', 'career_id', 'faculty_id');
+    }
+
 }
