@@ -70,16 +70,31 @@ class GraduateController extends Controller
         return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
     }
 
+    /**
+     * Display the Campus of a specified graduate
+     * @param \App\Models\NumGraduate $graduate
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function displayCampus(NumGraduate $graduate) {
         $campu = $graduate->campus()->get();
         return $this->jsonResponse('Campu obtenido exitosamente', $campu, 200);
     }
 
+    /**
+     * Display the career of a specified graduate
+     * @param \App\Models\NumGraduate $graduate
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function displayCareer(NumGraduate $graduate) {
         $career = $graduate->career()->get();
         return $this->jsonResponse('Carrera obtenido exitosamente', $career, 200);
     }
 
+    /**
+     * Display the faculty of a specified graduate
+     * @param int $graduate_id
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function displayFaculty(int $graduate_id) {
         $graduate = NumGraduate::findOrFail($graduate_id);
         return $this->jsonResponse('Facultad obtenido exitosamente', $graduate, 200);
