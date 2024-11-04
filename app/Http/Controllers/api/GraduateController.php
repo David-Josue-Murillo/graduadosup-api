@@ -47,8 +47,9 @@ class GraduateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(NumGraduatesRequest $request, NumGraduate $graduate)
+    public function update(NumGraduatesRequest $request, int $graduate_id)
     {
+        $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->update([
             'quantity' => $request->quantity,
             'year' => $request->year,
