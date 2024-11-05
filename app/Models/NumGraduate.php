@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class NumGraduate extends Model
 {
+    /** @use HasFactory<\Database\Factories\NumGraduateFactory> */
+    use HasFactory, Notifiable;
 
     /**
      * butes that can be assigned

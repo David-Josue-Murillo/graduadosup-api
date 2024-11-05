@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Faculty extends Model
 {
-    //
-    use HasFactory;
+    /** @use HasFactory<\Database\Factories\FacultyFactory> */
+    use HasFactory, Notifiable;
 
     /**
      * Atributos que pueden ser asignados
