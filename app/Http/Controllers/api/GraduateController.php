@@ -14,13 +14,25 @@ class GraduateController extends Controller
      */
     public function index(Request $request)
     {
-        // Cargar relaciones
-        $num_graduates = NumGraduate::with(['campus', 'career', 'faculty'])->get();
+        $query = NumGraduate::query();
+
+        // Aplicar filtros opcionales si se proporcionan en el request
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+        if ($request->filled('campus_id')) {
+            $query->where('campus_id', $request->campus_id);
+        }
+        if ($request->filled('career_id')) {
+            $query->where('career_id', $request->career_id);
+        }
+
+        $num_graduates = $query->with(['campus', 'career', 'faculty'])->get();
 
         return $num_graduates->isEmpty()
-            ? $this->jsonResponse('No hay datos', [], 200)
-            : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
-     }
+        ? $this->jsonResponse('No hay datos', [], 200)
+        : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
+    }
 
     /**
      * Store a newly created resource in storage.
