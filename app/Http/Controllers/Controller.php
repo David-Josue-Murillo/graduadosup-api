@@ -16,7 +16,7 @@ abstract class Controller
      * 
      * @return JsonResponse
      */
-    public function jsonResponse(string $message, $data = [], int $statusCode = 200)
+    protected function jsonResponse(string $message, $data = [], int $statusCode = 200)
     {
         return response()->json([
             'message' => $message,
@@ -34,7 +34,7 @@ abstract class Controller
      * 
      * @return JsonResponse
      */
-    public function displayByTable(string $model, string $relation, int $id) {
+    protected function displayByTable(string $model, string $relation, int $id) {
         $data = $model::with($relation)->findOrFail($id);
         $relatedData = $data->$relation()->get();
 
@@ -48,7 +48,7 @@ abstract class Controller
      * 
      * @return \Illuminate\Support\Collection
      */
-    public function displayCustomNumGraduatesData($numGraduates) {
+    protected function formatGraduatesData($numGraduates) {
         $numGraduatesData = $numGraduates->map(function($graduate) {
             return [
                 'id' => $graduate->id,
@@ -79,7 +79,7 @@ abstract class Controller
      * 
      * @return \Illuminate\Support\Collection
      */
-    public function displayCustomCampusData($campus) {
+    protected function formatCampusData($campus) {
         $campusData = $campus->map(function($campus) {
             return [
                 'id' => $campus->id,

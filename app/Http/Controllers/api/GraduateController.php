@@ -28,7 +28,7 @@ class GraduateController extends Controller
         }
 
         $numGraduates = $query->with(['campus', 'career', 'faculty'])->get();
-        $numGraduatesData = $this->displayCustomNumGraduatesData($numGraduates);
+        $numGraduatesData = $this->formatGraduatesData($numGraduates);
 
         return $numGraduates->isEmpty()
         ? $this->jsonResponse('No hay datos', [], 200)

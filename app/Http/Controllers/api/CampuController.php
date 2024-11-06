@@ -15,7 +15,7 @@ class CampuController extends Controller
     public function index()
     {
         $campus = Campu::with('graduates')->get();
-        $campusData = $this->displayCustomCampusData($campus);
+        $campusData = $this->formatCampusData($campus);
 
         return $campus->isEmpty() 
         ? $this->jsonResponse('No se encontro campus', [], 200)
