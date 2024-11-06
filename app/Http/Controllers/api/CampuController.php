@@ -14,13 +14,8 @@ class CampuController extends Controller
      */
     public function index()
     {
-        $campus = Campu::with(['graduates' => function($query) {
-            $query->with(['career' => function($q) {
-                $q->with('faculty');
-            }]);
-        }])->get();
-
-        $campusData = $this->displayDataCampus($campus);
+        $campus = Campu::with('graduates')->get();
+        $campusData = $this->displayCustomCampusData($campus);
 
         return $campus->isEmpty() 
         ? $this->jsonResponse('No se encontro campus', [], 200)

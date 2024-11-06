@@ -19,7 +19,7 @@ abstract class Controller
         return $data->$table()->get();
     }
 
-    public function displayDataCampus($campus) {
+    public function displayCustomCampusData($campus) {
         $campusData = $campus->map(function($campus) {
             return [
                 'id' => $campus->id,
