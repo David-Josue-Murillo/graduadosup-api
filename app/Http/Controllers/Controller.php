@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NumGraduate;
 use Illuminate\Http\JsonResponse;
 
 abstract class Controller
@@ -97,5 +98,32 @@ abstract class Controller
         });
 
         return $campusData;
+    }
+
+    /**
+     * Formatea los datos de un graduado en una estructura personalizada.
+     *
+     * @param \App\Models\NumGraduate $graduate
+     * @return array Datos formateados para la respuesta
+     */
+    protected function formatGraduateData(NumGraduate $graduate)
+    {
+        return [
+            'id' => $graduate->id,
+            'quantity' => $graduate->quantity,
+            'year' => $graduate->year,
+            'campus' => [
+                'id' => $graduate->campus->id,
+                'name' => $graduate->campus->name,
+            ],
+            'career' => [
+                'id' => $graduate->career->id,
+                'name' => $graduate->career->name,
+                'faculty' => [
+                    'id' => $graduate->career->faculty->id,
+                    'name' => $graduate->career->faculty->name,
+                ]
+            ]
+        ];
     }
 }

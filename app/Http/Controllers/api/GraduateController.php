@@ -55,8 +55,10 @@ class GraduateController extends Controller
      */
     public function show(int $graduate_id)
     {
-        $graduate = NumGraduate::findOrFail($graduate_id);
-        return $this->jsonResponse('Dato obtenido exitosamente', $graduate, 200);
+        $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
+        $formattedGraduate = $this->formatGraduateData($graduate);
+
+        return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 
     /**
