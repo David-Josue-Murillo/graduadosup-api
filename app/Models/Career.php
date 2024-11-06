@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Career extends Model
 {
+        /** @use HasFactory<\Database\Factories\CareerFactory> */
+        use HasFactory, Notifiable;
 
     /**
      * Atributos que pueden ser asignados

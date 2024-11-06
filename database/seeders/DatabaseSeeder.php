@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Campu;
+use App\Models\Career;
+use App\Models\Faculty;
+use App\Models\NumGraduate;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,7 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Campu::factory(25)->create();
+        Campu::factory(10)->create();
+        Faculty::factory(19)->create();
+        Career::factory(355)->create();
+        NumGraduate::factory(10000)->create();
         // User::factory(10)->create();
 
         /*User::factory()->create([
