@@ -27,11 +27,12 @@ class GraduateController extends Controller
             $query->where('career_id', $request->career_id);
         }
 
-        $num_graduates = $query->with(['campus', 'career', 'faculty'])->get();
+        $numGraduates = $query->with(['campus', 'career', 'faculty'])->get();
+        $numGraduatesData = $this->displayCustomNumGraduatesData($numGraduates);
 
-        return $num_graduates->isEmpty()
+        return $numGraduates->isEmpty()
         ? $this->jsonResponse('No hay datos', [], 200)
-        : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
+        : $this->jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
     }
 
     /**

@@ -19,6 +19,30 @@ abstract class Controller
         return $data->$table()->get();
     }
 
+    public function displayCustomNumGraduatesData($numGraduates) {
+        $numGraduatesData = $numGraduates->map(function($graduate) {
+            return [
+                'id' => $graduate->id,
+                'quantity' => $graduate->quantity,
+                'year' => $graduate->year,
+                'career' => [
+                    'id' => $graduate->career->id,
+                    'name' => $graduate->career->name,
+                ],
+                'faculty' => [
+                    'id' => $graduate->faculty->id,
+                    'name' => $graduate->faculty->name,
+                ],
+                'campus' => [
+                    'id' => $graduate->campus->id,
+                    'name' => $graduate->campus->name,
+                ]
+            ];
+        });
+
+        return $numGraduatesData;
+    }
+
     public function displayCustomCampusData($campus) {
         $campusData = $campus->map(function($campus) {
             return [
