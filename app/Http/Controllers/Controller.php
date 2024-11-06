@@ -2,9 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+
 abstract class Controller
 {
-    //
+    /**
+     * Generates a standardized JSON response for the API.
+     * 
+     * @param string $message The main message of the response.
+     * @param mixed $data The data to be returned in the response (array or object).
+     * @param int $statusCode The HTTP status code (default is 200).
+     * 
+     * @return JsonResponse
+     */
     public function jsonResponse($message, $data = [], $statusCode = 200)
     {
         return response()->json([
@@ -14,11 +24,27 @@ abstract class Controller
         ], $statusCode);
     }
 
+    /**
+     * Retrieves related data from a specific table through a model.
+     * 
+     * @param string $model The model class to query.
+     * @param string $relation The relationship to load.
+     * @param int $id The primary key of the model to retrieve.
+     * 
+     * @return JsonResponse
+     */
     public function displayByTable($model, $table, $id) {
         $data = $model::with($table)->findOrFail($id);
         return $data->$table()->get();
     }
 
+    /**
+     * Formats and returns custom data structure for NumGraduates with associated details.
+     * 
+     * @param \Illuminate\Database\Eloquent\Collection $numGraduates The collection of NumGraduate models.
+     * 
+     * @return \Illuminate\Support\Collection
+     */
     public function displayCustomNumGraduatesData($numGraduates) {
         $numGraduatesData = $numGraduates->map(function($graduate) {
             return [
@@ -43,6 +69,13 @@ abstract class Controller
         return $numGraduatesData;
     }
 
+    /**
+     * Formats and returns custom data structure for Campus with graduate information.
+     * 
+     * @param \Illuminate\Database\Eloquent\Collection $campus The collection of Campus models.
+     * 
+     * @return \Illuminate\Support\Collection
+     */
     public function displayCustomCampusData($campus) {
         $campusData = $campus->map(function($campus) {
             return [
