@@ -91,7 +91,7 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayCampus(int $graduate_id) {
-        return $this->jsonResponse('Campu obtenido exitosamente', $this->displayByTable(NumGraduate::class, 'campus', $graduate_id), 200);
+        return $this->displayByTable(NumGraduate::class, 'campus', $graduate_id);
     }
 
     /**
@@ -100,7 +100,7 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayCareer(int $graduate_id) {
-        return $this->jsonResponse('Carrera obtenido exitosamente', $this->displayByTable(NumGraduate::class, 'career', $graduate_id), 200);
+        return $this->displayByTable(NumGraduate::class, 'career', $graduate_id);
     }
 
     /**
@@ -109,6 +109,6 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayFaculty(int $graduate_id) {
-        return $this->jsonResponse('Facultad obtenido exitosamente', $this->displayByTable(NumGraduate::class, 'faculty', $graduate_id), 200);
+        return $this->displayByTable(NumGraduate::class, 'faculty', $graduate_id);
     }
 }

@@ -15,7 +15,7 @@ abstract class Controller
      * 
      * @return JsonResponse
      */
-    public function jsonResponse($message, $data = [], $statusCode = 200)
+    public function jsonResponse(string $message, $data = [], int $statusCode = 200)
     {
         return response()->json([
             'message' => $message,
@@ -33,9 +33,11 @@ abstract class Controller
      * 
      * @return JsonResponse
      */
-    public function displayByTable($model, $table, $id) {
-        $data = $model::with($table)->findOrFail($id);
-        return $data->$table()->get();
+    public function displayByTable(string $model, string $relation, int $id) {
+        $data = $model::with($relation)->findOrFail($id);
+        $relatedData = $data->$relation()->get();
+
+        return $this->jsonResponse('Datos obtenidos exitosamente', $relatedData, 200);
     }
 
     /**
