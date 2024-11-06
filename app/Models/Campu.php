@@ -29,6 +29,6 @@ class Campu extends Model
     ];
 
     public function graduates() {
-        return $this->hasMany(NumGraduate::class);
+        return $this->hasMany(NumGraduate::class, 'campus_id');
     }
 }

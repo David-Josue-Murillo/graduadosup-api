@@ -14,10 +14,17 @@ class CampuController extends Controller
      */
     public function index()
     {
-        $campus = Campu::all();
+        $campus = Campu::with(['graduates' => function($query) {
+            $query->with(['career' => function($q) {
+                $q->with('faculty');
+            }]);
+        }])->get();
+
+        $campusData = $this->displayDataCampus($campus);
+
         return $campus->isEmpty() 
         ? $this->jsonResponse('No se encontro campus', [], 200)
-        : $this->jsonResponse('Campus encontrados con éxitos', $campus, 200);
+        : $this->jsonResponse('Campus encontrados con éxitos',$campusData, 200);
     }
 
     /**
