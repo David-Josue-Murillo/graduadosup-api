@@ -42,37 +42,6 @@ abstract class Controller
     }
 
     /**
-     * Formats and returns custom data structure for NumGraduates with associated details.
-     * 
-     * @param \Illuminate\Database\Eloquent\Collection $numGraduates The collection of NumGraduate models.
-     * 
-     * @return \Illuminate\Support\Collection
-     */
-    protected function formatGraduatesData($numGraduates) {
-        $numGraduatesData = $numGraduates->map(function($graduate) {
-            return [
-                'id' => $graduate->id,
-                'quantity' => $graduate->quantity,
-                'year' => $graduate->year,
-                'career' => [
-                    'id' => $graduate->career->id,
-                    'name' => $graduate->career->name,
-                ],
-                'faculty' => [
-                    'id' => $graduate->faculty->id,
-                    'name' => $graduate->faculty->name,
-                ],
-                'campus' => [
-                    'id' => $graduate->campus->id,
-                    'name' => $graduate->campus->name,
-                ]
-            ];
-        });
-
-        return $numGraduatesData;
-    }
-
-    /**
      * Formats and returns custom data structure for Campus with graduate information.
      * 
      * @param \Illuminate\Database\Eloquent\Collection $campus The collection of Campus models.
@@ -98,32 +67,5 @@ abstract class Controller
         });
 
         return $campusData;
-    }
-
-    /**
-     * Formatea los datos de un graduado en una estructura personalizada.
-     *
-     * @param \App\Models\NumGraduate $graduate
-     * @return array Datos formateados para la respuesta
-     */
-    protected function formatGraduateData(NumGraduate $graduate)
-    {
-        return [
-            'id' => $graduate->id,
-            'quantity' => $graduate->quantity,
-            'year' => $graduate->year,
-            'campus' => [
-                'id' => $graduate->campus->id,
-                'name' => $graduate->campus->name,
-            ],
-            'career' => [
-                'id' => $graduate->career->id,
-                'name' => $graduate->career->name,
-                'faculty' => [
-                    'id' => $graduate->career->faculty->id,
-                    'name' => $graduate->career->faculty->name,
-                ]
-            ]
-        ];
     }
 }

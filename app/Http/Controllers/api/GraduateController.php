@@ -5,10 +5,17 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
 use App\Models\NumGraduate;
+use App\Services\GraduateDataFormatterService;
 use Illuminate\Http\Request;
 
 class GraduateController extends Controller
 {
+    protected $formatter;
+
+    public function __construct(GraduateDataFormatterService $formatter){
+        $this->formatter = $formatter;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +35,7 @@ class GraduateController extends Controller
         }
 
         $numGraduates = $query->with(['campus', 'career', 'faculty'])->get();
-        $numGraduatesData = $this->formatGraduatesData($numGraduates);
+        $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
 
         return $numGraduates->isEmpty()
         ? $this->jsonResponse('No hay datos', [], 200)
@@ -56,7 +63,7 @@ class GraduateController extends Controller
     public function show(int $graduate_id)
     {
         $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
-        $formattedGraduate = $this->formatGraduateData($graduate);
+        $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
 
         return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
