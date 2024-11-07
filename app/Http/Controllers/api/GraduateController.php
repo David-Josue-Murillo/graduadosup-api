@@ -5,15 +5,18 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
 use App\Models\NumGraduate;
+use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
 use Illuminate\Http\Request;
 
 class GraduateController extends Controller
 {
     protected $formatter;
+    protected $displayData;
 
-    public function __construct(GraduateDataFormatterService $formatter){
+    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData){
         $this->formatter = $formatter;
+        $this->displayData = $displayData;
     }
 
     /**
@@ -100,7 +103,8 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayCampus(int $graduate_id) {
-        return $this->displayByTable(NumGraduate::class, 'campus', $graduate_id);
+        $data = $this->displayData->numGraduateRelatedData('campus', $graduate_id);
+        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
@@ -109,7 +113,8 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayCareer(int $graduate_id) {
-        return $this->displayByTable(NumGraduate::class, 'career', $graduate_id);
+        $data = $this->displayData->numGraduateRelatedData('career', $graduate_id);
+        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
@@ -118,6 +123,7 @@ class GraduateController extends Controller
      * @return mixed|\Illuminate\Http\JsonResponse
      */
     public function displayFaculty(int $graduate_id) {
-        return $this->displayByTable(NumGraduate::class, 'faculty', $graduate_id);
+        $data = $this->displayData->numGraduateRelatedData('faculty', $graduate_id);
+        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 }

@@ -23,20 +23,4 @@ abstract class Controller
             'status' => $statusCode
         ], $statusCode);
     }
-
-    /**
-     * Retrieves related data from a specific table through a model.
-     * 
-     * @param string $model The model class to query.
-     * @param string $relation The relationship to load.
-     * @param int $id The primary key of the model to retrieve.
-     * 
-     * @return JsonResponse
-     */
-    protected function displayByTable(string $model, string $relation, int $id) {
-        $data = $model::with($relation)->findOrFail($id);
-        $relatedData = $data->$relation()->get();
-
-        return $this->jsonResponse('Datos obtenidos exitosamente', $relatedData, 200);
-    }
 }
