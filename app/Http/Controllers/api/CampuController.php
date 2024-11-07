@@ -3,19 +3,26 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Campu;
+use App\Services\CampusDataFormatterService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CampuRequest;
 
 class CampuController extends Controller
 {
+    protected $formatter;
+
+    public function __construct(CampusDataFormatterService $formatter) {
+        $this->formatter = $formatter;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $campus = Campu::with('graduates')->get();
-        $campusData = $this->formatCampusData($campus);
+        $campusData = $this->formatter->formatCampusData($campus);
 
         return $campus->isEmpty() 
         ? $this->jsonResponse('No se encontro campus', [], 200)
