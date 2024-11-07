@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\ExceptionSetup;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -20,20 +21,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Manejo de ModelNotFoundException
-        $exceptions->render(function (ModelNotFoundException $exception, Request $request) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);
-        });
-
-        // Manejo de QueryException
-        $exceptions->render(function (QueryException $exception, Request $request) {
-            Log::error('Error en la consulta de la base de datos: ' . $exception->getMessage());
-            return response()->json(['message' => 'Error en la base de datos'], 500);
-        });
-
-        // Manejo de otras excepciones genéricas
-        $exceptions->render(function (Throwable $exception, Request $request) {
-            Log::error('Error inesperado: ' . $exception->getMessage());
-            return response()->json(['message' => 'Error interno del servidor'], 500);
-        });
+        ExceptionSetup::configure($exceptions);
     })->create();
