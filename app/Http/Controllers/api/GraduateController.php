@@ -60,17 +60,10 @@ class GraduateController extends Controller
      */
     public function show(int $graduate_id)
     {
-        try {
-            $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
-            $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
-    
-            return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->jsonResponse('Registro de graduado no encontrado', null, 404);
-        } catch (Exception $e){
-            Log::error('Error al obtener registro de graduado: ' . $e->getMessage());
-            return $this->jsonResponse("Error al obtener el dato", null, 500);
-        }
+        $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
+        $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
+
+        return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 
     /**
