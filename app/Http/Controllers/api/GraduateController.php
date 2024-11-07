@@ -9,6 +9,7 @@ use App\Models\Career;
 use App\Models\NumGraduate;
 use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
+use App\Services\GraduateService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -62,41 +63,13 @@ class GraduateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(NumGraduatesRequest $request)
-    {
+    public function store(NumGraduatesRequest $request, GraduateService $graduateService)
+    {   
         try {
-            $campus = Campu::find($request->campus_id);
-            $career = Career::find($request->career_id);
-
-            if(!$campus || !$career) {
-                $missing = !$campus ? 'Campus' : !$career ? 'Carrera' : null;
-                return $this->jsonResponse("El {$missing} especificado no existe", null, 422);
-            }
-
-            $existingRecord = NumGraduate::where([
-                'year' => $request->year,
-                'campus_id' => $request->campus_id,
-                'career_id' => $request->career_id
-            ])->first();
-
-            if($existingRecord){
-                return $this->jsonResponse('Ya existe un registro para esta combinación de año, campus y carrera', null, 409);
-            }
-
-            $graduates = NumGraduate::create([
-                'quantity' => $request->quantity,
-                'year' => $request->year,
-                'campus_id' => $request->campus_id,
-                'career_id' => $request->career_id
-            ]);
-    
+            $graduates = $graduateService->createGraduate($request->validated());
             return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
-        } catch (QueryException $e) {
-            Log::error('Error al crear registro de graduados: ' . $e->getMessage());
-            return $this->jsonResponse('Error al guardar en la base de datos', null, 500);
-        } catch (Exception $e) {
-            Log::error('Error inesperado en store: ' . $e->getMessage());
-            return $this->jsonResponse("Error interno del servidor", null, 500);
+        } catch(Exception $e) {
+            return $this->jsonResponse($e->getMessage(), null, $e->getCode() ?: 500);
         }
     }
 
