@@ -47,12 +47,10 @@ class GraduateController extends Controller
      */
     public function store(NumGraduatesRequest $request, GraduateService $graduateService)
     {   
-        try {
-            $graduates = $graduateService->createGraduate($request->validated());
-            return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
-        } catch(Exception $e) {
-            return $this->jsonResponse($e->getMessage(), null, $e->getCode() ?: 500);
-        }
+        
+        $graduates = $graduateService->createGraduate($request->validated());
+        return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
+        
     }
 
     /**
@@ -71,21 +69,15 @@ class GraduateController extends Controller
      */
     public function update(NumGraduatesRequest $request, int $graduate_id)
     {
-        try{
-            $graduate = NumGraduate::findOrFail($graduate_id);
-            $graduate->update([
-                'quantity' => $request->quantity,
-                'year' => $request->year,
-                'campus_id' => $request->campus_id,
-                'career_id' => $request->career_id
-            ]);
-    
-            return $this->jsonResponse('Dato actualizado exitosamente', $graduate, 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->jsonResponse('Registro de graduado no encontrado', null, 404);
-        } catch (Exception $e) {
-            return $this->jsonResponse('Error al actualizar los datos del graduado', null, 500);
-        }
+        $graduate = NumGraduate::findOrFail($graduate_id);
+        $graduate->update([
+            'quantity' => $request->quantity,
+            'year' => $request->year,
+            'campus_id' => $request->campus_id,
+            'career_id' => $request->career_id
+        ]);
+
+        return $this->jsonResponse('Dato actualizado exitosamente', $graduate, 200);
     }
 
     /**
@@ -93,15 +85,9 @@ class GraduateController extends Controller
      */
     public function destroy(int $graduate_id)
     {
-        try {
-            $graduate = NumGraduate::findOrFail($graduate_id);
-            $graduate->delete();
-            return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
-        } catch (ModelNotFoundException $e) {
-            return $this->jsonResponse('Registro de graduado no encontrado', null, 404);
-        } catch (Exception $e) {
-            return $this->jsonResponse('Error al eliminar el dato', null, 500);
-        }
+        $graduate = NumGraduate::findOrFail($graduate_id);
+        $graduate->delete();
+        return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
     }
 
     /**
