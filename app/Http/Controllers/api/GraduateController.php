@@ -8,6 +8,7 @@ use App\Models\NumGraduate;
 use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
 use App\Services\GraduateService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class GraduateController extends Controller
@@ -22,8 +23,11 @@ class GraduateController extends Controller
 
     /**
      * Display a listing of the resource.
+     * 
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function index(Request $request, GraduateService $graduateService)
+    public function index(Request $request, GraduateService $graduateService): JsonResponse
     {
         $query = $graduateService->verifyFilter($request);
 
@@ -38,8 +42,11 @@ class GraduateController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @param NumGraduatesRequest $request
+     * @return JsonResponse
      */
-    public function store(NumGraduatesRequest $request, GraduateService $graduateService)
+    public function store(NumGraduatesRequest $request, GraduateService $graduateService): JsonResponse
     {   
         
         $graduates = $graduateService->createGraduate($request->validated());
@@ -49,8 +56,11 @@ class GraduateController extends Controller
 
     /**
      * Display the specified resource.
+     * 
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function show(int $graduate_id)
+    public function show(int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
         $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
@@ -60,8 +70,12 @@ class GraduateController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param NumGraduatesRequest $request
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function update(NumGraduatesRequest $request, int $graduate_id)
+    public function update(NumGraduatesRequest $request, int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->update([
@@ -76,8 +90,11 @@ class GraduateController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function destroy(int $graduate_id)
+    public function destroy(int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->delete();
@@ -86,30 +103,37 @@ class GraduateController extends Controller
 
     /**
      * Display the Campus of a specified graduate
-     * @param \App\Models\NumGraduate $graduate
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * 
+     * @param NumGraduate $graduate
+     * @return JsonResponse
      */
-    public function filterByCampus(int $graduate_id) {
+    public function filterByCampus(int $graduate_id): JsonResponse 
+    {
         $data = $this->displayData->numGraduateRelatedData('campus', $graduate_id);
         return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
      * Display the career of a specified graduate
-     * @param \App\Models\NumGraduate $graduate
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * 
+     * @param NumGraduate $graduate
+     * @return JsonResponse
+     * 
      */
-    public function filterByCareer(int $graduate_id) {
+    public function filterByCareer(int $graduate_id):JsonResponse 
+    {
         $data = $this->displayData->numGraduateRelatedData('career', $graduate_id);
         return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
      * Display the faculty of a specified graduate
+     * 
      * @param int $graduate_id
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function filterByFaculty(int $graduate_id) {
+    public function filterByFaculty(int $graduate_id): JsonResponse 
+    {
         $data = $this->displayData->numGraduateRelatedData('faculty', $graduate_id);
         return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
