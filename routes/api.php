@@ -56,9 +56,9 @@ Route::prefix('graduates')->group(function () {
     Route::delete('/{graduates}', [GraduateController::class, 'destroy']); 
 
     // Relations operations 
-    Route::get('/{graduates}/campus', [GraduateController::class, 'displayCampus']); 
-    Route::get('/{graduates}/career', [GraduateController::class, 'displayCareer']); 
-    Route::get('/{graduates}/faculty', [GraduateController::class, 'displayFaculty']); 
+    Route::get('/{graduates}/campus', [GraduateController::class, 'filterByCampus']); 
+    Route::get('/{graduates}/career', [GraduateController::class, 'filterByCareer']); 
+    Route::get('/{graduates}/faculty', [GraduateController::class, 'filterByFaculty']); 
 
     // By filters
 });

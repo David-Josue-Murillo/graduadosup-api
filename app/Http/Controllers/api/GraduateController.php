@@ -95,7 +95,7 @@ class GraduateController extends Controller
      * @param \App\Models\NumGraduate $graduate
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function displayCampus(int $graduate_id) {
+    public function filterByCampus(int $graduate_id) {
         $data = $this->displayData->numGraduateRelatedData('campus', $graduate_id);
         return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
@@ -105,7 +105,7 @@ class GraduateController extends Controller
      * @param \App\Models\NumGraduate $graduate
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function displayCareer(int $graduate_id) {
+    public function filterByCareer(int $graduate_id) {
         $data = $this->displayData->numGraduateRelatedData('career', $graduate_id);
         return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
@@ -115,7 +115,7 @@ class GraduateController extends Controller
      * @param int $graduate_id
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function displayFaculty(int $graduate_id) {
+    public function filterByFaculty(int $graduate_id) {
         $data = $this->displayData->numGraduateRelatedData('faculty', $graduate_id);
         return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
