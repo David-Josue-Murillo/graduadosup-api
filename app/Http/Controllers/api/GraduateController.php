@@ -4,17 +4,11 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
-use App\Models\Campu;
-use App\Models\Career;
 use App\Models\NumGraduate;
 use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
 use App\Services\GraduateService;
-use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Log;
 
 class GraduateController extends Controller
 {
