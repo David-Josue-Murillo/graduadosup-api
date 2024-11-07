@@ -5,9 +5,27 @@ namespace App\Services;
 use App\Models\NumGraduate;
 use App\Models\Campu;
 use App\Models\Career;
+use Illuminate\Http\Request;
 
 class GraduateService
 {
+    public function verifyFilter(Request $request) {
+        $query = NumGraduate::query();
+
+        // Aplicar filtros opcionales si se proporcionan en el request
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+        if ($request->filled('campus_id')) {
+            $query->where('campus_id', $request->campus_id);
+        }
+        if ($request->filled('career_id')) {
+            $query->where('career_id', $request->career_id);
+        }
+
+        return $query;
+    }
+
     public function createGraduate(array $data)
     {
         $campus = Campu::find($data['campus_id']);

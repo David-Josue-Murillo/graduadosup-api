@@ -29,35 +29,17 @@ class GraduateController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, GraduateService $graduateService)
     {
-        try {
-            $query = NumGraduate::query();
-    
-            // Aplicar filtros opcionales si se proporcionan en el request
-            if ($request->filled('year')) {
-                $query->where('year', $request->year);
-            }
-            if ($request->filled('campus_id')) {
-                $query->where('campus_id', $request->campus_id);
-            }
-            if ($request->filled('career_id')) {
-                $query->where('career_id', $request->career_id);
-            }
-    
-            $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
-            $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
-    
-            return $numGraduates->isEmpty()
-            ? $this->jsonResponse('No hay datos', [], 200)
-            : $this->jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
-        } catch (QueryException $e) {
-            Log::error('Error en la consulta de graduados: ' . $e->getMessage());
-            return $this->jsonResponse('Error al consultar la base de datos', null, 500);
-        } catch (Exception $e) {
-            Log::error('Error inesperado en index: ' . $e->getMessage());
-            return $this->jsonResponse('Error interno del servidor', null, 500);
-        }
+        $query = $graduateService->verifyFilter($request);
+
+        $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
+        $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
+
+        return $numGraduates->isEmpty()
+        ? $this->jsonResponse('No hay datos', [], 200)
+        : $this->jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
+        
     }
 
     /**
