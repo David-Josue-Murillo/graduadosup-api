@@ -73,6 +73,16 @@ class GraduateController extends Controller
                 return $this->jsonResponse("El {$missing} especificado no existe", null, 422);
             }
 
+            $existingRecord = NumGraduate::where([
+                'year' => $request->year,
+                'campus_id' => $request->campus_id,
+                'career_id' => $request->career_id
+            ])->first();
+
+            if($existingRecord){
+                return $this->jsonResponse('Ya existe un registro para esta combinación de año, campus y carrera', null, 409);
+            }
+
             $graduates = NumGraduate::create([
                 'quantity' => $request->quantity,
                 'year' => $request->year,
@@ -81,8 +91,12 @@ class GraduateController extends Controller
             ]);
     
             return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
+        } catch (QueryException $e) {
+            Log::error('Error al crear registro de graduados: ' . $e->getMessage());
+            return $this->jsonResponse('Error al guardar en la base de datos', null, 500);
         } catch (Exception $e) {
-            return $this->jsonResponse("Error al crear el dato", null, 500);
+            Log::error('Error inesperado en store: ' . $e->getMessage());
+            return $this->jsonResponse("Error interno del servidor", null, 500);
         }
     }
 
