@@ -110,7 +110,10 @@ class GraduateController extends Controller
             $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
     
             return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
+        } catch (ModelNotFoundException $e) {
+            return $this->jsonResponse('Registro de graduado no encontrado', null, 404);
         } catch (Exception $e){
+            Log::error('Error al obtener registro de graduado: ' . $e->getMessage());
             return $this->jsonResponse("Error al obtener el dato", null, 500);
         }
     }
