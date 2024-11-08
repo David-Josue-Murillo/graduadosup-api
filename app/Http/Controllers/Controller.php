@@ -18,4 +18,25 @@ abstract class Controller
         $data = $model::with($table)->findOrFail($id);
         return $data->$table()->get();
     }
+
+    public function displayCustomCampusData($campus) {
+        $campusData = $campus->map(function($campus) {
+            return [
+                'id' => $campus->id,
+                'name' => $campus->name,
+                'graduates_info' => [
+                    'total_graduates' => $campus->graduates->sum('quantity'),
+                    'by_year' => $campus->graduates
+                        ->groupBy('year')
+                        ->map(function($yearGroup) {
+                            return [
+                                'quantity' => $yearGroup->sum('quantity')
+                            ];
+                        })
+                ]
+            ];
+        });
+
+        return $campusData;
+    }
 }

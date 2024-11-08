@@ -59,5 +59,7 @@ Route::prefix('graduates')->group(function () {
     Route::get('/{graduates}/campus', [GraduateController::class, 'displayCampus']); 
     Route::get('/{graduates}/career', [GraduateController::class, 'displayCareer']); 
     Route::get('/{graduates}/faculty', [GraduateController::class, 'displayFaculty']); 
+
+    // By filters
 });
 

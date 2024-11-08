@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Campu extends Model
 {
+    /** @use HasFactory<\Database\Factories\CampuFactory> */
+    use HasFactory, Notifiable;
+
     /**
      * Attributes that can be assigned
      * @var array
@@ -24,6 +29,6 @@ class Campu extends Model
     ];
 
     public function graduates() {
-        return $this->hasMany(NumGraduate::class);
+        return $this->hasMany(NumGraduate::class, 'campus_id');
     }
 }
