@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Builder;
-use Request;
+use Illuminate\Http\Request;
 
-class CareerService {
+class CareerService 
+{
 
     public function verifyFilter(Builder $query, Request $request):Builder {
         if($request->filled('name')){

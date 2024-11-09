@@ -34,9 +34,9 @@ class GraduateController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = NumGraduate::query();
-        $response = $this->graduateService->verifyFilter($query, $request);
+        $query = $this->graduateService->verifyFilter($query, $request);
 
-        $numGraduates = $response->with(['campus', 'career', 'faculty'])->paginate(15);
+        $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
         $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
 
         return $numGraduates->isEmpty()
