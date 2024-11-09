@@ -62,7 +62,10 @@ class ExceptionSetup
     {
         $exceptions->render(function (Throwable $exception, Request $request) {
             Log::error('Error inesperado: ' . $exception->getMessage());
-            return response()->json(['message' => 'Error interno del servidor', 'error' => $exception->getMessage()], 400);
+            return response()->json([
+                'message' => 'El servidor no puede procesar la solicitud debido a un error del cliente', 
+                'error' => $exception->getMessage()
+            ], 400);
         });
     }
 }
