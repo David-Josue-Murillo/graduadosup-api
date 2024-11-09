@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
+use App\Models\Campu;
+use App\Models\Career;
 use App\Models\NumGraduate;
 use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
@@ -31,9 +33,10 @@ class GraduateController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = $this->graduateService->verifyFilter($request);
+        $query = NumGraduate::query();
+        $response = $this->graduateService->verifyFilter($query, $request);
 
-        $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
+        $numGraduates = $response->with(['campus', 'career', 'faculty'])->paginate(15);
         $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
 
         return $numGraduates->isEmpty()
@@ -50,9 +53,20 @@ class GraduateController extends Controller
      */
     public function store(NumGraduatesRequest $request): JsonResponse
     {   
-        
-        $graduates = $this->graduateService->createGraduate($request->validated());
-        return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
+        $campus = Campu::find($request['campus_id']);
+        $career = Career::find($request['career_id']);
+
+        $record = NumGraduate::where([
+            'year' => $request['year'],
+            'campus_id' => $request['campus_id'],
+            'career_id' => $request['career_id']
+        ])->first();
+
+        if($this->graduateService->ifExistsCampusAndCareer($campus, $career) && $this->graduateService->ifNotExistsRecord($record)) {
+            $graduate = NumGraduate::create($request->validated());
+        }
+
+        return $this->jsonResponse("Dato creado exitosamente", $graduate, 201);
         
     }
 
@@ -80,8 +94,14 @@ class GraduateController extends Controller
     public function update(NumGraduatesRequest $request, int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
-        $data = $this->graduateService->updateGraduate($graduate, $request);
-        return $this->jsonResponse('Dato actualizado exitosamente', $data, 200);
+        $graduate->update([
+            'quantity' => $request->quantity,
+            'year' => $request->year,
+            'campus_id' => $request->campus_id,
+            'career_id' => $request->career_id
+        ]);
+
+        return $this->jsonResponse('Dato actualizado exitosamente', $graduate, 200);
     }
 
     /**
