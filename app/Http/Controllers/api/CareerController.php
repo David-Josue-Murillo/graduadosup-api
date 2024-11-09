@@ -57,15 +57,24 @@ class CareerController extends Controller
 
     /**
      * Display the specified resource.
+     * 
+     * @param int $id
+     * @return JsonResponse
      */
     public function show(int $id)
     {
-        $career = Career::findOrFail($id);
-        return $this->jsonResponse('Carrera encontrada', $career, 200);
+        $career = Career::with(['graduates', 'faculty'])->findOrFail($id);
+        $careerData = $this->formatterData->formatterData($career);
+
+        return $this->jsonResponse('Carrera encontrada', $careerData, 200);
     }
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param CareerRequest $request
+     * @param Career $career
+     * @return JsonResponse
      */
     public function update(CareerRequest $request, Career $career)
     {
