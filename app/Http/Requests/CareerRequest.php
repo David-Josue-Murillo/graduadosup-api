@@ -22,7 +22,7 @@ class CareerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:100',
+            'name' => 'required|max:100|unique:careers',
             'faculty_id' => 'required|exists:faculties,id'
         ];
     }
@@ -35,6 +35,9 @@ class CareerRequest extends FormRequest
         return [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.max' => 'El nombre no debe exceder los 100 caracteres.',
+            'name.unique' => 'El nombre ya existe en la base de datos.',
+            'faculty_id.required' => 'El campo facultad es obligatorio.',
+            'faculty_id.exists' => 'La facultad seleccionada no existe.'
         ];
     }
 }

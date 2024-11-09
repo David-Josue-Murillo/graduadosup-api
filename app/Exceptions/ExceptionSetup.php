@@ -34,7 +34,7 @@ class ExceptionSetup
     protected static function handleModelNotFoundException(Exceptions $exceptions)
     {
         $exceptions->render(function (ModelNotFoundException $exception, Request $request) {
-            return response()->json(['message' => 'Registro no encontrado'], 404);
+            return response()->json(['message' => 'Registro no encontrado', 'error' => $exception->getMessage()], 404);
         });
     }
 
@@ -48,7 +48,7 @@ class ExceptionSetup
     {
         $exceptions->render(function (QueryException $exception, Request $request) {
             Log::error('Error en la consulta de la base de datos: ' . $exception->getMessage());
-            return response()->json(['message' => 'Error en la base de datos'], 500);
+            return response()->json(['message' => 'Error en la base de datos', 'error' => $exception->getMessage()], 500);
         });
     }
 
@@ -62,7 +62,7 @@ class ExceptionSetup
     {
         $exceptions->render(function (Throwable $exception, Request $request) {
             Log::error('Error inesperado: ' . $exception->getMessage());
-            return response()->json(['message' => 'Error interno del servidor'], 500);
+            return response()->json(['message' => 'Error interno del servidor', 'error' => $exception->getMessage()], 400);
         });
     }
 }

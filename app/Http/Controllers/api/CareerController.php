@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CareerRequest;
 use App\Models\Career;
+use App\Models\Faculty;
 use App\Services\CareerDataFormatterService;
 use App\Services\CareerService;
 use Illuminate\Http\Request;
@@ -22,7 +23,8 @@ class CareerController extends Controller
 
     /**
      * Display a listing of the resource.
-     *      * @param Request $request
+     * 
+     * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request)
@@ -40,6 +42,9 @@ class CareerController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @param CareerRequest $request
+     * @return JsonResponse
      */
     public function store(CareerRequest $request)
     {
