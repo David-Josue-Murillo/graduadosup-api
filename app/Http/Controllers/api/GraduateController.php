@@ -15,10 +15,12 @@ class GraduateController extends Controller
 {
     protected $formatter;
     protected $displayData;
+    protected $graduateService;
 
-    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData){
+    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData, GraduateService $graduateService){
         $this->formatter = $formatter;
         $this->displayData = $displayData;
+        $this->graduateService = $graduateService;
     }
 
     /**
@@ -27,9 +29,9 @@ class GraduateController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request, GraduateService $graduateService): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $query = $graduateService->verifyFilter($request);
+        $query = $this->graduateService->verifyFilter($request);
 
         $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
         $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
@@ -46,10 +48,10 @@ class GraduateController extends Controller
      * @param NumGraduatesRequest $request
      * @return JsonResponse
      */
-    public function store(NumGraduatesRequest $request, GraduateService $graduateService): JsonResponse
+    public function store(NumGraduatesRequest $request): JsonResponse
     {   
         
-        $graduates = $graduateService->createGraduate($request->validated());
+        $graduates = $this->graduateService->createGraduate($request->validated());
         return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
         
     }

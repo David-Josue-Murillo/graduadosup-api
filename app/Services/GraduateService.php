@@ -47,4 +47,15 @@ class GraduateService
 
         return NumGraduate::create($data);
     }
+
+    public function updateGraduate(NumGraduate $graduate, Request $request):NumGraduate {
+        $graduate->update([
+            'quantity' => $request->quantity,
+            'year' => $request->year,
+            'campus_id' => $request->campus_id,
+            'career_id' => $request->career_id
+        ]);
+
+        return $graduate;
+    }
 }
