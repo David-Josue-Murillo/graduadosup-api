@@ -53,8 +53,6 @@ class GraduateController extends Controller
      */
     public function store(NumGraduatesRequest $request): JsonResponse
     {   
-        $campus = Campu::find($request['campus_id']);
-        $career = Career::find($request['career_id']);
 
         $record = NumGraduate::where([
             'year' => $request['year'],
@@ -62,7 +60,7 @@ class GraduateController extends Controller
             'career_id' => $request['career_id']
         ])->first();
 
-        if($this->graduateService->ifExistsCampusAndCareer($campus, $career) && $this->graduateService->ifNotExistsRecord($record)) {
+        if($this->graduateService->ifNotExistsRecord($record)) {
             $graduate = NumGraduate::create($request->validated());
         }
 
