@@ -6,13 +6,16 @@ use App\Models\Faculty;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
 use App\Services\FacultyDataFormatterService;
+use App\Services\FacultyService;
 
 class FacultyController extends Controller
 {
     protected $formatter;
+    protected $services;
 
-    public function __construct(FacultyDataFormatterService $formatter){
+    public function __construct(FacultyDataFormatterService $formatter, FacultyService $services){
         $this->formatter = $formatter;
+        $this->services = $services;
     }
 
     /**
@@ -33,10 +36,9 @@ class FacultyController extends Controller
      */
     public function store(FacultyRequest $request)
     {
-        $faculty = Faculty::create([
-            'name' => $request->name
-        ]);
-
+        if(!$this->services->verifyFacultyExists($request)){
+            $faculty = Faculty::create($request->validated());
+        }
         return $this->jsonResponse('Facultad creada con éxito', $faculty, 201);
     }
 
