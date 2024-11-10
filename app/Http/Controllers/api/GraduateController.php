@@ -81,12 +81,7 @@ class GraduateController extends Controller
     public function update(NumGraduatesRequest $request, int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
-        $graduate->update([
-            'quantity' => $request->quantity,
-            'year' => $request->year,
-            'campus_id' => $request->campus_id,
-            'career_id' => $request->career_id
-        ]);
+        $this->graduateService->updateRecord($request, $graduate);
 
         return $this->jsonResponse('Dato actualizado exitosamente', $graduate, 200);
     }

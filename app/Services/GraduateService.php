@@ -7,6 +7,7 @@ use App\Models\NumGraduate;
 use App\Models\Campu;
 use App\Models\Career;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class GraduateService
 {
@@ -60,4 +61,12 @@ class GraduateService
         return $record ? throw new \Exception('Registro duplicado', 409) : true;
     }
 
+    public function updateRecord(NumGraduatesRequest $request, $record):void { 
+        $record->update([
+            'quantity' => $request->quantity,
+            'year' => $request->year,
+            'campus_id' => $request->campus_id,
+            'career_id' => $request->career_id
+        ]);
+    }
 }
