@@ -53,18 +53,6 @@ class UserController extends Controller
     }
 
     /**
-     *  Show the form for editing the specified resource.
-     * 
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function edit(int $id): JsonResponse
-    {
-        $user = User::findOrFail($id);
-        return $this->jsonResponse('Usuario a modificar', $user, 200);
-    }
-
-    /**
      *  Update the specified resource in storage.
      * 
      * @param UserRequest $request

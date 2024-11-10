@@ -2,14 +2,19 @@
 
 use App\Http\Controllers\api\CampuController;
 use App\Http\Controllers\api\GraduateController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\CareerController;
 use App\Http\Controllers\api\FacultyController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix('users')->group(function (){
+    //CRUD Operations
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'store']);          
+    Route::get('/{id}', [UserController::class, 'show']);   
+    Route::put('/{id}', [UserController::class, 'update']); 
+    Route::delete('/{id}', [UserController::class, 'destroy']); 
+});
 
 Route::prefix('faculties')->group(function () {
     // CRUD Operation
