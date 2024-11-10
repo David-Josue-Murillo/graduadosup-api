@@ -47,8 +47,9 @@ class FacultyController extends Controller
      */
     public function show($id)
     {
-        $faculty = Faculty::findOrFail($id);
-        return $this->jsonResponse('Facultad encontrada', $faculty, 200);
+        $faculty = Faculty::with('careers')->findOrFail($id);
+        $facultyData = $this->formatter->formatFacultyData($faculty);
+        return $this->jsonResponse('Facultad encontrada', $facultyData, 200);
     }
 
     /**
@@ -56,10 +57,7 @@ class FacultyController extends Controller
      */
     public function update(FacultyRequest $request, Faculty $faculty)
     {
-        $faculty->update([
-            'name' => $request->name
-        ]);
-
+        $faculty->update($request->validated());
         return $this->jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
     }
 

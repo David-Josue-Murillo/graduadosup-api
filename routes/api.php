@@ -20,7 +20,7 @@ Route::prefix('faculties')->group(function () {
     Route::delete('/{faculty}', [FacultyController::class, 'destroy']); 
 
     // Relations operations
-    Route::get('/{faculty}/careers', [FacultyController::class, 'displayCareers']); 
+    Route::get('/{faculty}/career', [FacultyController::class, 'displayCareers']); 
 });
 
 Route::prefix('careers')->group(function () {
