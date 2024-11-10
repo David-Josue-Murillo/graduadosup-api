@@ -7,8 +7,7 @@ use App\Models\Career;
 class CareerDataFormatterService 
 {
 
-    public function formatterData(Career $career):array 
-    {
+    public function formatterData(Career $career):array {
         return [
             'id' => $career->id,
             'name' => $career->name,

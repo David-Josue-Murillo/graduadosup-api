@@ -12,15 +12,17 @@ class FacultyDataFormatterService
      * @param \App\Models\Faculty $faculty
      * @return array
      */
-    public function formatFacultyData(Faculty $faculty){
+    public function formatFacultyData(Faculty $faculty):array {
         return [
             'id' => $faculty->id,
             'name' => $faculty->name,
             'total_careers' => $faculty->careers->count(),
-            'careers' => [
-                'id' => $faculty->careers->id,
-                'name' => $faculty->careers->name
-            ]
+            'careers' => $faculty->careers->map(function($career){
+                return [
+                    'id' => $career->id,
+                    'name' => $career->name
+                ];
+            })
         ];
     }
 

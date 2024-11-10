@@ -5,19 +5,27 @@ namespace App\Http\Controllers\api;
 use App\Models\Faculty;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
+use App\Services\FacultyDataFormatterService;
 
 class FacultyController extends Controller
 {
+    protected $formatter;
+
+    public function __construct(FacultyDataFormatterService $formatter){
+        $this->formatter = $formatter;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $faculties = Faculty::with('careers')->get();
+        $facultiesData = $this->formatter->formatFacultiesData($faculties);
 
         return $faculties->isEmpty()
             ? $this->jsonResponse('No se encontraron facultades', [], 200)
-            : $this->jsonResponse('Facultades encontradas exitosamente', $faculties, 200);
+            : $this->jsonResponse('Facultades encontradas exitosamente', $facultiesData, 200);
     }
 
     /**
