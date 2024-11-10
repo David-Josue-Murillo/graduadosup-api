@@ -31,6 +31,8 @@ class CampuController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @param CampuRequest $request
      */
     public function store(CampuRequest $request)
     {
@@ -43,6 +45,8 @@ class CampuController extends Controller
 
     /**
      * Display the specified resource.
+     * 
+     * @param int $campu_id
      */
     public function show(int $campu_id)
     {   
@@ -53,8 +57,11 @@ class CampuController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param CampuRequest $request
+     * @param Campu $campu
      */
-    public function update(Request $request, Campu $campu)
+    public function update(CampuRequest $request, Campu $campu)
     {
         $campu->update([
             'name' => $request->name
@@ -64,6 +71,8 @@ class CampuController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param Campu $campu
      */
     public function destroy(Campu $campu)
     {
