@@ -7,21 +7,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
 use App\Services\FacultyDataFormatterService;
 use App\Services\FacultyService;
+use Illuminate\Http\JsonResponse;
 
 class FacultyController extends Controller
 {
     protected $formatter;
     protected $services;
 
-    public function __construct(FacultyDataFormatterService $formatter, FacultyService $services){
+    public function __construct(FacultyDataFormatterService $formatter, FacultyService $services)
+    {
         $this->formatter = $formatter;
         $this->services = $services;
     }
 
     /**
      * Display a listing of the resource.
+     * 
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $faculties = Faculty::with('careers')->get();
         $facultiesData = $this->formatter->formatFacultiesData($faculties);
@@ -33,8 +37,11 @@ class FacultyController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @param FacultyRequest $request
+     * @return JsonResponse
      */
-    public function store(FacultyRequest $request)
+    public function store(FacultyRequest $request): JsonResponse
     {
         if(!$this->services->verifyFacultyExists($request)){
             $faculty = Faculty::create($request->validated());
@@ -44,8 +51,11 @@ class FacultyController extends Controller
 
     /**
      * Display the specified resource.
+     * 
+     * @param int $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
         $faculty = Faculty::with('careers')->findOrFail($id);
         $facultyData = $this->formatter->formatFacultyData($faculty);
@@ -54,8 +64,12 @@ class FacultyController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param FacultyRequest $request
+     * @param Faculty $faculty
+     * @return JsonResponse
      */
-    public function update(FacultyRequest $request, Faculty $faculty)
+    public function update(FacultyRequest $request, Faculty $faculty): JsonResponse
     {
         $faculty->update($request->validated());
         return $this->jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
@@ -63,29 +77,25 @@ class FacultyController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param Faculty $faculty
+     * @return JsonResponse
      */
-    public function destroy(Faculty $faculty)
+    public function destroy(Faculty $faculty): JsonResponse
     {
         $faculty->delete();
-        return $this->jsonResponse('Facultad eliminada con éxito', [], 200);
+        return $this->jsonResponse('Facultad eliminada con éxito', $faculty, 200);
     }
 
     /**
      * Display careers from this faculty
+     * 
+     * @param Faculty $faculty
+     * @return JsonResponse
      */
-    public function displayCareers(Faculty $faculty)
+    public function displayCareers(Faculty $faculty): JsonResponse
     {
         $careers = $faculty->careers()->get();
         return $this->jsonResponse('Lista de carreras', $careers, 200);
     }
-
-    /**
-     * Generates a standardized JSON response for the API.
-     * 
-     * @param string $message Main message describing the status of the response.
-     * @param mixed $data Additional data to be returned in the response (can be an array or an object).
-     * @param int $statusCode HTTP status code associated with the response (200 by default).
-     * 
-     * @return \Illuminate\Http\JsonResponse JSON response with the message, data, and status code.
-     */
 }

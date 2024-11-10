@@ -9,7 +9,7 @@ use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
 use App\Services\GraduateService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+
 
 class GraduateController extends Controller
 {
@@ -17,7 +17,8 @@ class GraduateController extends Controller
     protected $displayData;
     protected $graduateService;
 
-    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData, GraduateService $graduateService){
+    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData, GraduateService $graduateService)
+    {
         $this->formatter = $formatter;
         $this->displayData = $displayData;
         $this->graduateService = $graduateService;
@@ -26,7 +27,7 @@ class GraduateController extends Controller
     /**
      * Display a listing of the resource.
      * 
-     * @param Request $request
+     * @param NumGraduatesRequest $request
      * @return JsonResponse
      */
     public function index(NumGraduatesRequest $request): JsonResponse
@@ -67,7 +68,6 @@ class GraduateController extends Controller
     {
         $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
         $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
-
         return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 
@@ -102,7 +102,7 @@ class GraduateController extends Controller
     /**
      * Display the Campus of a specified graduate
      * 
-     * @param NumGraduate $graduate
+     * @param int $graduate_id
      * @return JsonResponse
      */
     public function filterByCampus(int $graduate_id): JsonResponse 
@@ -114,7 +114,7 @@ class GraduateController extends Controller
     /**
      * Display the career of a specified graduate
      * 
-     * @param NumGraduate $graduate
+     * @param int $graduate_id
      * @return JsonResponse
      * 
      */
