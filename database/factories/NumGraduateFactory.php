@@ -20,7 +20,7 @@ class NumGraduateFactory extends Factory
             'quantity' => $this->faker->numberBetween(1, 150),
             'year' => $this->faker->year(),
             'campus_id' => $this->faker->numberBetween(1, 10),
-            'career_id' => $this->faker->numberBetween(1, 355),
+            'career_id' => $this->faker->numberBetween(1, 60),
         ];
     }
 }

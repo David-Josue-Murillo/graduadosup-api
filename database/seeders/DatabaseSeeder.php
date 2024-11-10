@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         Campu::factory(10)->create();
         Faculty::factory(19)->create();
-        Career::factory(30)->create();
+        Career::factory(60)->create();
         NumGraduate::factory(1000)->create();
         User::factory(10)->create();
 
