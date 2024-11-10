@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Campu;
 use Illuminate\Support\Collection;
 
 class CampusDataFormatterService 
@@ -13,24 +14,26 @@ class CampusDataFormatterService
      * 
      * @return \Illuminate\Support\Collection
      */
-    public function formatCampusData(Collection $campus): Collection {
-        $campusData = $campus->map(function($campus) {
-            return [
-                'id' => $campus->id,
-                'name' => $campus->name,
-                'graduates_info' => [
-                    'total_graduates' => $campus->graduates->sum('quantity'),
-                    'by_year' => $campus->graduates
-                        ->groupBy('year')
-                        ->map(function($yearGroup) {
-                            return [
-                                'quantity' => $yearGroup->sum('quantity')
-                            ];
-                        })
-                ]
-            ];
-        });
+    public function formatCampuData(Campu $campu): array {
+        return [
+            'id' => $campu->id,
+            'name' => $campu->name,
+            'graduates_info' => [
+                'total_graduates' => $campu->graduates->sum('quantity'),
+                'by_year' => $campu->graduates
+                    ->groupBy('year')
+                    ->map(function($yearGroup) {
+                        return [
+                            'quantity' => $yearGroup->sum('quantity')
+                        ];
+                    })
+            ]
+        ];
+    }
 
-        return $campusData;
+    public function formatCampusData(Collection $campus) {
+        return $campus->map(function($campu){
+            return $this->formatCampuData($campu);
+        });
     }
 }

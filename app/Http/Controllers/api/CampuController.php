@@ -46,8 +46,9 @@ class CampuController extends Controller
      */
     public function show(int $campu_id)
     {   
-        $campu = Campu::findOrFail($campu_id);
-        return $this->jsonResponse('Campus encontrado', $campu, 200);
+        $campu = Campu::with('graduates')->findOrFail($campu_id);
+        $data = $this->formatter->formatCampuData($campu);
+        return $this->jsonResponse('Campus encontrado', $data, 200);
     }
 
     /**
