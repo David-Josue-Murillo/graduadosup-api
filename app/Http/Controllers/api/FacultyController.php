@@ -13,7 +13,7 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $faculties = Faculty::all();
+        $faculties = Faculty::with('careers')->get();
 
         return $faculties->isEmpty()
             ? $this->jsonResponse('No se encontraron facultades', [], 200)

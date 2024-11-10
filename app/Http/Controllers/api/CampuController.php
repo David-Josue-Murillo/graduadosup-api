@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api;
 
 use App\Models\Campu;
 use App\Services\CampusDataFormatterService;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CampuRequest;
 

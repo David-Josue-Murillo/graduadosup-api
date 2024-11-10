@@ -11,7 +11,6 @@ class CampusDataFormatterService
      * Formats and returns custom data structure for Campus with graduate information.
      * 
      * @param \Illuminate\Database\Eloquent\Collection $campus The collection of Campus models.
-     * 
      * @return \Illuminate\Support\Collection
      */
     public function formatCampuData(Campu $campu): array {
