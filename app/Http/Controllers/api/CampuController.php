@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\api;
 
 use App\Models\Campu;
-use App\Services\CampusDataFormatterService;
+use App\Services\CampuDataFormatterService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CampuRequest;
+use App\Services\CampuService;
 
 class CampuController extends Controller
 {
     protected $formatter;
+    protected $services;
 
-    public function __construct(CampusDataFormatterService $formatter) {
+    public function __construct(CampuDataFormatterService $formatter, CampuService $services) {
         $this->formatter = $formatter;
+        $this->services = $services;
     }
 
     /**
@@ -35,10 +38,9 @@ class CampuController extends Controller
      */
     public function store(CampuRequest $request)
     {
-        $campu = Campu::create([
-            'name' => $request->name
-        ]);
-
+        if(!$this->services->verifyCampusExist($request)){
+            $campu = Campu::create($request->validated());
+        }
         return $this->jsonResponse('Campus creado con éxito', $campu, 201);
     }
 

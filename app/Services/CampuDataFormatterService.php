@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Campu;
 use Illuminate\Support\Collection;
 
-class CampusDataFormatterService 
+class CampuDataFormatterService 
 {
     /**
      * Formats and returns custom data structure for Campus with graduate information.
