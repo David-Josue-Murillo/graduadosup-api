@@ -49,7 +49,7 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|regex:/^[\pL\s\-]+$/u',
+            'name' => 'required|string|max:255|regex:/^[\pL\s]+$/u',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'role' => 'string|'. Rule::in('admin', 'user')
@@ -65,7 +65,7 @@ class UserRequest extends FormRequest
         return [
             'name.required' => 'El nombre es obligatorio',
             'name.max' => 'El nombre no puede tener más de :max caracteres',
-            'name.regex' => 'El nombre solo puede contener letras, espacios y guiones',
+            'name.regex' => 'El nombre solo puede contener letras y espacios',
             'email.required' => 'El correo electrónico es obligatorio',
             'email.email' => 'El correo electrónico debe ser válido',
             'email.unique' => 'Este correo electrónico ya está registrado',
