@@ -11,7 +11,19 @@ class LoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
+    }
+
+     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->login) {
+            $this->merge([
+                'login' => strtolower(trim($this->login)),
+            ]);
+        }
     }
 
     /**
@@ -22,7 +34,40 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'login' => 'required|string|max:100|min:4',
+            'password' => 'required|string',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array {
+        return [
+            'login.required' => 'El correo electrónico o nombre de usuario es obligatorio.',
+            'login.min' => 'El correo electrónico o nombre de usuario debe tener al menos :min caracteres.',
+            'login.max' => 'El correo electrónico o nombre de usuario no puede tener más de :max caracteres.',
+            'password.required' => 'La contraseña es obligatoria.'
+        ];
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function getCredentials(): array
+    {
+        $login = $this->get('login');
+
+        // Determinar si el login es un email o username
+        $loginType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        return [
+            $loginType => $login,
+            'password' => $this->get('password'),
         ];
     }
 }

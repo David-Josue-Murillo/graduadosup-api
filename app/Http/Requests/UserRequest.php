@@ -49,8 +49,8 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255|regex:/^[\pL\s]+$/u',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:50|regex:/^[\pL\s]+$/u',
+            'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|min:6',
             'role' => 'string|'. Rule::in('admin', 'user')
         ];
