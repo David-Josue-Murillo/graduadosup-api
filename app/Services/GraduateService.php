@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Http\Requests\NumGraduatesRequest;
 use App\Models\NumGraduate;
 use App\Models\Campu;
 use App\Models\Career;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class GraduateService
 {
@@ -17,7 +17,7 @@ class GraduateService
      * @param \Illuminate\Http\Request $request
      * @return Builder
      */
-    public function verifyFilter(Builder $query, Request $request):Builder {
+    public function verifyFilter(Builder $query, NumGraduatesRequest $request):Builder {
         if ($request->filled('year')) {
             $query->where('year', $request->year);
         }
@@ -50,7 +50,13 @@ class GraduateService
      * @param mixed $record
      * @return bool
      */
-    public function ifNotExistsRecord($record):bool {
+    public function ifNotExistsRecord(NumGraduatesRequest $request):bool {
+        $record = NumGraduate::where([
+            'year' => $request['year'],
+            'campus_id' => $request['campus_id'],
+            'career_id' => $request['career_id']
+        ])->first();
+
         return $record ? throw new \Exception('Registro duplicado', 409) : true;
     }
 

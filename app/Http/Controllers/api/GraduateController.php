@@ -4,8 +4,6 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
-use App\Models\Campu;
-use App\Models\Career;
 use App\Models\NumGraduate;
 use App\Services\DataDisplayByService;
 use App\Services\GraduateDataFormatterService;
@@ -31,7 +29,7 @@ class GraduateController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(NumGraduatesRequest $request): JsonResponse
     {
         $query = NumGraduate::query();
         $query = $this->graduateService->verifyFilter($query, $request);
@@ -42,7 +40,6 @@ class GraduateController extends Controller
         return $numGraduates->isEmpty()
         ? $this->jsonResponse('No hay datos', [], 200)
         : $this->jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
-        
     }
 
     /**
@@ -53,19 +50,11 @@ class GraduateController extends Controller
      */
     public function store(NumGraduatesRequest $request): JsonResponse
     {   
-
-        $record = NumGraduate::where([
-            'year' => $request['year'],
-            'campus_id' => $request['campus_id'],
-            'career_id' => $request['career_id']
-        ])->first();
-
-        if($this->graduateService->ifNotExistsRecord($record)) {
+        if($this->graduateService->ifNotExistsRecord($request)) {
             $graduate = NumGraduate::create($request->validated());
         }
 
         return $this->jsonResponse("Dato creado exitosamente", $graduate, 201);
-        
     }
 
     /**
