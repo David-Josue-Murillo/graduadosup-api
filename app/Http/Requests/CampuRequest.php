@@ -22,7 +22,7 @@ class CampuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:100'
+            'name' => 'required|max:100|min:10|unique:careers|string|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'
         ];
     }
 
@@ -33,7 +33,11 @@ class CampuRequest extends FormRequest
     public function messages(): array {
         return [
             'name.required' => 'El campo nombre es obligatorio',
-            'name.max' => 'El nombre no debe exceder los 100 caracteres'
+            'name.max' => 'El nombre del campus no debe exceder los 100 caracteres',
+            'name.min' => 'El nombre del campus debe exceder los 10 caracteres.',
+            'name.unique' => 'Ya existe un campus con este nombre.',
+            'name.string' => 'El nombre del campus debe ser una cadena de texto.',
+            'name.regex' => 'El nombre del campus debe contener solo caracteres alfanuméricos.'
         ];
     }
 }

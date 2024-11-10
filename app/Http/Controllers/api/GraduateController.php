@@ -5,79 +5,94 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
 use App\Models\NumGraduate;
-use Illuminate\Http\Request;
+use App\Services\DataDisplayByService;
+use App\Services\GraduateDataFormatterService;
+use App\Services\GraduateService;
+use Illuminate\Http\JsonResponse;
+
 
 class GraduateController extends Controller
 {
+    protected $formatter;
+    protected $displayData;
+    protected $graduateService;
+
+    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData, GraduateService $graduateService)
+    {
+        $this->formatter = $formatter;
+        $this->displayData = $displayData;
+        $this->graduateService = $graduateService;
+    }
+
     /**
      * Display a listing of the resource.
+     * 
+     * @param NumGraduatesRequest $request
+     * @return JsonResponse
      */
-    public function index(Request $request)
+    public function index(NumGraduatesRequest $request): JsonResponse
     {
         $query = NumGraduate::query();
+        $query = $this->graduateService->verifyFilter($query, $request);
 
-        // Aplicar filtros opcionales si se proporcionan en el request
-        if ($request->filled('year')) {
-            $query->where('year', $request->year);
-        }
-        if ($request->filled('campus_id')) {
-            $query->where('campus_id', $request->campus_id);
-        }
-        if ($request->filled('career_id')) {
-            $query->where('career_id', $request->career_id);
-        }
+        $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
+        $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
 
-        $num_graduates = $query->with(['campus', 'career', 'faculty'])->get();
-
-        return $num_graduates->isEmpty()
+        return $numGraduates->isEmpty()
         ? $this->jsonResponse('No hay datos', [], 200)
-        : $this->jsonResponse('Datos obtenidos exitosamente', $num_graduates, 200);
+        : $this->jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
     }
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @param NumGraduatesRequest $request
+     * @return JsonResponse
      */
-    public function store(NumGraduatesRequest $request)
-    {
-        $graduates = NumGraduate::create([
-            'quantity' => $request->quantity,
-            'year' => $request->year,
-            'campus_id' => $request->campus_id,
-            'career_id' => $request->career_id
-        ]);
+    public function store(NumGraduatesRequest $request): JsonResponse
+    {   
+        if($this->graduateService->ifNotExistsRecord($request)) {
+            $graduate = NumGraduate::create($request->validated());
+        }
 
-        return $this->jsonResponse("Dato creado exitosamente", $graduates, 201);
+        return $this->jsonResponse("Dato creado exitosamente", $graduate, 201);
     }
 
     /**
      * Display the specified resource.
+     * 
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function show(int $graduate_id)
+    public function show(int $graduate_id): JsonResponse
     {
-        $graduate = NumGraduate::findOrFail($graduate_id);
-        return $this->jsonResponse('Dato obtenido exitosamente', $graduate, 200);
+        $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
+        $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
+        return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param NumGraduatesRequest $request
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function update(NumGraduatesRequest $request, int $graduate_id)
+    public function update(NumGraduatesRequest $request, int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
-        $graduate->update([
-            'quantity' => $request->quantity,
-            'year' => $request->year,
-            'campus_id' => $request->campus_id,
-            'career_id' => $request->career_id
-        ]);
+        $this->graduateService->updateRecord($request, $graduate);
 
         return $this->jsonResponse('Dato actualizado exitosamente', $graduate, 200);
     }
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function destroy(int $graduate_id)
+    public function destroy(int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->delete();
@@ -86,28 +101,38 @@ class GraduateController extends Controller
 
     /**
      * Display the Campus of a specified graduate
-     * @param \App\Models\NumGraduate $graduate
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * 
+     * @param int $graduate_id
+     * @return JsonResponse
      */
-    public function displayCampus(int $graduate_id) {
-        return $this->jsonResponse('Campu obtenido exitosamente', $this->displayByTable(NumGraduate::class, 'campus', $graduate_id), 200);
+    public function filterByCampus(int $graduate_id): JsonResponse 
+    {
+        $data = $this->displayData->numGraduateRelatedData('campus', $graduate_id);
+        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
      * Display the career of a specified graduate
-     * @param \App\Models\NumGraduate $graduate
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * 
+     * @param int $graduate_id
+     * @return JsonResponse
+     * 
      */
-    public function displayCareer(int $graduate_id) {
-        return $this->jsonResponse('Carrera obtenido exitosamente', $this->displayByTable(NumGraduate::class, 'career', $graduate_id), 200);
+    public function filterByCareer(int $graduate_id):JsonResponse 
+    {
+        $data = $this->displayData->numGraduateRelatedData('career', $graduate_id);
+        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
      * Display the faculty of a specified graduate
+     * 
      * @param int $graduate_id
-     * @return mixed|\Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function displayFaculty(int $graduate_id) {
-        return $this->jsonResponse('Facultad obtenido exitosamente', $this->displayByTable(NumGraduate::class, 'faculty', $graduate_id), 200);
+    public function filterByFaculty(int $graduate_id): JsonResponse 
+    {
+        $data = $this->displayData->numGraduateRelatedData('faculty', $graduate_id);
+        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 }
