@@ -14,12 +14,12 @@ class LoginTest extends TestCase
         $this->withoutExceptionHandling();
         // Dato a probar
         $credentianls = [
-            'email' => 'rutilio@gmail.com',
-            'password' => '123456'
+            'email' => 'dm514821@gmail.com',
+            'password' => 'password'
         ];
 
         // Realizando la prueba
-        $response = $this->post('/api/login', $credentianls);
+        $response = $this->post('/login', $credentianls);
 
         // Respuesta esperada
         $response->assertStatus(200);
