@@ -8,9 +8,10 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
-    #[Test]
+    /** @test */
     public function an_existing_user_can_login(): void
     {
+        $this->withoutExceptionHandling();
         // Dato a probar
         $credentianls = [
             'email' => 'rutilio@gmail.com',
@@ -18,7 +19,7 @@ class LoginTest extends TestCase
         ];
 
         // Realizando la prueba
-        $response = $this->get('/api/login', $credentianls);
+        $response = $this->post('/api/login', $credentianls);
 
         // Respuesta esperada
         $response->assertStatus(200);

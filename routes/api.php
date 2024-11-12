@@ -2,10 +2,14 @@
 
 use App\Http\Controllers\api\CampuController;
 use App\Http\Controllers\api\GraduateController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\CareerController;
 use App\Http\Controllers\api\FacultyController;
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'login']);
 
 Route::prefix('users')->group(function (){
     //CRUD Operations
