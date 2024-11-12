@@ -28,15 +28,10 @@ class AuthController
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return JsonResponse('Token creado exitosamente', [
+            'token' => $token,
+            'expires_in' => auth('')->factory()->getTTL() * 60
+        ], 200);
     }
 
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'token' => $token,
-            //'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
-        ]);
-    }
 }

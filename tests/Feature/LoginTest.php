@@ -14,7 +14,7 @@ class LoginTest extends TestCase
         $this->withoutExceptionHandling();
         // Dato a probar
         $credentianls = [
-            'login' => 'dm514821@gmail.com',
+            'login' => 'David Murillo',
             'password' => 'password'
         ];
 

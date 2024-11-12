@@ -63,7 +63,7 @@ class LoginRequest extends FormRequest
         $login = $this->get('login');
 
         // Determinar si el login es un email o username
-        $loginType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $loginType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 
         return [
             $loginType => $login,
