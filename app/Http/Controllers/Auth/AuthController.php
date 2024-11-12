@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Requests\auth\LoginRequest;
 use App\Services\AuthService;
+use Auth;
+use Illuminate\Http\JsonResponse;
 
 class AuthController
 {
@@ -20,7 +22,7 @@ class AuthController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->getCredentials();
 
@@ -34,4 +36,9 @@ class AuthController
         ], 200);
     }
 
+    public function logout() 
+    {
+        Auth::logout();
+        return jsonResponse('Sessión cerrada');
+    }
 }
