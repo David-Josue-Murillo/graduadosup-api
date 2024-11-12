@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\api\CampuController;
 use App\Http\Controllers\api\GraduateController;
-use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\CareerController;
