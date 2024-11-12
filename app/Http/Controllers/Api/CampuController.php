@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Campu;
 use App\Services\CampuDataFormatterService;
@@ -31,8 +31,8 @@ class CampuController extends Controller
         $campusData = $this->formatter->formatCampusData($campus);
 
         return $campus->isEmpty() 
-        ? $this->jsonResponse('No se encontro campus', [], 200)
-        : $this->jsonResponse('Campus encontrados con éxitos',$campusData, 200);
+        ? jsonResponse('No se encontro campus', [], 200)
+        : jsonResponse('Campus encontrados con éxitos',$campusData, 200);
     }
 
     /**
@@ -46,7 +46,7 @@ class CampuController extends Controller
         if(!$this->services->verifyCampusExist($request)){
             $campu = Campu::create($request->validated());
         }
-        return $this->jsonResponse('Campus creado con éxito', $campu, 201);
+        return jsonResponse('Campus creado con éxito', $campu, 201);
     }
 
     /**
@@ -59,7 +59,7 @@ class CampuController extends Controller
     {   
         $campu = Campu::with('graduates')->findOrFail($campu_id);
         $data = $this->formatter->formatCampuData($campu);
-        return $this->jsonResponse('Campus encontrado', $data, 200);
+        return jsonResponse('Campus encontrado', $data, 200);
     }
 
     /**
@@ -72,7 +72,7 @@ class CampuController extends Controller
     public function update(CampuRequest $request, Campu $campu): JsonResponse
     {
         $campu->update($request->validated());
-        return $this->jsonResponse('Campus actualizado exitosamente', $campu, 200);
+        return jsonResponse('Campus actualizado exitosamente', $campu, 200);
     }
 
     /**
@@ -84,6 +84,6 @@ class CampuController extends Controller
     public function destroy(Campu $campu): JsonResponse
     {
         $campu->delete();
-        return $this->jsonResponse('Campus eliminado con éxito', $campu, 200);
+        return jsonResponse('Campus eliminado con éxito', $campu, 200);
     }
 }

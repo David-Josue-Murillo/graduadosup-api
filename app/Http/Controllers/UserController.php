@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         $users = $this->services->formatAllData(User::all());
-        return $this->jsonResponse('ok', $users, 200);
+        return jsonResponse('ok', $users, 200);
     }
 
 
@@ -37,7 +37,7 @@ class UserController extends Controller
     public function store(UserRequest $request): JsonResponse
     {
         $newUser = User::create($request->validated());
-        return $this->jsonResponse('Usuario creado exitosamente', $newUser, 201);
+        return jsonResponse('Usuario creado exitosamente', $newUser, 201);
     }
 
     /**
@@ -49,7 +49,7 @@ class UserController extends Controller
     public function show(int $id): JsonResponse
     {
         $user = User::findOrFail($id);
-        return $this->jsonResponse('Usuario encontreado', $user, 200);
+        return jsonResponse('Usuario encontreado', $user, 200);
     }
 
     /**
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->update($request->validated());
-        return $this->jsonResponse('Usuario actualizado exitosamente', $user, 200);
+        return jsonResponse('Usuario actualizado exitosamente', $user, 200);
     }
 
     /**
@@ -76,6 +76,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return $this->jsonResponse('Usuario eliminado exitosamente', $user, 200);
+        return jsonResponse('Usuario eliminado exitosamente', $user, 200);
     }
 }

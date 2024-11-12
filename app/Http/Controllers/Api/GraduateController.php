@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
@@ -39,8 +39,8 @@ class GraduateController extends Controller
         $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
 
         return $numGraduates->isEmpty()
-        ? $this->jsonResponse('No hay datos', [], 200)
-        : $this->jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
+        ?  jsonResponse('No hay datos', [], 200)
+        :  jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
     }
 
     /**
@@ -55,7 +55,7 @@ class GraduateController extends Controller
             $graduate = NumGraduate::create($request->validated());
         }
 
-        return $this->jsonResponse("Dato creado exitosamente", $graduate, 201);
+        return  jsonResponse("Dato creado exitosamente", $graduate, 201);
     }
 
     /**
@@ -68,7 +68,7 @@ class GraduateController extends Controller
     {
         $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
         $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
-        return $this->jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
+        return  jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 
     /**
@@ -83,7 +83,7 @@ class GraduateController extends Controller
         $graduate = NumGraduate::findOrFail($graduate_id);
         $this->graduateService->updateRecord($request, $graduate);
 
-        return $this->jsonResponse('Dato actualizado exitosamente', $graduate, 200);
+        return  jsonResponse('Dato actualizado exitosamente', $graduate, 200);
     }
 
     /**
@@ -96,7 +96,7 @@ class GraduateController extends Controller
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->delete();
-        return $this->jsonResponse('Dato eliminado exitosamente', $graduate, 200);
+        return  jsonResponse('Dato eliminado exitosamente', $graduate, 200);
     }
 
     /**
@@ -108,7 +108,7 @@ class GraduateController extends Controller
     public function filterByCampus(int $graduate_id): JsonResponse 
     {
         $data = $this->displayData->numGraduateRelatedData('campus', $graduate_id);
-        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
+        return  jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
@@ -121,7 +121,7 @@ class GraduateController extends Controller
     public function filterByCareer(int $graduate_id):JsonResponse 
     {
         $data = $this->displayData->numGraduateRelatedData('career', $graduate_id);
-        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
+        return  jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
     /**
@@ -133,6 +133,6 @@ class GraduateController extends Controller
     public function filterByFaculty(int $graduate_id): JsonResponse 
     {
         $data = $this->displayData->numGraduateRelatedData('faculty', $graduate_id);
-        return $this->jsonResponse("Dato obtenido exitosamente", $data, 200);
+        return  jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 }

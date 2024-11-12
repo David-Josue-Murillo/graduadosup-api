@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\api\CampuController;
-use App\Http\Controllers\api\GraduateController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\api\CareerController;
-use App\Http\Controllers\api\FacultyController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\CampuController;
+use App\Http\Controllers\Api\GraduateController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Api\CareerController;
+use App\Http\Controllers\Api\FacultyController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'login']);

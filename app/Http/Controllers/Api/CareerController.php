@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CareerRequest;
@@ -36,8 +36,8 @@ class CareerController extends Controller
         $careersData = $this->formatterData->formatCareerData($careers);
         
         return $careers->isEmpty() 
-        ? $this->jsonResponse('No se encontraron carreras', [], 200)
-        : $this->jsonResponse('Carreras encontradas exitosamente', $careersData, 200);
+        ?  jsonResponse('No se encontraron carreras', [], 200)
+        :  jsonResponse('Carreras encontradas exitosamente', $careersData, 200);
     }
 
     /**
@@ -49,7 +49,7 @@ class CareerController extends Controller
     public function store(CareerRequest $request): JsonResponse
     {
         $career = Career::create($request->validated());
-        return $this->jsonResponse('Carrera creada con éxito', $career, 201);
+        return  jsonResponse('Carrera creada con éxito', $career, 201);
     }
 
     /**
@@ -62,7 +62,7 @@ class CareerController extends Controller
     {
         $career = Career::with(['graduates', 'faculty'])->findOrFail($id);
         $careerData = $this->formatterData->formatterData($career);
-        return $this->jsonResponse('Carrera encontrada', $careerData, 200);
+        return  jsonResponse('Carrera encontrada', $careerData, 200);
     }
 
     /**
@@ -75,7 +75,7 @@ class CareerController extends Controller
     public function update(CareerRequest $request, Career $career): JsonResponse
     {
         $career->update($request->validated());
-        return $this->jsonResponse('Carrera actualizada exitosamente', $career, 200);
+        return  jsonResponse('Carrera actualizada exitosamente', $career, 200);
     }
 
     /**
@@ -87,7 +87,7 @@ class CareerController extends Controller
     public function destroy(Career $career): JsonResponse
     {
         $career->delete();
-        return $this->jsonResponse('Carrera eliminada con éxito', $career, 200);
+        return  jsonResponse('Carrera eliminada con éxito', $career, 200);
     }
 
     /**
@@ -99,6 +99,6 @@ class CareerController extends Controller
     public function displayFaculty(Career $career): JsonResponse
     {
         $faculty = $career->faculty()->get();
-        return $this->jsonResponse('Obteniendo Facultad', $faculty, 200);
+        return  jsonResponse('Obteniendo Facultad', $faculty, 200);
     }
 }

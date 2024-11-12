@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Faculty;
 use App\Http\Controllers\Controller;
@@ -31,8 +31,8 @@ class FacultyController extends Controller
         $facultiesData = $this->formatter->formatFacultiesData($faculties);
 
         return $faculties->isEmpty()
-            ? $this->jsonResponse('No se encontraron facultades', [], 200)
-            : $this->jsonResponse('Facultades encontradas exitosamente', $facultiesData, 200);
+            ?  jsonResponse('No se encontraron facultades', [], 200)
+            :  jsonResponse('Facultades encontradas exitosamente', $facultiesData, 200);
     }
 
     /**
@@ -46,7 +46,7 @@ class FacultyController extends Controller
         if(!$this->services->verifyFacultyExists($request)){
             $faculty = Faculty::create($request->validated());
         }
-        return $this->jsonResponse('Facultad creada con éxito', $faculty, 201);
+        return  jsonResponse('Facultad creada con éxito', $faculty, 201);
     }
 
     /**
@@ -59,7 +59,7 @@ class FacultyController extends Controller
     {
         $faculty = Faculty::with('careers')->findOrFail($id);
         $facultyData = $this->formatter->formatFacultyData($faculty);
-        return $this->jsonResponse('Facultad encontrada', $facultyData, 200);
+        return  jsonResponse('Facultad encontrada', $facultyData, 200);
     }
 
     /**
@@ -72,7 +72,7 @@ class FacultyController extends Controller
     public function update(FacultyRequest $request, Faculty $faculty): JsonResponse
     {
         $faculty->update($request->validated());
-        return $this->jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
+        return  jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
     }
 
     /**
@@ -84,7 +84,7 @@ class FacultyController extends Controller
     public function destroy(Faculty $faculty): JsonResponse
     {
         $faculty->delete();
-        return $this->jsonResponse('Facultad eliminada con éxito', $faculty, 200);
+        return  jsonResponse('Facultad eliminada con éxito', $faculty, 200);
     }
 
     /**
@@ -96,6 +96,6 @@ class FacultyController extends Controller
     public function displayCareers(Faculty $faculty): JsonResponse
     {
         $careers = $faculty->careers()->get();
-        return $this->jsonResponse('Lista de carreras', $careers, 200);
+        return  jsonResponse('Lista de carreras', $careers, 200);
     }
 }
