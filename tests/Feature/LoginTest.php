@@ -26,20 +26,24 @@ class LoginTest extends TestCase
         $response->assertJsonStructure(['data' => ['token']]);
     }
 
+    /** @test */
     public function an_non_existing_user_cannot_login(): void
     {
         // Dato a probar
         $credentianls = [
-            'email' => 'admi@admi.com',
+            'login' => 'admi@admi.com',
             'password' => 'dsdsssdds'
         ];
 
         // Realizando la prueba
-        $response = $this->get('/api/login', $credentianls);
+        $response = $this->post('/login', $credentianls);
 
         // Respuesta esperada
-        $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => ['token']]);
+        $response->assertStatus(401);
+        $response->assertJsonFragment([
+            'errors' => 'Unauthorized',
+            'status' => 401
+        ]);
     }
 
     public function email_must_be_required(): void

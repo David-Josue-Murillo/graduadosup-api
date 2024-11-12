@@ -25,10 +25,10 @@ class AuthController
         $credentials = $request->getCredentials();
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return jsonResponse('Error de autenticación', null, 401, 'Unauthorized');
         }
 
-        return JsonResponse('Token creado exitosamente', [
+        return jsonResponse('Token creado exitosamente', [
             'token' => $token,
             'expires_in' => auth('')->factory()->getTTL() * 60
         ], 200);
