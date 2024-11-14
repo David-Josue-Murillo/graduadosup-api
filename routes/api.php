@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\CampuController;
@@ -9,7 +10,7 @@ use App\Http\Controllers\Api\CareerController;
 use App\Http\Controllers\Api\FacultyController;
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'login']);
+Route::post('/register', [RegisterController::class, 'register']);
 
 Route::prefix('users')->group(function (){
     //CRUD Operations
