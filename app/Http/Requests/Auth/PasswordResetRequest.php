@@ -15,15 +15,32 @@ class PasswordResetRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'email' => strtolower(trim($this->email)),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'email' => 'required|email|exists:users,email',
         ];
+
+        if($this->method() === 'PUT'){
+            $rules['token'] = 'required';
+            $rules['password'] = 'required|string|min:6|confirmed';
+        }
+
+        return $rules;
     }
 
     public function messages(): array
@@ -32,6 +49,11 @@ class PasswordResetRequest extends FormRequest
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico no es válido.',
             'email.exists' => 'El correo electrónico no está registrado.',
+
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.string' => 'La contraseña debe ser una cadena de texto.',
+            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
         ];
     }
 }

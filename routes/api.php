@@ -78,3 +78,4 @@ Route::prefix('graduates')->middleware(['auth:api'])->group(function () {
 
 // Emails
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
+Route::put('/reset-password', [PasswordResetController::class, 'reset']);
