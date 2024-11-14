@@ -32,12 +32,22 @@ class NumGraduatesRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'quantity' => 'required|integer|min:0|max:2999',
             'year' => 'required|integer|min:2018|max:'. date('Y'),
             'campus_id' => 'required|integer|exists:campus,id',
             'career_id' => 'required|integer|exists:careers,id',
         ];
+
+        // Change rules based on HTPP method
+        if($this->method() === 'GET'){
+            $rules['quantity'] = 'integer|min:0|max:2999';
+            $rules['year'] = 'integer|min:2018|max:'. date('Y');
+            $rules['campus_id'] = 'integer|exists:campus,id';
+            $rules['career_id'] = 'integer|exists:careers,id';
+        }
+
+        return $rules;
     }
 
     /**
