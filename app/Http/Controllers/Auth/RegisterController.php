@@ -24,6 +24,7 @@ class RegisterController extends Controller
         $data = [
             'user' => $newUser,
             'token' => $token,
+            'expires_in' => auth('')->factory()->getTTL() * 60
         ];
 
         return jsonResponse('Usuario creado exitosamente', $data, 201);

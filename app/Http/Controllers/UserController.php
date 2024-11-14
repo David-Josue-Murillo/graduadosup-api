@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
@@ -37,7 +38,14 @@ class UserController extends Controller
     public function store(UserRequest $request): JsonResponse
     {
         $newUser = User::create($request->validated());
-        return jsonResponse('Usuario creado exitosamente', $newUser, 201);
+        $token = JWTAuth::fromUser($newUser);
+        $data = [
+            'user' => $newUser,
+            'token' => $token,
+            'expires_in' => auth('')->factory()->getTTL() * 60
+        ];
+
+        return jsonResponse('Usuario creado exitosamente', $data, 201);
     }
 
     /**
