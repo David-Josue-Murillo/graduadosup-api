@@ -27,6 +27,6 @@ class PasswordResetController extends Controller
     }
 
     public function reset(){
-
+        
     }
 }
