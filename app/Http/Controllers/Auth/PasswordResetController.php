@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Password;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Password;
 use App\Http\Requests\Auth\PasswordResetRequest;
 
 class PasswordResetController extends Controller
 {
-    protected $services;
-
-    public function __construct(){
-        
-    }
 
     /**
      * Send a password reset link to a user
@@ -23,7 +18,7 @@ class PasswordResetController extends Controller
     public function sendResetLinkEmail(PasswordResetRequest $request): JsonResponse
     {
         $status = Password::sendResetLink(
-            $request->onlY('email')
+            $request->only('email')
         );
 
         return $status === Password::RESET_LINK_SENT

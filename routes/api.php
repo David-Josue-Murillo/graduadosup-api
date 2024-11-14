@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -75,3 +76,5 @@ Route::prefix('graduates')->middleware(['auth:api'])->group(function () {
     // By filters
 });
 
+// Emails
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
