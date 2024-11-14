@@ -9,13 +9,15 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Api\CareerController;
 use App\Http\Controllers\Api\FacultyController;
 
+// Routes the authentication
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/users', [UserController::class, 'store']);
+
 
 Route::prefix('users')->group(function (){
     //CRUD Operations
     Route::get('/', [UserController::class, 'index']);
-    Route::post('/', [UserController::class, 'store']);          
     Route::get('/{id}', [UserController::class, 'show']);   
     Route::put('/{id}', [UserController::class, 'update']); 
     Route::delete('/{id}', [UserController::class, 'destroy']); 
@@ -57,7 +59,7 @@ Route::prefix('campus')->group(function () {
     Route::get('/{campu}/faculty', [CampuController::class, 'displayFaculty']); 
 });
 
-Route::prefix('graduates')->group(function () {
+Route::prefix('graduates')->middleware(['auth:api'])->group(function () {
     // CRUD Operation
     Route::get('/', [GraduateController::class, 'index']);          
     Route::post('/', [GraduateController::class, 'store']);          

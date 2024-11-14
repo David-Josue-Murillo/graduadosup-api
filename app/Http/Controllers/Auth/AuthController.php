@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
-use Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -14,6 +14,7 @@ class AuthController extends Controller
 
     public function __construct(AuthService $services)
     {
+        $this->middleware('auth:api', ['except' => ['login']]);
         $this->services = $services;
     }
 
