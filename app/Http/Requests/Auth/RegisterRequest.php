@@ -22,7 +22,6 @@ class RegisterRequest extends FormRequest
         $this->merge([
             'name' => trim($this->name),
             'email' => strtolower(trim($this->email)),
-            'username' => strtolower(trim($this->username)),
         ]);
     }
 

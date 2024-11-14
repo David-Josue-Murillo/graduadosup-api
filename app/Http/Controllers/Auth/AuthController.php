@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
 use Auth;
 use Illuminate\Http\JsonResponse;
 
-class AuthController
+class AuthController extends Controller
 {
     protected $services;
 
