@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RegisterController extends Controller
 {
@@ -19,7 +20,7 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $newUser = User::create($request->validated());
-        $token = auth()->login($newUser);
+        $token = JWTAuth::fromUser($newUser);;
         $data = [
             'user' => $newUser,
             'token' => $token,
