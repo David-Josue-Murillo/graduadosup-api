@@ -23,7 +23,7 @@ class PasswordResetController extends Controller
 
         return $status === Password::RESET_LINK_SENT
             ? jsonResponse('Correo enviado exitosamente', __($status), 200)
-            : jsonResponse('Error al enviar el correo', __($status), 400);
+            : jsonResponse('Error al enviar el correo', __($status), 500);
     }
 
     public function reset(){
