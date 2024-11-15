@@ -27,7 +27,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'Lucha533.',
         ];
 
-        $response = $this->actingAs($user)->putJson('/api/update-password', $data);
+        $response = $this->actingAs($user)->patchJson('/api/users/update-password', $data);
 
         $response->assertStatus(200);
         $user = User::where('name', 'David')->first();
