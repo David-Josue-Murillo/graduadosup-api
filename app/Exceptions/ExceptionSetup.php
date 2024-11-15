@@ -65,7 +65,7 @@ class ExceptionSetup
             return response()->json([
                 'message' => 'El servidor no puede procesar la solicitud debido a un error del cliente', 
                 'error' => $exception->getMessage()
-            ], 400);
+            ], 422);
         });
     }
 }

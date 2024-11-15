@@ -25,7 +25,7 @@ Route::prefix('users')->group(function (){
     Route::delete('/{id}', [UserController::class, 'destroy']); 
 
     // Other operations
-    Route::patch('/{id}/update-password', [UpdatePasswordController::class, 'update']);
+    Route::patch('/update-password', [UpdatePasswordController::class, 'update']);
 });
 
 Route::prefix('faculties')->group(function () {
