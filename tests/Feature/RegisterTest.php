@@ -159,4 +159,23 @@ class RegisterTest extends TestCase
             'errors' => 'La contraseña debe tener al menos 6 caracteres.'
         ]);
     }
+
+     /** @test */
+     public function password_must_match(): void
+     {
+         $registerData = [
+             'name' => 'Josue Serrano',
+             'email' => 'testone@gmail.com',
+             'password' => 'password',  
+             'password_confirmation' => 'badpassword',
+         ];
+ 
+         $response = $this->postJson('/register', $registerData);
+ 
+         $response->assertStatus(422);
+         $response->assertJsonStructure(['message','errors']);
+         $response->assertJsonFragment([
+             'errors' => 'La confirmación de contraseña no coincide.'
+         ]);
+     }
 }
