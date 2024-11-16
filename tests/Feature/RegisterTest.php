@@ -14,8 +14,9 @@ class RegisterTest extends TestCase
 
         $registerData = [
             'name' => 'Josue Serrano',
-            'email' => 'dm514823@gmail.com',
-            'password' => Hash::make('password')  
+            'email' => 'dm51ss4823@gmail.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
         $response = $this->post('/register', $registerData);
@@ -35,7 +36,8 @@ class RegisterTest extends TestCase
     {
         $registerData = [
             'email' => 'dm514823@gmail.com',
-            'password' => Hash::make('password')  
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
         $response = $this->post('/register', $registerData);
@@ -53,7 +55,8 @@ class RegisterTest extends TestCase
         $registerData = [
             'name' => 'David507',
             'email' => 'dm514823@gmail.com',
-            'password' => Hash::make('password')  
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
         $response = $this->post('/register', $registerData);
@@ -70,7 +73,8 @@ class RegisterTest extends TestCase
     {
         $registerData = [
             'name' => 'Josue Serrano',
-            'password' => Hash::make('password')  
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
         $response = $this->post('/register', $registerData);
@@ -88,7 +92,8 @@ class RegisterTest extends TestCase
         $registerData = [
             'name' => 'Josue Serrano',
             'email' => 'prueba@prueba',
-            'password' => Hash::make('password')  
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
         $response = $this->post('/register', $registerData);
@@ -106,7 +111,8 @@ class RegisterTest extends TestCase
         $registerData = [
             'name' => 'Josue Murillo',
             'email' => 'dm514823@gmail.com',
-            'password' => Hash::make('password')  
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ];
 
         $response = $this->post('/register', $registerData);
