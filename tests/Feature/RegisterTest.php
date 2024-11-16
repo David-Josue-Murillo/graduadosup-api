@@ -54,7 +54,7 @@ class RegisterTest extends TestCase
     {
         $registerData = [
             'name' => 'David507',
-            'email' => 'dm514823@gmail.com',
+            'email' => 'dm5148sdsd21@gmail.com',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -64,7 +64,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
         $response->assertJsonFragment([
-            'errors' => 'El nombre solo puede contener letras y espacios. (and 1 more error)'
+            'errors' => 'El nombre solo puede contener letras y espacios.'
         ]);
     }
 
