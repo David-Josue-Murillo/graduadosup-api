@@ -23,11 +23,20 @@ class UpdatePasswordRequest extends FormRequest
     public function rules(): array
     {
         $rules =  [
-            'current_password' => 'required|string|'.function ($attribute, $value, $fail) {
+            'current_password' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    if (!auth()->check()) {
+                        $fail('No se puede verificar la contraseña actual. Usuario no autenticado.');
+                        return;
+                    }
+
                     if (!Hash::check($value, auth()->user()->password)) {
                         $fail('La contraseña actual es incorrecta.');
                     }
                 },
+            ],
             'password' => 'required|string|min:8|confirmed',
         ];
 
@@ -43,7 +52,7 @@ class UpdatePasswordRequest extends FormRequest
             'password.required' => 'El campo contraseña es requerida',
             'password.string' => 'El campo contraseña debe ser un texto',
             'password.min' => 'El campo contraseña debe tener al menos :min caracteres',
-            'password.confirmed' => 'Las contraseñas no coinciden',
+            'password.confirmed' => 'La contraseñas no coinciden',
         ];
     }
 }

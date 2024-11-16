@@ -62,15 +62,18 @@ class UpdatePasswordTest extends TestCase
     public function password_confirmation_must_match(): void
     {
         $data = [
-            'current_password' => 'Lucha507.',
-            'password' => 'Lucha533.',
+            'current_password' => 'Lucha533.',
+            'password' => 'Lucha507.',
             'password_confirmation' => 'DifferentPassword',
         ];
 
         $response = $this->actingAs($this->user)
-            ->patchJson('/api/users/update-password', $data);
+            ->patchJson('/users/update-password', $data);
 
-        $response->assertStatus(422)
-            ->assertJsonValidationErrors(['password']);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors']);
+        $response->assertJsonFragment([
+            'errors' => 'La contraseñas no coinciden'
+        ]);
     }
 }
