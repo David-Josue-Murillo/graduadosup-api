@@ -51,7 +51,7 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|string|max:50|regex:/^[\pL\s]+$/u',
             'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
             'role' => 'string|'. Rule::in('admin', 'user')
         ];
     }
@@ -66,11 +66,17 @@ class UserRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio',
             'name.max' => 'El nombre no puede tener más de :max caracteres',
             'name.regex' => 'El nombre solo puede contener letras y espacios',
+
             'email.required' => 'El correo electrónico es obligatorio',
+            'email.string' => 'El correo electrónico solo debe de contener letras',
             'email.email' => 'El correo electrónico debe ser válido',
+            'email.max' => 'El correo electrónico no puede tener más de :max caracteres',
             'email.unique' => 'Este correo electrónico ya está registrado',
+            
             'password.required' => 'La contraseña es obligatoria',
             'password.min' => 'La contraseña debe tener al menos :min caracteres',
+            'password.confirmed' => 'La confirmación de contraseña no coincide',
+            
             'role.in' => 'El rol seleccionado no es válido'
         ];
     }
