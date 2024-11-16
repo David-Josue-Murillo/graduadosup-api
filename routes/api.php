@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\UpdatePasswordController;
+use App\Http\Controllers\Auth\UpdatePasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\CampuController;
