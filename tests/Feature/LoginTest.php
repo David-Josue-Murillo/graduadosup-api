@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -15,7 +13,7 @@ class LoginTest extends TestCase
         // Dato a probar
         $credentianls = [
             'login' => 'David Murillo',
-            'password' => 'password'
+            'password' => 'Lucha533.'
         ];
 
         // Realizando la prueba
@@ -46,6 +44,7 @@ class LoginTest extends TestCase
         ]);
     }
 
+    /** @test */
     public function email_must_be_required(): void
     {
         // Dato a probar
@@ -54,25 +53,32 @@ class LoginTest extends TestCase
         ];
 
         // Realizando la prueba
-        $response = $this->get('/api/login', $credentianls);
+        $response = $this->postJson('/login', $credentianls);
 
         // Respuesta esperada
-        $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => ['token']]);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors']);
+        $response->assertJsonFragment([
+            'errors' => 'El correo electrónico o nombre de usuario es obligatorio.',
+        ]);
     }
-
+    
+    /** @test */
     public function password_must_be_required(): void
     {
         // Dato a probar
         $credentianls = [
-            'email' => 'rutilio@gmail.com',
+            'login' => 'rutilio@gmail.com',
         ];
 
         // Realizando la prueba
-        $response = $this->get('/api/login', $credentianls);
+        $response = $this->post('/login', $credentianls);
 
         // Respuesta esperada
-        $response->assertStatus(200);
-        $response->assertJsonStructure(['data' => ['token']]);
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['message', 'errors']);
+        $response->assertJsonFragment([
+            'errors' => 'La contraseña es obligatoria.'
+        ]);
     }
 }
