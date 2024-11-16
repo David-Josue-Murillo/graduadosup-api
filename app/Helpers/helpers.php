@@ -11,5 +11,5 @@
  * @return \Illuminate\Http\JsonResponse
 */
 function jsonResponse(string $messages = 'OK', $data = [], int $status = 200, $errors = []){
-    return response()->json(compact('messages', 'data', 'status', 'errors'), $status);
+    return response()->json(compact('message', 'data', 'status', 'errors'), $status);
 }

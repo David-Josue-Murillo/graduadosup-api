@@ -53,7 +53,7 @@ class ResetPasswordTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $response->assertJsonStructure(['messages', 'data', 'errors', 'status']);
+        $response->assertJsonStructure(['message', 'data', 'errors', 'status']);
 
         $user = User::where('email', $data['email'])->first();
         $this->assertTrue(Hash::check('new_password', $user->password));
