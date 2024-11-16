@@ -35,7 +35,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required|string|max:50|min:2|regex:/^[\pL\s]+$/u',
             'email' => 'required|string|email:rfc,dns|max:100|unique:users,email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
         ];
     }
 

@@ -140,11 +140,12 @@ class RegisterTest extends TestCase
     {
         $registerData = [
             'name' => 'Josue Serrano',
-            'email' => 'dm5148311@gmail.com',
-            'password' => Hash::make('test')  
+            'email' => 'dm5148ss311@gmail.com',
+            'password' => 'test',  
+            'password_confirmation' => 'test',
         ];
 
-        $response = $this->post('/register', $registerData);
+        $response = $this->postJson('/register', $registerData);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
