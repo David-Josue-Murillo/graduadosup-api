@@ -2,18 +2,27 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     /** @test */
     public function an_existing_user_can_login(): void
     {
         $this->withoutExceptionHandling();
         // Dato a probar
         $credentianls = [
-            'login' => 'David Murillo',
-            'password' => 'Lucha533.'
+            'login' => 'test@test.com',
+            'password' => 'password'
         ];
 
         // Realizando la prueba
@@ -30,7 +39,7 @@ class LoginTest extends TestCase
         // Dato a probar
         $credentianls = [
             'login' => 'admi@admi.com',
-            'password' => 'dsdsssdds'
+            'password' => 'password'
         ];
 
         // Realizando la prueba
@@ -49,7 +58,7 @@ class LoginTest extends TestCase
     {
         // Dato a probar
         $credentianls = [
-            'password' => 'dsdsssdds'
+            'password' => 'password'
         ];
 
         // Realizando la prueba
@@ -68,7 +77,7 @@ class LoginTest extends TestCase
     {
         // Dato a probar
         $credentianls = [
-            'login' => 'rutilio@gmail.com',
+            'login' => 'test@test.com',
         ];
 
         // Realizando la prueba
