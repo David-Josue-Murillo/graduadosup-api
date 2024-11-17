@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Database\Seeders\UserSeeder;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,13 +11,11 @@ use Illuminate\Support\Facades\Hash;
 class UpdatePasswordTest extends TestCase
 {
     use RefreshDatabase;
-    private User $user;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
-        $this->user = User::find(1);
+        $this->seed(UserSeeder::class);
     }
 
     /** @test */
@@ -28,15 +27,14 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'new_password',
         ];
 
-        $response = $this->actingAs($this->user)
-            ->patchJson('/users/update-password', $data);
-        
+        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
+
         $response->assertOk();
-        $this->user->refresh();
+        User::find(1)->refresh();
         $this->assertTrue(
-            Hash::check('new_password', $this->user->password),
+            Hash::check('new_password', User::find(1)->password),
             'La nueva contraseña no se guardó correctamente'
-        );
+        );    
     }
 
     /** @test */
@@ -48,13 +46,11 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'new_password',
         ];
 
-        $response = $this->actingAs($this->user)
-            ->patchJson('/users/update-password', $data);
-
+        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
         $response->assertStatus(422);
-        $this->user->refresh();
-        $this->assertTrue(
-            !Hash::check('new_password', $this->user->password),
+        User::find(1)->refresh();
+        $this->assertFalse(
+            Hash::check('new_password', User::find(1)->password),
             'La contraseña no debería haber cambiado'
         );
     }
@@ -67,9 +63,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'other_password',
         ];
 
-        $response = $this->actingAs($this->user)
-            ->patchJson('/users/update-password', $data);
-
+        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors']);
         $response->assertJsonFragment([
@@ -86,9 +80,8 @@ class UpdatePasswordTest extends TestCase
             'password' => 'test',
             'password_confirmation' => 'test',
         ];
-
-        $response = $this->actingAs($this->user)
-            ->patchJson('/users/update-password', $data);
+        
+        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors']);
@@ -106,8 +99,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'different_password',
         ];
 
-        $response = $this->actingAs($this->user)
-            ->patchJson('/users/update-password', $data);
+        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors']);

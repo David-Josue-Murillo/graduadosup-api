@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Hash;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +13,7 @@ class RegisterTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(UserSeeder::class);
     }
 
     /** @test */
