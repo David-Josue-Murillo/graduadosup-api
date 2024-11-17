@@ -18,18 +18,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Campu::factory(10)->create();
-        Faculty::factory(19)->create();
-        Career::factory(60)->create();
-        NumGraduate::factory(1000)->create();
-        User::factory(10)->create();
-
-
         User::factory()->create([
             'name' => 'David Murillo',
             'email' => 'dm514821@gmail.com',
             'password'=> Hash::make('password'),
             'role' => 'admin'
         ]);
+        
+        Campu::factory(3)->create();
+        Faculty::factory(6)->create();
+        Career::factory(18)->create();
+        NumGraduate::factory(36)->create();
+        User::factory(2)->create();
     }
 }
