@@ -4,31 +4,29 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
-use Hash;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Notification;
 use Tests\TestCase;
 
 class ResetPasswordTest extends TestCase
 {
     protected $token;
-    protected $email;
 
     protected function setUp(): void
     {
         parent::setUp();
     }
-    
+
     /** @test */
-    public function an_existing_user_can_reset_their_password(): void
+    public function an_existing_user_request_password_reset(): void
     {
         Notification::fake();
-        $data = ['email' => 'dm514822@gmail.com']; 
+        $data = ['email' => 'dm514821@gmail.com']; 
 
         $response = $this->postJson('/forgot-password', $data); // Send the email
 
         $response->assertStatus(200);
-        $response->assertJsonFragment(['messages' => 'Correo enviado exitosamente']); // Check if the response has the message
+        $response->assertJsonFragment(['message' => 'Correo enviado exitosamente']); // Check if the response has the message
         
         $user = User::where('email', $data['email'])->first();
         Notification::assertSentTo(
@@ -44,18 +42,136 @@ class ResetPasswordTest extends TestCase
                 return str_contains($url, 'http://127.0.0.1:8000/api/reset-password?token=');
             }
         );
+    }
 
-        // Reset the password
-        $response = $this->putJson("/api/reset-password?token={$this->token}", [
-            'email' => $this->email,
+    /** @test */
+    public function an_existing_user_performs_a_password_reset(): void
+    {
+        $this->an_existing_user_request_password_reset();
+        $data = [
+            'email' => 'dm514821@gmail.com',
             'password' => 'new_password',
             'password_confirmation' => 'new_password',
-        ]);
+        ];
+
+        $response = $this->putJson("/api/reset-password?token={$this->token}", $data);
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['message', 'data', 'errors', 'status']);
 
         $user = User::where('email', $data['email'])->first();
         $this->assertTrue(Hash::check('new_password', $user->password));
+    }
+    
+    /** @test */
+    public function user_must_include_email(): void
+    {
+        Notification::fake();
+        $data = ['email' => '']; 
+
+        $response = $this->postJson('/forgot-password', $data); // Send the email
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'El correo electrónico es obligatorio.'
+        ]); 
+    }
+
+    /** @test */
+    public function user_must_include_a_validated_email(): void
+    {
+        Notification::fake();
+        $data = ['email' => 'test@.test.com']; 
+
+        $response = $this->postJson('/forgot-password', $data); // Send the email
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'El correo electrónico no es válido.'
+        ]); 
+    }
+
+    /** @test */
+    public function user_must_include_a_register_email(): void
+    {
+        Notification::fake();
+        $data = ['email' => 'test@test.com']; 
+
+        $response = $this->postJson('/forgot-password', $data); // Send the email
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'El correo electrónico no está registrado.'
+        ]); 
+    }
+
+    /** @test */
+    public function user_must_include_a_token(): void
+    {
+        $data = [
+            'email' => 'dm514821@gmail.com',
+            'password' => 'new_password',
+            'password_confirmation' => 'new_password',
+        ];
+
+        $response = $this->putJson("/reset-password", $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'The token field is required.'
+        ]); 
+    }
+
+    /** @test */
+    public function user_must_include_the_new_password(): void
+    {
+        $this->an_existing_user_request_password_reset();
+        $data = [
+            'email' => 'dm514821@gmail.com',
+            'password' => '',
+            'password_confirmation' => 'new_password',
+        ];
+
+        $response = $this->putJson('/api/reset-password?token='.$this->token, $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'La contraseña es obligatoria.'
+        ]); 
+    }
+
+    /** @test */
+    public function user_must_include_a_password_at_least_6_characters(): void
+    {
+        $this->an_existing_user_request_password_reset();
+        $data = [
+            'email' => 'dm514821@gmail.com',
+            'password' => 'test',
+            'password_confirmation' => 'test',
+        ];
+
+        $response = $this->putJson('/api/reset-password?token='.$this->token, $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'La contraseña debe tener al menos 6 caracteres.'
+        ]); 
+    }
+
+    /** @test */
+    public function user_must_include_the_password_confirmation(): void
+    {
+        $this->an_existing_user_request_password_reset();
+        $data = [
+            'email' => 'dm514821@gmail.com',
+            'password' => 'new_password',
+        ];
+
+        $response = $this->putJson('/api/reset-password?token='.$this->token, $data);
+
+        $response->assertStatus(422);
+        $response->assertJsonFragment([
+            'errors' => 'La contraseña de confirmación es obligatoria y debe coincidir.'
+        ]); 
     }
 }

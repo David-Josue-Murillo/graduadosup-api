@@ -52,8 +52,8 @@ class PasswordResetRequest extends FormRequest
 
             'password.required' => 'La contraseña es obligatoria.',
             'password.string' => 'La contraseña debe ser una cadena de texto.',
-            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres.',
+            'password.confirmed' => 'La contraseña de confirmación es obligatoria y debe coincidir.',
         ];
     }
 }
