@@ -12,7 +12,7 @@ abstract class TestCase extends BaseTestCase
     {
         $headers = [
             'Accept' => 'application/json',
-            'Authentication' => 'Bearer '. JWTAuth::fromUser($user)
+            'Authorization' => 'Bearer '. JWTAuth::fromUser($user)
         ];
 
         return $this->json($method, $url, $data, $headers);
