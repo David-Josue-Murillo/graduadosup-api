@@ -4,24 +4,27 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Notification;
 use Tests\TestCase;
 
 class ResetPasswordTest extends TestCase
 {
+    use RefreshDatabase;
     protected $token;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->seed();
     }
 
     /** @test */
     public function an_existing_user_request_password_reset(): void
     {
         Notification::fake();
-        $data = ['email' => 'dm514821@gmail.com']; 
+        $data = ['email' => 'test@test.com']; 
 
         $response = $this->postJson('/forgot-password', $data); // Send the email
 
@@ -49,7 +52,7 @@ class ResetPasswordTest extends TestCase
     {
         $this->an_existing_user_request_password_reset();
         $data = [
-            'email' => 'dm514821@gmail.com',
+            'email' => 'test@test.com',
             'password' => 'new_password',
             'password_confirmation' => 'new_password',
         ];
@@ -95,7 +98,7 @@ class ResetPasswordTest extends TestCase
     public function user_must_include_a_register_email(): void
     {
         Notification::fake();
-        $data = ['email' => 'test@test.com']; 
+        $data = ['email' => 'admin@admin.com']; 
 
         $response = $this->postJson('/forgot-password', $data); // Send the email
 
@@ -109,7 +112,7 @@ class ResetPasswordTest extends TestCase
     public function user_must_include_a_token(): void
     {
         $data = [
-            'email' => 'dm514821@gmail.com',
+            'email' => 'test@test.com',
             'password' => 'new_password',
             'password_confirmation' => 'new_password',
         ];
@@ -127,7 +130,7 @@ class ResetPasswordTest extends TestCase
     {
         $this->an_existing_user_request_password_reset();
         $data = [
-            'email' => 'dm514821@gmail.com',
+            'email' => 'test@test.com',
             'password' => '',
             'password_confirmation' => 'new_password',
         ];
@@ -145,7 +148,7 @@ class ResetPasswordTest extends TestCase
     {
         $this->an_existing_user_request_password_reset();
         $data = [
-            'email' => 'dm514821@gmail.com',
+            'email' => 'test@test.com',
             'password' => 'test',
             'password_confirmation' => 'test',
         ];
@@ -163,7 +166,7 @@ class ResetPasswordTest extends TestCase
     {
         $this->an_existing_user_request_password_reset();
         $data = [
-            'email' => 'dm514821@gmail.com',
+            'email' => 'test@test.com',
             'password' => 'new_password',
         ];
 
