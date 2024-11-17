@@ -3,18 +3,27 @@
 namespace Tests\Feature;
 
 use Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     /** @test */
     public function a_new_user_is_registering(): void
     {
         $this->withoutExceptionHandling();
 
         $registerData = [
-            'name' => 'Josue Serrano',
-            'email' => 'dm51ss4823@gmail.com',
+            'name' => 'Admin Admin',
+            'email' => 'admin@admin.com',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -35,7 +44,7 @@ class RegisterTest extends TestCase
     public function name_field_must_be_required(): void
     {
         $registerData = [
-            'email' => 'dm514823@gmail.com',
+            'email' => 'dmin@admin.com',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -45,7 +54,7 @@ class RegisterTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
         $response->assertJsonFragment([
-            'errors' => 'El nombre es obligatorio. (and 1 more error)'
+            'errors' => 'El nombre es obligatorio.'
         ]);
     }
 
@@ -53,8 +62,8 @@ class RegisterTest extends TestCase
     public function name_must_be_valid(): void
     {
         $registerData = [
-            'name' => 'David507',
-            'email' => 'dm5148sdsd21@gmail.com',
+            'name' => 'Admin123',
+            'email' => 'admin@admin.com',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -72,7 +81,7 @@ class RegisterTest extends TestCase
     public function email_field_must_be_required(): void
     {
         $registerData = [
-            'name' => 'Josue Serrano',
+            'name' => 'Admin Admin',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -90,8 +99,8 @@ class RegisterTest extends TestCase
     public function email_is_not_valid(): void
     {
         $registerData = [
-            'name' => 'Josue Serrano',
-            'email' => 'prueba@prueba',
+            'name' => 'Admin Admin',
+            'email' => 'test@test',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -109,8 +118,8 @@ class RegisterTest extends TestCase
     public function email_must_not_be_duplicated(): void
     {
         $registerData = [
-            'name' => 'Josue Murillo',
-            'email' => 'dm514823@gmail.com',
+            'name' => 'Admin Admin',
+            'email' => 'test@test.com',
             'password' => 'password',
             'password_confirmation' => 'password',
         ];
@@ -128,8 +137,8 @@ class RegisterTest extends TestCase
     public function password_field_must_be_required(): void
     {
         $registerData = [
-            'name' => 'Josue Serrano',
-            'email' => 'dm514831@gmail.com',
+            'name' => 'Test Test',
+            'email' => 'newtest@test.com',
         ];
 
         $response = $this->post('/register', $registerData);
@@ -145,8 +154,8 @@ class RegisterTest extends TestCase
     public function password_must_be_at_least_6_characters(): void
     {
         $registerData = [
-            'name' => 'Josue Serrano',
-            'email' => 'dm5148ss311@gmail.com',
+            'name' => 'Test Test',
+            'email' => 'newtest@test.com',
             'password' => 'test',  
             'password_confirmation' => 'test',
         ];
@@ -164,8 +173,8 @@ class RegisterTest extends TestCase
      public function password_must_match(): void
      {
          $registerData = [
-             'name' => 'Josue Serrano',
-             'email' => 'testone@gmail.com',
+             'name' => 'Test Test',
+             'email' => 'newtest@test.com',
              'password' => 'password',  
              'password_confirmation' => 'badpassword',
          ];
