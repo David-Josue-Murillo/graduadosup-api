@@ -13,6 +13,7 @@ use Tests\TestCase;
 class NumGraduateTest extends TestCase
 {
     use RefreshDatabase;
+    private const URL = '/graduates';
 
     protected function setUp(): void
     {
@@ -25,17 +26,23 @@ class NumGraduateTest extends TestCase
         ]);
     }
 
+    protected function validGraduateData(array $overrides = []): array
+    {
+        return array_merge([
+            'quantity' => 100,
+            'year' => now()->year,
+            'campus_id' => 1,
+            'career_id' => 1,
+        ], $overrides);
+    }
+
+
     /** @test */
     public function register_a_new_number_of_graduates(): void
     {
-        $data = [
-            'quantity' => 100,
-            'year' => 2024,
-            'campus_id' => 1,
-            'career_id' => 1
-        ];
+        $data = $this->validGraduateData();
 
-        $response = $this->apiAs(User::find(1), 'post', '/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(201);
         $response->assertJsonStructure([
@@ -50,12 +57,7 @@ class NumGraduateTest extends TestCase
     public function it_cannot_be_regiter_a_number_of_graduates_duplicated(): void
     {
         $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => 2024,
-            'campus_id' => 1,
-            'career_id' => 1
-        ];
+        $data = $this->validGraduateData();
 
         $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
         
@@ -69,14 +71,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_be_required(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'year' => 2024,
-            'campus_id' => 1,
-            'career_id' => 1
-        ];
+        $data = $this->validGraduateData(['quantity' => '']);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -88,15 +85,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_be_a_integer(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => "11fgfg1",
-            'year' => 2024,
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['quantity' => "11fgfg1"]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -108,15 +99,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_be_a_positive_integer(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => -1,
-            'year' => 2024,
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data =$this->validGraduateData(['quantity' => -1]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -128,15 +113,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_not_be_a_n_number(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 10000,
-            'year' => 2024,
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['quantity' => 10000]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -148,14 +127,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_be_required(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['year' => '']);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -167,15 +141,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_be_a_integer(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => "2024sdsd",
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['year' => "2024sdsd"]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -187,15 +155,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_not_be_than_old(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => '1999',
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['year' => 1999]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -207,15 +169,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_not_be_older_than_the_current_year(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => 2025,
-            'campus_id' => 1,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['year' => 2025]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -227,14 +183,9 @@ class NumGraduateTest extends TestCase
     /** @test */
      public function the_campus_must_be_required(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => 2024,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['campus_id' => '']);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -246,15 +197,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_campus_must_be_a_integer(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => "2024",
-            'campus_id' => "a",
-            'career_id' => 2
-        ];
+       $data = $this->validGraduateData(['campus_id' => "a"]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -266,15 +211,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_campus_must_exist(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => "2024",
-            'campus_id' => 100,
-            'career_id' => 2
-        ];
+        $data = $this->validGraduateData(['campus_id' => "2024"]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -286,14 +225,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_career_must_be_required(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => 2024,
-            'campus_id' => 1,
-        ];
+       $data = $this->validGraduateData(['career_id' => '']);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -305,15 +239,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_career_must_be_a_integer(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => "2024",
-            'campus_id' => 1,
-            'career_id' => "a"
-        ];
+       $data = $this->validGraduateData(['career_id' => "a"]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -325,15 +253,9 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_career_must_exist(): void
     {
-        $this->register_a_new_number_of_graduates();
-        $data = [
-            'quantity' => 100,
-            'year' => "2024",
-            'campus_id' => 1,
-            'career_id' => 200
-        ];
+       $data = $this->validGraduateData(['career_id' => 200]);
 
-        $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
+        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
         
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
@@ -343,11 +265,9 @@ class NumGraduateTest extends TestCase
     }
 
     /** @test */
-    public function it_should_returned_all_graduates()
+    public function it_should_returned_all_graduates(): void
     {
-        $this->register_a_new_number_of_graduates();
-
-        $response = $this->get('/api/graduates');
+        $response = $this->apiAs(User::find(1), 'get', self::URL);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
