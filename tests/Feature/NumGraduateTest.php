@@ -13,32 +13,10 @@ use Tests\TestCase;
 class NumGraduateTest extends TestCase
 {
     use RefreshDatabase;
-    protected $jsonResponseEstructure;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->jsonResponseEstructure = [
-            'message',
-            'data' => [
-                'id',
-                'quantity',
-                'year',
-                'campus' => [
-                    'id',
-                    'name'
-                ],
-                'career' => [
-                    'id',
-                    'name',
-                    'faculty' => [
-                        'id',
-                        'name'
-                    ]
-                ]
-            ],
-            'status'
-        ];
         $this->seed([
             UserSeeder::class,
             FacultySeeder::class,
@@ -48,7 +26,7 @@ class NumGraduateTest extends TestCase
     }
 
     /** @test */
-    public function regiter_a_new_number_of_graduates(): void
+    public function register_a_new_number_of_graduates(): void
     {
         $data = [
             'quantity' => 100,
@@ -71,7 +49,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function it_cannot_be_regiter_a_number_of_graduates_duplicated(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => 2024,
@@ -91,7 +69,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_be_required(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'year' => 2024,
             'campus_id' => 1,
@@ -110,7 +88,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_be_a_integer(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => "11fgfg1",
             'year' => 2024,
@@ -130,7 +108,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_be_a_positive_integer(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => -1,
             'year' => 2024,
@@ -150,7 +128,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_quantity_graduates_must_not_be_a_n_number(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 10000,
             'year' => 2024,
@@ -170,7 +148,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_be_required(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'campus_id' => 1,
@@ -189,7 +167,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_be_a_integer(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => "2024sdsd",
@@ -209,7 +187,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_not_be_than_old(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => '1999',
@@ -229,7 +207,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_year_must_not_be_older_than_the_current_year(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => 2025,
@@ -249,7 +227,7 @@ class NumGraduateTest extends TestCase
     /** @test */
      public function the_campus_must_be_required(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => 2024,
@@ -268,7 +246,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_campus_must_be_a_integer(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => "2024",
@@ -288,7 +266,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_campus_must_exist(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => "2024",
@@ -308,7 +286,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_career_must_be_required(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => 2024,
@@ -327,7 +305,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_career_must_be_a_integer(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => "2024",
@@ -347,7 +325,7 @@ class NumGraduateTest extends TestCase
     /** @test */
     public function the_career_must_exist(): void
     {
-        $this->regiter_a_new_number_of_graduates();
+        $this->register_a_new_number_of_graduates();
         $data = [
             'quantity' => 100,
             'year' => "2024",
@@ -362,5 +340,21 @@ class NumGraduateTest extends TestCase
         $response->assertJsonFragment([
             'errors' => 'La carrera seleccionado no existe'
         ]);
+    }
+
+    /** @test */
+    public function it_should_returned_all_graduates()
+    {
+        $this->register_a_new_number_of_graduates();
+
+        $response = $this->get('/api/graduates');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'message',
+                'data',
+                'status',
+                'errors'
+            ]);
     }
 }
