@@ -22,7 +22,7 @@ class FacultyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:100|min:10|unique:careers|string|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ.\s]+$/'
+            'name' => 'required|max:100|min:10|unique:careers|string|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ.,\s]+$/'
         ];
     }
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\NumGraduate;
 use App\Models\User;
 use Database\Seeders\CampuSeeder;
 use Database\Seeders\CareerSeeder;
