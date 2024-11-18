@@ -14,16 +14,6 @@ class NumGraduatesRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Prepare the data for validation.
-     */
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'quantity' => filter_var($this->quantity, FILTER_SANITIZE_NUMBER_INT),
-            'year' => filter_var($this->year, FILTER_SANITIZE_NUMBER_INT),
-        ]);
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -58,7 +48,7 @@ class NumGraduatesRequest extends FormRequest
         return [
             'quantity.required' => 'La cantidad es obligatorio',
             'quantity.integer' => 'La cantidad debe ser un número entero',
-            'quantity.min' => 'La cantidad debe ser al menos :min',
+            'quantity.min' => 'La cantidad debe ser un número postivo',
             'quantity.max' => 'La cantidad no puede ser mayor a :max',
 
             'year.required' => 'El año es obligatorio',
