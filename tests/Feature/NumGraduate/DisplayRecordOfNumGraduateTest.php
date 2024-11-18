@@ -40,7 +40,7 @@ class DisplayRecordOfNumGraduateTest extends TestCase
     }
 
     /** @test */
-    public function it_should_returned_all_graduates(): void
+    public function it_must_returned_all_graduates(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL);
 
@@ -54,11 +54,10 @@ class DisplayRecordOfNumGraduateTest extends TestCase
     }
 
     /** @test */
-    public function it_should_returned_all_graduates_that_matching_with_campus_id(): void
+    public function it_must_returned_all_graduates_that_matching_with_campus_id(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?campus_id=1');
 
-        dd($response);
         $response->assertStatus(200)
             ->assertJsonStructure(self::JSON_RESPONSE)
             ->assertJsonFragment([
@@ -70,7 +69,7 @@ class DisplayRecordOfNumGraduateTest extends TestCase
     }
 
     /** @test */
-    public function it_should_returned_all_graduates_that_matching_with_career_id(): void
+    public function it_must_returned_all_graduates_that_matching_with_career_id(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?career=1');
 
@@ -89,14 +88,14 @@ class DisplayRecordOfNumGraduateTest extends TestCase
     }
 
     /** @test */
-    public function it_should_returned_all_graduates_that_matching_with_the_year(): void
+    public function it_must_returned_all_graduates_that_matching_with_the_year(): void
     {
-        $response = $this->apiAs(User::find(1), 'get', self::URL.'?year=2024');
+        $response = $this->apiAs(User::find(1), 'get', self::URL.'?year=2023');
 
         $response->assertStatus(200)
             ->assertJsonStructure(self::JSON_RESPONSE)
             ->assertJsonFragment([
-                'year' => 2024
+                'year' => 2023
             ]);
     }    
 }
