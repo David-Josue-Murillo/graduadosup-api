@@ -97,5 +97,21 @@ class DisplayRecordOfNumGraduateTest extends TestCase
             ->assertJsonFragment([
                 'year' => 2023
             ]);
-    }    
+    }
+    
+    /** @test */
+    public function must_return_a_specific_record(): void
+    {
+        $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
+
+        dd($response->json());
+        $response->assertStatus(200)
+            ->assertJsonStructure(self::JSON_RESPONSE)
+            ->assertJsonFragment([
+                'quantity' => '100',
+                'year' => '2021',
+                'campus_id' => 1,
+                'career_id' => 1
+            ]);
+    }
 }

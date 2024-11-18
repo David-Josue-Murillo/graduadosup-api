@@ -24,6 +24,7 @@ class NumGraduateSeeder extends Seeder
         ]);
 
         NumGraduate::factory()->create([
+            'id' => 1,
             'quantity' => '100',
             'year' => '2021',
             'campus_id' => 1,
@@ -31,6 +32,7 @@ class NumGraduateSeeder extends Seeder
         ]);
 
         NumGraduate::factory()->create([
+            'id' => 2,
             'quantity' => '25',
             'year' => '2022',
             'campus_id' => 2,
@@ -38,6 +40,7 @@ class NumGraduateSeeder extends Seeder
         ]);
 
         NumGraduate::factory()->create([
+            'id' => 3,
             'quantity' => '70',
             'year' => '2023',
             'campus_id' => 2,
@@ -45,6 +48,7 @@ class NumGraduateSeeder extends Seeder
         ]);
 
         NumGraduate::factory()->create([
+            'id' => 4,
             'quantity' => '15',
             'year' => '2018',
             'campus_id' => 1,
@@ -52,6 +56,7 @@ class NumGraduateSeeder extends Seeder
         ]);
 
         NumGraduate::factory()->create([
+            'id' => 5,
             'quantity' => '140',
             'year' => '2019',
             'campus_id' => 1,
