@@ -11,20 +11,6 @@ class DisplayDataFacultyTest extends TestCase
 {
     use RefreshDatabase;
     private const URL = '/faculties';
-    private const JSON_RESPONSE = [
-        'message',
-        'data' => [[
-            'id',
-            'name',
-            'total_careers',
-            'careers' => [
-                'id',
-                'name'
-            ]
-        ]],
-        'status',
-        'errors'
-    ];
 
     protected function setUp(): void
     {
