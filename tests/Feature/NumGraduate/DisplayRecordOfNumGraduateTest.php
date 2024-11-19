@@ -104,14 +104,58 @@ class DisplayRecordOfNumGraduateTest extends TestCase
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
 
-        dd($response->json());
         $response->assertStatus(200)
-            ->assertJsonStructure(self::JSON_RESPONSE)
+            ->assertJsonStructure(['message', 'data', 'status', 'errors'])
             ->assertJsonFragment([
-                'quantity' => '100',
-                'year' => '2021',
-                'campus_id' => 1,
-                'career_id' => 1
+                'id' => 1,
+            ]);
+    }
+
+    /** @test */
+    public function must_return_an_error_if_the_record_does_not_exist(): void
+    {
+        $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
+
+        $response->assertStatus(422)
+            ->assertJsonStructure(['message','errors']);
+    }
+
+    /** @test */
+    public function must_return_the_campus_that_belongs_to_the_given_record(): void
+    {
+        $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/campus');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['message', 'data', 'status', 'errors'])
+            ->assertJsonFragment([
+                'id' => 1,
+                'name' => 'Centro regional universitario de Veraguas',
+            ]);
+    }
+
+    /** @test */
+    public function must_return_the_career_that_belongs_to_the_given_record(): void
+    {
+        $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/career');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['message', 'data', 'status', 'errors'])
+            ->assertJsonFragment([
+                'id' => 1,
+                'name' => 'Ingeniería en Informática',
+            ]);
+    }
+
+    /** @test */
+    public function must_return_the_faculty_that_belongs_to_the_given_record(): void
+    {
+        $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/faculty');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['message', 'data', 'status', 'errors'])
+            ->assertJsonFragment([
+                'id' => 1,
+                'name' => 'Facultad de Informática, Electrónica y Comunicación',
             ]);
     }
 }
