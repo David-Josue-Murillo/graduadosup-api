@@ -59,9 +59,6 @@ Route::prefix('campus')->group(function () {
     Route::get('/{id}', [CampuController::class, 'show']);   
     Route::put('/{campu}', [CampuController::class, 'update']); 
     Route::delete('/{campu}', [CampuController::class, 'destroy']); 
-
-    // Relations operations 
-    Route::get('/{campu}/faculty', [CampuController::class, 'displayFaculty']); 
 });
 
 Route::prefix('graduates')->middleware(['auth:api'])->group(function () {
