@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use Tests\TestCase;
 
-class DisplayRecordOfNumGraduateTest extends TestCase
+class DisplayDataNumGraduateTest extends TestCase
 {
     use RefreshDatabase;
     private const URL = '/graduates';

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class DeleteRecordNumGraduateTest extends TestCase
+class DeleteDataNumGraduateTest extends TestCase
 {
     use RefreshDatabase;
     private const URL = '/graduates';
