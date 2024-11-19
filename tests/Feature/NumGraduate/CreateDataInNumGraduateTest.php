@@ -124,7 +124,7 @@ class CreateDataInNumGraduateTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
         $response->assertJsonFragment([
-            'errors' => 'La cantidad debe ser un número postivo'
+            'errors' => 'La cantidad debe ser un número positivo'
         ]);
     }
 
