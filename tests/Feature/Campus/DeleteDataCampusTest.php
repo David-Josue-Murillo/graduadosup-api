@@ -7,7 +7,7 @@ use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DisplaydDataCampusTest extends TestCase
+class DeleteDataCampusTest extends TestCase
 {
     use RefreshDatabase;
     private const URL = '/campus';
@@ -27,9 +27,9 @@ class DisplaydDataCampusTest extends TestCase
     }
 
     /** @test */
-    public function it_must_returned_all_data(): void
+    public function must_delete_a_existing_record(): void 
     {
-        $response = $this->apiAs(User::find(1), 'get', self::URL);
+        $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -37,16 +37,7 @@ class DisplaydDataCampusTest extends TestCase
                 'data',
                 'status',
                 'errors'
-            ]);
-    }
-
-    /** @test */
-    public function must_return_a_specific_record(): void
-    {
-        $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
-
-        $response->assertStatus(200)
-            ->assertJsonStructure(['message', 'data', 'status', 'errors'])
+            ])
             ->assertJsonFragment([
                 'id' => 1,
                 'name' => 'Centro regional universitario de Veraguas'
@@ -54,9 +45,9 @@ class DisplaydDataCampusTest extends TestCase
     }
 
     /** @test */
-    public function must_return_an_error_if_the_record_does_not_exist(): void
+    public function it_cannot_delete_a_not_exit_record(): void 
     {
-        $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
+        $response = $this->apiAs(User::find(1), 'delete', self::URL.'/100');
 
         $response->assertStatus(422)
             ->assertJsonStructure(['message','errors']);
