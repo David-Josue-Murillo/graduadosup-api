@@ -48,7 +48,7 @@ class NumGraduatesRequest extends FormRequest
         return [
             'quantity.required' => 'La cantidad es obligatorio',
             'quantity.integer' => 'La cantidad debe ser un número entero',
-            'quantity.min' => 'La cantidad debe ser un número postivo',
+            'quantity.min' => 'La cantidad debe ser un número positivo',
             'quantity.max' => 'La cantidad no puede ser mayor a :max',
 
             'year.required' => 'El año es obligatorio',
