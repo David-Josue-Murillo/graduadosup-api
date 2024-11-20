@@ -28,7 +28,7 @@ class DisplayDataCareerTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function it_returns_all_faculty_records(): void
+    #[Test] public function it_returns_all_career_records(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL);
 
@@ -52,7 +52,7 @@ class DisplayDataCareerTest extends TestCase
             ]);
     }
 
-    #[Test] public function it_requires_the_faculty_id__to_exist(): void
+    #[Test] public function it_requires_the_faculty_id_to_exist(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
 

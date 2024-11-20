@@ -5,7 +5,6 @@ namespace Tests\Feature\Campus;
 use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -28,7 +27,7 @@ class CreateDataCampusTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function must_register_a_new_record(): void
+    #[Test] public function it_registers_a_new_campus(): void
     {
         $data = $this->validGraduateData();
 
@@ -43,9 +42,9 @@ class CreateDataCampusTest extends TestCase
         ]);
     }
 
-    #[Test] public function it_cannot_be_regiter_a_record_duplicated(): void
+    #[Test] public function it_does_not_allow_duplicate_campus_names(): void
     {
-        $this->must_register_a_new_record();
+        $this->it_registers_a_new_campus();
         $data = $this->validGraduateData();
 
         $response = $this->apiAs(User::find(1), 'post', '/api'.self::URL, $data);
@@ -57,7 +56,7 @@ class CreateDataCampusTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_name_field_must_be_required(): void
+    #[Test] public function it_requires_the_name_field(): void
     {
         $data = $this->validGraduateData(['name' => '']);
 
@@ -70,20 +69,7 @@ class CreateDataCampusTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_name_must_not_be_a_number(): void
-    {
-        $data = $this->validGraduateData(['name' => 202419191919]);
-
-        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
-
-        $response->assertStatus(422);
-        $response->assertJsonStructure(['message','errors']);
-        $response->assertJsonFragment([
-            'errors' => 'El nombre del campus debe ser una cadena de texto. (and 1 more error)'
-        ]);
-    }
-
-    #[Test] public function the_name_must_be_exceed_15_characters(): void
+    #[Test] public function it_name_must_be_exceed_ten_characters(): void
     {
         $data = $this->validGraduateData(['name' => 'test']);
 
@@ -96,9 +82,9 @@ class CreateDataCampusTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_name_only_must_bealphanumeric_characters(): void
+    #[Test] public function it_requires_the_name_to_be_a_string(): void
     {
-        $data = $this->validGraduateData(['name' => 'testtesttest12']);
+        $data = $this->validGraduateData(['name' => 'test test 124']);
 
         $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
 

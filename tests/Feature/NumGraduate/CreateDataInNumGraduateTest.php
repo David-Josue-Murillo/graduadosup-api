@@ -56,7 +56,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function register_a_new_number_of_graduates(): void
+    #[Test] public function it_registers_a_new_num_graduates(): void
     {
         $data = $this->validGraduateData();
 
@@ -71,9 +71,9 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function it_cannot_be_regiter_a_number_of_graduates_duplicated(): void
+    #[Test] public function it_does_not_allow_duplicate_data(): void
     {
-        $this->register_a_new_number_of_graduates();
+        $this->it_registers_a_new_num_graduates();
         $data = $this->validGraduateData();
 
         $response = $this->apiAs(User::find(1), 'post', '/api/graduates', $data);
@@ -85,7 +85,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_quantity_graduates_must_be_required(): void
+    #[Test] public function it_requires_the_quantity_num_graduates(): void
     {
         $data = $this->validGraduateData(['quantity' => '']);
 
@@ -98,7 +98,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_quantity_graduates_must_be_a_integer(): void
+    #[Test] public function it_require_the_quantity_num_graduates_to_be_integer(): void
     {
         $data = $this->validGraduateData(['quantity' => "11fgfg1"]);
 
@@ -111,7 +111,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_quantity_graduates_must_be_a_positive_integer(): void
+    #[Test] public function it_require_the_quantity_num_graduates_to_be_a_positive_integer(): void
     {
         $data =$this->validGraduateData(['quantity' => -1]);
 
@@ -124,7 +124,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_quantity_graduates_must_not_be_a_n_number(): void
+    #[Test] public function it_require_the_quantity_graduates_to_be_validated_integer(): void
     {
         $data = $this->validGraduateData(['quantity' => 10000]);
 
@@ -137,7 +137,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_year_must_be_required(): void
+    #[Test] public function it_requires_the_year_field(): void
     {
         $data = $this->validGraduateData(['year' => '']);
 
@@ -150,7 +150,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_year_must_be_a_integer(): void
+    #[Test] public function it_require_the_year_to_be_an_integer(): void
     {
         $data = $this->validGraduateData(['year' => "2024sdsd"]);
 
@@ -163,7 +163,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_year_must_not_be_than_old(): void
+    #[Test] public function it_requires_the_year_to_be_recent(): void
     {
         $data = $this->validGraduateData(['year' => 1999]);
 
@@ -176,7 +176,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_year_must_not_be_older_than_the_current_year(): void
+    #[Test] public function it_requires_the_year_to_not_exceed_current_year(): void
     {
         $data = $this->validGraduateData(['year' => 2025]);
 
@@ -189,7 +189,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_campus_must_be_required(): void
+    #[Test] public function it_requires_the_campus_field(): void
     {
         $data = $this->validGraduateData(['campus_id' => '']);
 
@@ -202,7 +202,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_campus_must_be_a_integer(): void
+    #[Test] public function it_requires_the_campus_id_to_be_an_integer(): void
     {
        $data = $this->validGraduateData(['campus_id' => "a"]);
 
@@ -215,7 +215,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_campus_must_exist(): void
+    #[Test] public function it_requires_the_campus_id_to_exist(): void
     {
         $data = $this->validGraduateData(['campus_id' => "2024"]);
 
@@ -228,7 +228,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_career_must_be_required(): void
+    #[Test] public function it_requires_the_career_field(): void
     {
        $data = $this->validGraduateData(['career_id' => '']);
 
@@ -241,7 +241,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_career_must_be_a_integer(): void
+    #[Test] public function it_requires_the_career_id_to_be_an_integer(): void
     {
        $data = $this->validGraduateData(['career_id' => "a"]);
 
@@ -254,7 +254,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_career_must_exist(): void
+    #[Test] public function it_requires_the_career_id_to_exist(): void
     {
        $data = $this->validGraduateData(['career_id' => 200]);
 

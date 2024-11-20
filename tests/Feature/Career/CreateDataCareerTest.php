@@ -83,7 +83,7 @@ class CreateDataCareerTest extends TestCase
         ]);
     }
 
-    #[Test] public function it_name_must_be_exceed_15_characters(): void
+    #[Test] public function it_name_must_be_exceed_ten_characters(): void
     {
         $data = $this->validGraduateData(['name' => 'test']);
 

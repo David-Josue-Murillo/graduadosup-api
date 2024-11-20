@@ -37,7 +37,7 @@ class UpdatePasswordTest extends TestCase
         );    
     }
 
-    #[Test] public function user_cannot_update_password_with_invalid_current_password(): void
+    #[Test] public function an_user_cannot_update_password_with_invalid_current_password(): void
     {
         $data = [
             'current_password' => 'WrongPassword',
@@ -54,7 +54,7 @@ class UpdatePasswordTest extends TestCase
         );
     }
 
-    #[Test] public function user_cannot_update_password_without_current_password(): void
+    #[Test] public function an_user_cannot_update_password_without_current_password(): void
     {
         $data = [
             'password' => 'other_password',
@@ -70,7 +70,7 @@ class UpdatePasswordTest extends TestCase
     }
 
 
-    #[Test] public function password_confirmation_must_be_at_least_8_characters(): void
+    #[Test] public function it_require_the_password_confirmation_field_to_be_at_least_8_characters(): void
     {
         $data = [
             'current_password' => 'password',
@@ -87,7 +87,7 @@ class UpdatePasswordTest extends TestCase
         ]);
     }
 
-    #[Test] public function password_confirmation_must_match(): void
+    #[Test] public function it_requires_the_password_confirmation_field_to_be_match_with_the_password_field(): void
     {
         $data = [
             'current_password' => 'password',

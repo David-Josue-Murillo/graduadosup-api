@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class DisplaydDataCampusTest extends TestCase
+class DisplayDataCampusTest extends TestCase
 {
     use RefreshDatabase;
     private const URL = '/campus';
@@ -27,7 +27,7 @@ class DisplaydDataCampusTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function it_must_returned_all_data(): void
+    #[Test] public function it_returns_all_campus_records(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL);
 
@@ -40,7 +40,7 @@ class DisplaydDataCampusTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_a_specific_record(): void
+    #[Test] public function it_return_a_specific_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
 
@@ -52,7 +52,7 @@ class DisplaydDataCampusTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_an_error_if_the_record_does_not_exist(): void
+    #[Test] public function it_requires_the_faculty_id_to_exist(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
 

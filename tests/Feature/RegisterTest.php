@@ -40,7 +40,7 @@ class RegisterTest extends TestCase
     }
 
 
-    #[Test] public function name_field_must_be_required(): void
+    #[Test] public function it_requires_the_name_field(): void
     {
         $registerData = [
             'email' => 'dmin@admin.com',
@@ -57,7 +57,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function name_must_be_valid(): void
+    #[Test] public function it_requires_the_name_fiel_to_be_valid(): void
     {
         $registerData = [
             'name' => 'Admin123',
@@ -75,7 +75,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function email_field_must_be_required(): void
+    #[Test] public function it_requires_the_email_field(): void
     {
         $registerData = [
             'name' => 'Admin Admin',
@@ -92,7 +92,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function email_is_not_valid(): void
+    #[Test] public function it_requires_the_email_field_to_be_valid(): void
     {
         $registerData = [
             'name' => 'Admin Admin',
@@ -110,7 +110,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function email_must_not_be_duplicated(): void
+    #[Test] public function it_does_not_allowed_email_duplicated(): void
     {
         $registerData = [
             'name' => 'Admin Admin',
@@ -128,7 +128,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function password_field_must_be_required(): void
+    #[Test] public function it_requires_the_password_field(): void
     {
         $registerData = [
             'name' => 'Test Test',
@@ -144,7 +144,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function password_must_be_at_least_6_characters(): void
+    #[Test] public function it_requires_the_password_be_at_least_6_characters(): void
     {
         $registerData = [
             'name' => 'Test Test',
@@ -162,7 +162,7 @@ class RegisterTest extends TestCase
         ]);
     }
 
-    #[Test] public function password_must_match(): void
+    #[Test] public function it_requires_the_password_to_match(): void
      {
          $registerData = [
              'name' => 'Test Test',

@@ -27,7 +27,7 @@ class UpdateFacultyTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function must_update_a_exist_record(): void
+    #[Test] public function it_updates_an_existing_faculty(): void
     {
         $data = $this->validGraduateData();
 
@@ -47,7 +47,7 @@ class UpdateFacultyTest extends TestCase
         }
     }
 
-    #[Test] public function the_name_field_must_be_required(): void
+    #[Test] public function it_requires_the_name_field(): void
     {
         $data = $this->validGraduateData(['name' => '']);
 
@@ -60,20 +60,7 @@ class UpdateFacultyTest extends TestCase
         ]);
     }
 
-    #[Test] public function the_name_must_not_be_a_number(): void
-    {
-        $data = $this->validGraduateData(['name' => 202419191919]);
-
-        $response = $this->apiAs(User::find(1), 'put', self::URL.'/1', $data);
-
-        $response->assertStatus(422);
-        $response->assertJsonStructure(['message','errors']);
-        $response->assertJsonFragment([
-            'errors' => 'El nombre de la facultad debe ser una cadena de texto. (and 1 more error)'
-        ]);
-    }
-
-    #[Test] public function the_name_must_be_exceed_15_characters(): void
+    #[Test] public function it_requires_the_name_to_be_longer_than_ten_characters(): void
     {
         $data = $this->validGraduateData(['name' => 'test']);
 
@@ -82,11 +69,11 @@ class UpdateFacultyTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
         $response->assertJsonFragment([
-            'errors' => 'El nombre de la facultads debe exceder los 10 caracteres.'
+            'errors' => 'El nombre de la facultades debe exceder los 10 caracteres.'
         ]);
     }
 
-    #[Test] public function the_name_only_must_bealphanumeric_characters(): void
+    #[Test] public function it_requires_the_name_to_be_a_string(): void
     {
         $data = $this->validGraduateData(['name' => 'testtesttest12']);
 

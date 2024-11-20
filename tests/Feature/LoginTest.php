@@ -21,13 +21,13 @@ class LoginTest extends TestCase
     {
         $this->withoutExceptionHandling();
         // Dato a probar
-        $credentianls = [
+        $credentials = [
             'login' => 'test@test.com',
             'password' => 'password'
         ];
 
         // Realizando la prueba
-        $response = $this->post('/login', $credentianls);
+        $response = $this->post('/login', $credentials);
 
         // Respuesta esperada
         $response->assertStatus(200);
@@ -37,13 +37,13 @@ class LoginTest extends TestCase
     #[Test] public function an_non_existing_user_cannot_login(): void
     {
         // Dato a probar
-        $credentianls = [
+        $credentials = [
             'login' => 'admi@admi.com',
             'password' => 'password'
         ];
 
         // Realizando la prueba
-        $response = $this->post('/login', $credentianls);
+        $response = $this->post('/login', $credentials);
 
         // Respuesta esperada
         $response->assertStatus(401);
@@ -53,15 +53,15 @@ class LoginTest extends TestCase
         ]);
     }
 
-    #[Test] public function email_must_be_required(): void
+    #[Test] public function it_requires_the_email_field(): void
     {
         // Dato a probar
-        $credentianls = [
+        $credentials = [
             'password' => 'password'
         ];
 
         // Realizando la prueba
-        $response = $this->postJson('/login', $credentianls);
+        $response = $this->postJson('/login', $credentials);
 
         // Respuesta esperada
         $response->assertStatus(422);
@@ -71,15 +71,15 @@ class LoginTest extends TestCase
         ]);
     }
 
-    #[Test] public function password_must_be_required(): void
+    #[Test] public function it_requires_the_password_field(): void
     {
         // Dato a probar
-        $credentianls = [
+        $credentials = [
             'login' => 'test@test.com',
         ];
 
         // Realizando la prueba
-        $response = $this->post('/login', $credentianls);
+        $response = $this->post('/login', $credentials);
 
         // Respuesta esperada
         $response->assertStatus(422);

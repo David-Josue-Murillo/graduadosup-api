@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Career;
 
-use App\Models\Career;
 use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;

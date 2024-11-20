@@ -51,7 +51,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function update_all_data_in_a_record(): void
+    #[Test] public function it_updates_an_existing_num_graduates(): void
     {
         $this->validGraduateData([
             'quantity' => 10,
@@ -76,7 +76,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         }
     }
 
-    #[Test] public function update_only_one_data_in_a_record(): void
+    #[Test] public function it_only_update_a_piece_of_data_in_the_record(): void
     {
         $this->validGraduateData(['year' => 2024]);
 
@@ -97,7 +97,7 @@ class UpdateRecordNumGraduateTest extends TestCase
     }
 
 
-    #[Test] public function cannot_be_update_a_record_without_the_quantity_field(): void
+    #[Test] public function it_fails_update_a_record_without_the_quantity_field(): void
     {
         $data = [
             'year' => now()->year,
@@ -115,7 +115,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         
     }
 
-    #[Test] public function cannot_be_update_the_quantity_field_with_invalidate_data(): void
+    #[Test] public function it_fails_update_the_quantity_field_with_invalidate_data(): void
     {
         $data = [
             'quantity' => 'sas',
@@ -133,7 +133,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_quantity_field_if_the_number_is_negative(): void
+    #[Test] public function it_fails_update_the_quantity_field_if_the_number_is_negative(): void
     {
         $data =$this->validGraduateData(['quantity' => -1]);
 
@@ -146,7 +146,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_quantity_field_if_the_number_exceeds_the_maximum_allowed(): void
+    #[Test] public function it_fails_update_the_quantity_field_if_the_number_exceeds_the_maximum_allowed(): void
     {
         $data = $this->validGraduateData(['quantity' => 10000]);
 
@@ -159,7 +159,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_a_record_without_the_year_field(): void
+    #[Test] public function it_fails_update_a_record_without_the_year_field(): void
     {
         $data = $this->validGraduateData(['year' => '']);
 
@@ -172,7 +172,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_year_field_with_invalidate_data(): void
+    #[Test] public function it_fails_update_the_year_field_with_invalidate_data(): void
     {
         $data = $this->validGraduateData(['year' => "2024sdsd"]);
 
@@ -185,7 +185,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_quantity_field_if_the_number_is_less_than_allowed(): void
+    #[Test] public function it_fails_update_the_quantity_field_if_the_number_is_less_than_allowed(): void
     {
         $data = $this->validGraduateData(['year' => 1999]);
 
@@ -198,7 +198,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_quantity_field_if_the_number_is_greater_than_allowed(): void
+    #[Test] public function it_fails_update_the_quantity_field_if_the_number_is_greater_than_allowed(): void
     {
         $data = $this->validGraduateData(['year' => 2025]);
 
@@ -211,7 +211,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_a_record_without_the_campus_id_fiel(): void
+    #[Test] public function it_fails_update_a_record_without_the_campus_id_fiel(): void
     {
         $data = $this->validGraduateData(['campus_id' => '']);
 
@@ -224,7 +224,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_campus_field_with_invalidate_data(): void
+    #[Test] public function it_fails_update_the_campus_field_with_invalidate_data(): void
     {
        $data = $this->validGraduateData(['campus_id' => "a"]);
 
@@ -237,7 +237,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_a_record_if_not_exit_campus_id(): void
+    #[Test] public function it_fails_update_a_record_if_not_exit_campus_id(): void
     {
         $data = $this->validGraduateData(['campus_id' => "2024"]);
 
@@ -250,7 +250,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_a_record_without_the_career_id_fiel(): void
+    #[Test] public function it_fails_update_a_record_without_the_career_id_fiel(): void
     {
        $data = $this->validGraduateData(['career_id' => '']);
 
@@ -263,7 +263,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_the_career_field_with_invalidate_data(): void
+    #[Test] public function it_fails_update_the_career_field_with_invalidate_data(): void
     {
        $data = $this->validGraduateData(['career_id' => "a"]);
 
@@ -276,7 +276,7 @@ class UpdateRecordNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function cannot_be_update_a_record_if_not_exit_career_id(): void
+    #[Test] public function it_fails_update_a_record_if_not_exit_career_id(): void
     {
        $data = $this->validGraduateData(['career_id' => 200]);
 

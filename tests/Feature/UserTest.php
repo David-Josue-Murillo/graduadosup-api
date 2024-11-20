@@ -19,7 +19,7 @@ class UserTest extends TestCase
         $this->seed(UserSeeder::class);
     }
 
-    #[Test] public function a_user_requests_to_see_the_entire_number_of_graduates(): void
+    #[Test] public function a_user_request_to_see_the_entire_number_of_graduates(): void
     {
         $response = $this->apiAs(User::find(1), 'GET', '/graduates');
 

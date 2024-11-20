@@ -40,7 +40,7 @@ class DisplayDataNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function it_must_returned_all_graduates(): void
+    #[Test] public function it_returns_all_num_graduates_records(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL);
 
@@ -96,7 +96,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_a_specific_record(): void
+    #[Test] public function it_return_a_specific_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
 
@@ -107,7 +107,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_an_error_if_the_record_does_not_exist(): void
+    #[Test] public function it_requires_the_num_graduates_id_to_exist(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
 
@@ -115,7 +115,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ->assertJsonStructure(['message','errors']);
     }
 
-    #[Test] public function must_return_the_campus_that_belongs_to_the_given_record(): void
+    #[Test] public function it_return_the_campus_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/campus');
 
@@ -127,7 +127,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_the_career_that_belongs_to_the_given_record(): void
+    #[Test] public function it_return_the_career_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/career');
 
@@ -139,7 +139,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_the_faculty_that_belongs_to_the_given_record(): void
+    #[Test] public function it_return_the_faculty_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/faculty');
 

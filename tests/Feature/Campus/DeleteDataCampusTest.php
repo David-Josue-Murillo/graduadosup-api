@@ -27,7 +27,7 @@ class DeleteDataCampusTest extends TestCase
         ], $overrides);
     }
 
-    #[Test] public function must_delete_a_existing_record(): void
+    #[Test] public function it_deletes_an_existing_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
@@ -42,9 +42,10 @@ class DeleteDataCampusTest extends TestCase
                 'id' => 1,
                 'name' => 'Centro regional universitario de Veraguas'
             ]);
+        $this->assertDatabaseMissing('campus', ['id' => 1]);
     }
 
-    #[Test] public function it_cannot_delete_a_not_exit_record(): void
+    #[Test] public function it_fails_to_delete_a_non_existent_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/100');
 

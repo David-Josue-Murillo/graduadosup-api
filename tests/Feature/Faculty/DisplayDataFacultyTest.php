@@ -32,7 +32,7 @@ class DisplayDataFacultyTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_a_specific_record(): void
+    #[Test] public function it_returns_all_faculty_records(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
 
@@ -44,7 +44,7 @@ class DisplayDataFacultyTest extends TestCase
             ]);
     }
 
-    #[Test] public function must_return_an_error_if_the_record_does_not_exist(): void
+    #[Test] public function it_return_a_specific_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
 
@@ -52,7 +52,7 @@ class DisplayDataFacultyTest extends TestCase
             ->assertJsonStructure(['message','errors']);
     }
 
-    #[Test] public function must_return_the_career_that_belongs_to_the_given_record(): void
+    #[Test] public function it_return_the_career_that_matches_the_faculty(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/career');
 

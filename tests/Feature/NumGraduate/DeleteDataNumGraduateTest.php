@@ -5,7 +5,6 @@ namespace Tests\Feature\NumGraduate;
 use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -22,7 +21,7 @@ class DeleteDataNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function must_delete_a_record(): void
+    #[Test] public function it_deletes_an_existing_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
@@ -40,9 +39,11 @@ class DeleteDataNumGraduateTest extends TestCase
                 'campus_id' => 1,
                 'career_id' => 1
             ]);
+
+        $this->assertDatabaseMissing('num_graduates', ['id' => 1]);
     }
 
-    #[Test] public function must_not_delete_record(): void
+    #[Test] public function it_fails_to_delete_a_non_existent_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/100');
 

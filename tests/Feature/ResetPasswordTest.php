@@ -66,7 +66,7 @@ class ResetPasswordTest extends TestCase
         $this->assertTrue(Hash::check('new_password', $user->password));
     }
 
-    #[Test] public function user_must_include_email(): void
+    #[Test] public function it_requires_the_email_field(): void
     {
         Notification::fake();
         $data = ['email' => '']; 
@@ -79,7 +79,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    #[Test] public function user_must_include_a_validated_email(): void
+    #[Test] public function it_require_the_email_field_to_be_valid(): void
     {
         Notification::fake();
         $data = ['email' => 'test@.test.com']; 
@@ -92,7 +92,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    #[Test] public function user_must_include_a_register_email(): void
+    #[Test] public function it_require_email_to_exit(): void
     {
         Notification::fake();
         $data = ['email' => 'admin@admin.com']; 
@@ -105,7 +105,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    #[Test] public function user_must_include_a_token(): void
+    #[Test] public function it_requires_the_token(): void
     {
         $data = [
             'email' => 'test@test.com',
@@ -121,7 +121,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    #[Test] public function user_must_include_the_new_password(): void
+    #[Test] public function it_requires_the_password_field(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [
@@ -138,7 +138,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    #[Test] public function user_must_include_a_password_at_least_6_characters(): void
+    #[Test] public function it_require_the_password_to_be_at_least_6_characters(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [
@@ -155,7 +155,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    #[Test] public function user_must_include_the_password_confirmation(): void
+    #[Test] public function it_requires_the_confirmation_password_field_and_to_be_match(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [
