@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DeleteDataNumGraduateTest extends TestCase
@@ -21,8 +22,7 @@ class DeleteDataNumGraduateTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function must_delete_a_record(): void 
+    #[Test] public function must_delete_a_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
@@ -42,8 +42,7 @@ class DeleteDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function must_not_delete_record(): void 
+    #[Test] public function must_not_delete_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/100');
 

@@ -5,6 +5,7 @@ namespace Tests\Feature\Campus;
 use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DeleteDataCampusTest extends TestCase
@@ -26,8 +27,7 @@ class DeleteDataCampusTest extends TestCase
         ], $overrides);
     }
 
-    /** @test */
-    public function must_delete_a_existing_record(): void 
+    #[Test] public function must_delete_a_existing_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
@@ -44,8 +44,7 @@ class DeleteDataCampusTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_cannot_delete_a_not_exit_record(): void 
+    #[Test] public function it_cannot_delete_a_not_exit_record(): void
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/100');
 

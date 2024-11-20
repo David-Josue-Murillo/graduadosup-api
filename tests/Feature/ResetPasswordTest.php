@@ -6,8 +6,9 @@ use App\Models\User;
 use App\Notifications\ResetPasswordNotification;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Hash;
-use Notification;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ResetPasswordTest extends TestCase
@@ -21,8 +22,7 @@ class ResetPasswordTest extends TestCase
         $this->seed(UserSeeder::class);
     }
 
-    /** @test */
-    public function an_existing_user_request_password_reset(): void
+    #[Test] public function an_existing_user_request_password_reset(): void
     {
         Notification::fake();
         $data = ['email' => 'test@test.com']; 
@@ -48,8 +48,7 @@ class ResetPasswordTest extends TestCase
         );
     }
 
-    /** @test */
-    public function an_existing_user_performs_a_password_reset(): void
+    #[Test] public function an_existing_user_performs_a_password_reset(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [
@@ -66,9 +65,8 @@ class ResetPasswordTest extends TestCase
         $user = User::where('email', $data['email'])->first();
         $this->assertTrue(Hash::check('new_password', $user->password));
     }
-    
-    /** @test */
-    public function user_must_include_email(): void
+
+    #[Test] public function user_must_include_email(): void
     {
         Notification::fake();
         $data = ['email' => '']; 
@@ -81,8 +79,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    /** @test */
-    public function user_must_include_a_validated_email(): void
+    #[Test] public function user_must_include_a_validated_email(): void
     {
         Notification::fake();
         $data = ['email' => 'test@.test.com']; 
@@ -95,8 +92,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    /** @test */
-    public function user_must_include_a_register_email(): void
+    #[Test] public function user_must_include_a_register_email(): void
     {
         Notification::fake();
         $data = ['email' => 'admin@admin.com']; 
@@ -109,8 +105,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    /** @test */
-    public function user_must_include_a_token(): void
+    #[Test] public function user_must_include_a_token(): void
     {
         $data = [
             'email' => 'test@test.com',
@@ -126,8 +121,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    /** @test */
-    public function user_must_include_the_new_password(): void
+    #[Test] public function user_must_include_the_new_password(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [
@@ -144,8 +138,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    /** @test */
-    public function user_must_include_a_password_at_least_6_characters(): void
+    #[Test] public function user_must_include_a_password_at_least_6_characters(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [
@@ -162,8 +155,7 @@ class ResetPasswordTest extends TestCase
         ]); 
     }
 
-    /** @test */
-    public function user_must_include_the_password_confirmation(): void
+    #[Test] public function user_must_include_the_password_confirmation(): void
     {
         $this->an_existing_user_request_password_reset();
         $data = [

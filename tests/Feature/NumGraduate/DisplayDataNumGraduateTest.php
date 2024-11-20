@@ -5,6 +5,7 @@ namespace Tests\Feature\NumGraduateTest;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DisplayDataNumGraduateTest extends TestCase
@@ -39,8 +40,7 @@ class DisplayDataNumGraduateTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_must_returned_all_graduates(): void
+    #[Test] public function it_must_returned_all_graduates(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL);
 
@@ -53,8 +53,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_must_returned_all_graduates_that_matching_with_campus_id(): void
+    #[Test] public function it_must_returned_all_graduates_that_matching_with_campus_id(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?campus_id=1');
 
@@ -68,8 +67,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_must_returned_all_graduates_that_matching_with_career_id(): void
+    #[Test] public function it_must_returned_all_graduates_that_matching_with_career_id(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?career=1');
 
@@ -87,8 +85,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function it_must_returned_all_graduates_that_matching_with_the_year(): void
+    #[Test] public function it_must_returned_all_graduates_that_matching_with_the_year(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?year=2023');
 
@@ -98,9 +95,8 @@ class DisplayDataNumGraduateTest extends TestCase
                 'year' => 2023
             ]);
     }
-    
-    /** @test */
-    public function must_return_a_specific_record(): void
+
+    #[Test] public function must_return_a_specific_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
 
@@ -111,8 +107,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function must_return_an_error_if_the_record_does_not_exist(): void
+    #[Test] public function must_return_an_error_if_the_record_does_not_exist(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
 
@@ -120,8 +115,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ->assertJsonStructure(['message','errors']);
     }
 
-    /** @test */
-    public function must_return_the_campus_that_belongs_to_the_given_record(): void
+    #[Test] public function must_return_the_campus_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/campus');
 
@@ -133,8 +127,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function must_return_the_career_that_belongs_to_the_given_record(): void
+    #[Test] public function must_return_the_career_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/career');
 
@@ -146,8 +139,7 @@ class DisplayDataNumGraduateTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function must_return_the_faculty_that_belongs_to_the_given_record(): void
+    #[Test] public function must_return_the_faculty_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/faculty');
 

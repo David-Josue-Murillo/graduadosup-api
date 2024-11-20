@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Database\Seeders\UserSeeder;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,8 +19,7 @@ class UpdatePasswordTest extends TestCase
         $this->seed(UserSeeder::class);
     }
 
-    /** @test */
-    public function an_authenticated_user_can_update_their_password(): void
+    #[Test] public function an_authenticated_user_can_update_their_password(): void
     {
         $data = [
             'current_password' => 'password',
@@ -37,8 +37,7 @@ class UpdatePasswordTest extends TestCase
         );    
     }
 
-    /** @test */
-    public function user_cannot_update_password_with_invalid_current_password(): void
+    #[Test] public function user_cannot_update_password_with_invalid_current_password(): void
     {
         $data = [
             'current_password' => 'WrongPassword',
@@ -55,8 +54,7 @@ class UpdatePasswordTest extends TestCase
         );
     }
 
-    /** @test */
-    public function user_cannot_update_password_without_current_password(): void
+    #[Test] public function user_cannot_update_password_without_current_password(): void
     {
         $data = [
             'password' => 'other_password',
@@ -72,8 +70,7 @@ class UpdatePasswordTest extends TestCase
     }
 
 
-    /** @test */
-    public function password_confirmation_must_be_at_least_8_characters(): void
+    #[Test] public function password_confirmation_must_be_at_least_8_characters(): void
     {
         $data = [
             'current_password' => 'password',
@@ -90,8 +87,7 @@ class UpdatePasswordTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function password_confirmation_must_match(): void
+    #[Test] public function password_confirmation_must_match(): void
     {
         $data = [
             'current_password' => 'password',

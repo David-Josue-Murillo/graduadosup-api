@@ -7,6 +7,7 @@ use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class UpdateDataCampusTest extends TestCase
@@ -28,8 +29,7 @@ class UpdateDataCampusTest extends TestCase
         ], $overrides);
     }
 
-    /** @test */
-    public function must_update_a_exist_record(): void
+    #[Test] public function must_update_a_exist_record(): void
     {
         $data = $this->validGraduateData();
 
@@ -49,8 +49,7 @@ class UpdateDataCampusTest extends TestCase
         }
     }
 
-    /** @test */
-    public function the_name_field_must_be_required(): void
+    #[Test] public function the_name_field_must_be_required(): void
     {
         $data = $this->validGraduateData(['name' => '']);
 
@@ -63,8 +62,7 @@ class UpdateDataCampusTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function the_name_must_not_be_a_number(): void
+    #[Test] public function the_name_must_not_be_a_number(): void
     {
         $data = $this->validGraduateData(['name' => 202419191919]);
 
@@ -77,8 +75,7 @@ class UpdateDataCampusTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function the_name_must_be_exceed_15_characters(): void
+    #[Test] public function the_name_must_be_exceed_15_characters(): void
     {
         $data = $this->validGraduateData(['name' => 'test']);
 
@@ -91,8 +88,7 @@ class UpdateDataCampusTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function the_name_only_must_bealphanumeric_characters(): void
+    #[Test] public function the_name_only_must_bealphanumeric_characters(): void
     {
         $data = $this->validGraduateData(['name' => 'testtesttest12']);
 

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -16,8 +17,7 @@ class LoginTest extends TestCase
         $this->seed(UserSeeder::class);
     }
 
-    /** @test */
-    public function an_existing_user_can_login(): void
+    #[Test] public function an_existing_user_can_login(): void
     {
         $this->withoutExceptionHandling();
         // Dato a probar
@@ -34,8 +34,7 @@ class LoginTest extends TestCase
         $response->assertJsonStructure(['data' => ['token']]);
     }
 
-    /** @test */
-    public function an_non_existing_user_cannot_login(): void
+    #[Test] public function an_non_existing_user_cannot_login(): void
     {
         // Dato a probar
         $credentianls = [
@@ -54,8 +53,7 @@ class LoginTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function email_must_be_required(): void
+    #[Test] public function email_must_be_required(): void
     {
         // Dato a probar
         $credentianls = [
@@ -72,9 +70,8 @@ class LoginTest extends TestCase
             'errors' => 'El correo electrónico o nombre de usuario es obligatorio.',
         ]);
     }
-    
-    /** @test */
-    public function password_must_be_required(): void
+
+    #[Test] public function password_must_be_required(): void
     {
         // Dato a probar
         $credentianls = [

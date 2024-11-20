@@ -5,6 +5,7 @@ namespace Tests\Feature\Faculty;
 use App\Models\User;
 use Database\Seeders\NumGraduateSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DisplayDataFacultyTest extends TestCase
@@ -18,8 +19,7 @@ class DisplayDataFacultyTest extends TestCase
         $this->seed([NumGraduateSeeder::class]);
     }
 
-    /** @test */
-    public function it_must_returned_all_faculties(): void
+    #[Test] public function it_must_returned_all_faculties(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL);
 
@@ -32,8 +32,7 @@ class DisplayDataFacultyTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function must_return_a_specific_record(): void
+    #[Test] public function must_return_a_specific_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1');
 
@@ -45,8 +44,7 @@ class DisplayDataFacultyTest extends TestCase
             ]);
     }
 
-    /** @test */
-    public function must_return_an_error_if_the_record_does_not_exist(): void
+    #[Test] public function must_return_an_error_if_the_record_does_not_exist(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/100');
 
@@ -54,8 +52,7 @@ class DisplayDataFacultyTest extends TestCase
             ->assertJsonStructure(['message','errors']);
     }
 
-    /** @test */
-    public function must_return_the_career_that_belongs_to_the_given_record(): void
+    #[Test] public function must_return_the_career_that_belongs_to_the_given_record(): void
     {
         $response = $this->apiAs(User::find(1), 'get', self::URL.'/1/career');
 
