@@ -84,7 +84,7 @@ class CareerController extends Controller
     public function destroy(Career $career): JsonResponse
     {
         $career->delete();
-        return  jsonResponse('Carrera eliminada con éxito', $career, 200);
+        return  jsonResponse('Carrera eliminada con éxito', [], 204);
     }
 
     /**

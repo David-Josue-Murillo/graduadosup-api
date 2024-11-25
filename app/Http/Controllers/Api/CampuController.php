@@ -81,6 +81,6 @@ class CampuController extends Controller
     public function destroy(Campu $campu): JsonResponse
     {
         $campu->delete();
-        return jsonResponse('Campus eliminado con éxito', $campu, 200);
+        return jsonResponse('Campus eliminado con éxito', [], 204);
     }
 }

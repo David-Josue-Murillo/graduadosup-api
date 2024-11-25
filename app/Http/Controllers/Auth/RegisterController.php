@@ -15,7 +15,7 @@ class RegisterController extends Controller
      * Register a new user and return a token JWT.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function register(RegisterRequest $request): JsonResponse
     {

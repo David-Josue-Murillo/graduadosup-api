@@ -90,7 +90,7 @@ class GraduateController extends Controller
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
         $graduate->delete();
-        return  jsonResponse('Dato eliminado exitosamente', $graduate, 200);
+        return  jsonResponse('Dato eliminado exitosamente', [], 204);
     }
 
     /**

@@ -81,7 +81,7 @@ class FacultyController extends Controller
     public function destroy(Faculty $faculty): JsonResponse
     {
         $faculty->delete();
-        return  jsonResponse('Facultad eliminada con éxito', $faculty, 200);
+        return  jsonResponse('Facultad eliminada con éxito', [], 204);
     }
 
     /**

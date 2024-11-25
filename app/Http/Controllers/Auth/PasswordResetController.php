@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
-use Hash;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use App\Http\Requests\Auth\PasswordResetRequest;
-use Str;
+use Illuminate\Support\Str;
 
 class PasswordResetController extends Controller
 {
 
     /**
      * Send a password reset link to a user
-     * @param \App\Http\Requests\Auth\PasswordResetRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param PasswordResetRequest $request
+     * @return JsonResponse
      */
     public function sendResetLinkEmail(PasswordResetRequest $request): JsonResponse
     {
