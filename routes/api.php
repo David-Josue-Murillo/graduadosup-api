@@ -16,8 +16,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/users', [UserController::class, 'store']);
 
-
-Route::prefix('users')->group(function (){
+Route::apiResource('users', UserController::class)->middleware('auth:api');
+Route::patch('/user/update-password', [UpdatePasswordController::class, 'update'])->middleware(['auth:api']);
+/*Route::prefix('users')->group(function (){
     //CRUD Operations
     Route::get('/', [UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'show']);   
@@ -25,8 +26,7 @@ Route::prefix('users')->group(function (){
     Route::delete('/{id}', [UserController::class, 'destroy']); 
 
     // Other operations
-    Route::patch('/update-password', [UpdatePasswordController::class, 'update']);
-});
+});*/
 
 Route::prefix('faculties')->group(function () {
     // CRUD Operation

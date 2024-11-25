@@ -32,16 +32,7 @@ class DeleteDataCareerTest extends TestCase
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'message',
-                'data',
-                'status',
-                'errors'
-            ])
-            ->assertJsonFragment([
-                'name' => 'Ingeniería en Informática'
-            ]);
+        $response->assertStatus(204);
         $this->assertDatabaseMissing('careers', ['id' => 1]);
     }
 

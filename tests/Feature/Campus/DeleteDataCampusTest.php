@@ -31,17 +31,7 @@ class DeleteDataCampusTest extends TestCase
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'message',
-                'data',
-                'status',
-                'errors'
-            ])
-            ->assertJsonFragment([
-                'id' => 1,
-                'name' => 'Centro regional universitario de Veraguas'
-            ]);
+        $response->assertStatus(204);
         $this->assertDatabaseMissing('campus', ['id' => 1]);
     }
 

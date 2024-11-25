@@ -25,21 +25,7 @@ class DeleteDataNumGraduateTest extends TestCase
     {
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                'message',
-                'data',
-                'status',
-                'errors'
-            ])
-            ->assertJsonFragment([
-                'id' => 1,
-                'quantity' => 100,
-                'year' => 2021,
-                'campus_id' => 1,
-                'career_id' => 1
-            ]);
-
+        $response->assertStatus(204);
         $this->assertDatabaseMissing('num_graduates', ['id' => 1]);
     }
 

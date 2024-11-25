@@ -27,7 +27,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'new_password',
         ];
 
-        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
+        $response = $this->apiAs(User::find(1), 'patch', '/user/update-password', $data);
 
         $response->assertOk();
         User::find(1)->refresh();
@@ -45,7 +45,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'new_password',
         ];
 
-        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
+        $response = $this->apiAs(User::find(1), 'patch', '/user/update-password', $data);
         $response->assertStatus(422);
         User::find(1)->refresh();
         $this->assertFalse(
@@ -61,7 +61,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'other_password',
         ];
 
-        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
+        $response = $this->apiAs(User::find(1), 'patch', '/user/update-password', $data);
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors']);
         $response->assertJsonFragment([
@@ -78,7 +78,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'test',
         ];
         
-        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
+        $response = $this->apiAs(User::find(1), 'patch', '/user/update-password', $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors']);
@@ -95,7 +95,7 @@ class UpdatePasswordTest extends TestCase
             'password_confirmation' => 'different_password',
         ];
 
-        $response = $this->apiAs(User::find(1), 'patch', '/users/update-password', $data);
+        $response = $this->apiAs(User::find(1), 'patch', '/user/update-password', $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message', 'errors']);

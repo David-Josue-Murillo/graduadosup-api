@@ -20,7 +20,7 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $newUser = User::create($request->validated());
-        $token = JWTAuth::fromUser($newUser);;
+        $token = JWTAuth::fromUser($newUser);
         $data = [
             'user' => $newUser,
             'token' => $token,
