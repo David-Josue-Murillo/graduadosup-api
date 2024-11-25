@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Faculty;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
-use App\Services\FacultyDataFormatterService;
 use App\Services\FacultyService;
 use Illuminate\Http\JsonResponse;
 
 class FacultyController extends Controller
 {
-    protected $formatter;
     protected $services;
 
-    public function __construct(FacultyDataFormatterService $formatter, FacultyService $services)
+    public function __construct(FacultyService $services)
     {
-        $this->formatter = $formatter;
         $this->services = $services;
     }
 
@@ -28,11 +25,11 @@ class FacultyController extends Controller
     public function index(): JsonResponse
     {
         $faculties = Faculty::with('careers')->get();
-        $facultiesData = $this->formatter->formatFacultiesData($faculties);
+        $facultiesData = $this->services->formatFacultiesData($faculties);
 
         return $faculties->isEmpty()
-            ? $this->jsonResponse('No se encontraron facultades', [], 200)
-            : $this->jsonResponse('Facultades encontradas exitosamente', $facultiesData, 200);
+            ?  jsonResponse('No se encontraron facultades', [], 200)
+            :  jsonResponse('Facultades encontradas exitosamente', $facultiesData, 200);
     }
 
     /**
@@ -46,7 +43,7 @@ class FacultyController extends Controller
         if(!$this->services->verifyFacultyExists($request)){
             $faculty = Faculty::create($request->validated());
         }
-        return $this->jsonResponse('Facultad creada con éxito', $faculty, 201);
+        return  jsonResponse('Facultad creada con éxito', $faculty, 201);
     }
 
     /**
@@ -58,8 +55,8 @@ class FacultyController extends Controller
     public function show(int $id): JsonResponse
     {
         $faculty = Faculty::with('careers')->findOrFail($id);
-        $facultyData = $this->formatter->formatFacultyData($faculty);
-        return $this->jsonResponse('Facultad encontrada', $facultyData, 200);
+        $facultyData = $this->services->formatFacultyData($faculty);
+        return  jsonResponse('Facultad encontrada', $facultyData, 200);
     }
 
     /**
@@ -72,7 +69,7 @@ class FacultyController extends Controller
     public function update(FacultyRequest $request, Faculty $faculty): JsonResponse
     {
         $faculty->update($request->validated());
-        return $this->jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
+        return  jsonResponse('Facultad actualizada exitosamente', $faculty, 200);
     }
 
     /**
@@ -84,7 +81,7 @@ class FacultyController extends Controller
     public function destroy(Faculty $faculty): JsonResponse
     {
         $faculty->delete();
-        return $this->jsonResponse('Facultad eliminada con éxito', $faculty, 200);
+        return  jsonResponse('Facultad eliminada con éxito', [], 204);
     }
 
     /**
@@ -96,6 +93,6 @@ class FacultyController extends Controller
     public function displayCareers(Faculty $faculty): JsonResponse
     {
         $careers = $faculty->careers()->get();
-        return $this->jsonResponse('Lista de carreras', $careers, 200);
+        return  jsonResponse('Lista de carreras', $careers, 200);
     }
 }

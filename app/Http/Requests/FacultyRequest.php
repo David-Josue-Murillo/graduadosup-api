@@ -22,7 +22,7 @@ class FacultyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:100|min:10|unique:careers|string|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ.\s]+$/'
+            'name' => 'required|max:100|min:10|unique:careers|string|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ.,\s]+$/'
         ];
     }
 
@@ -34,7 +34,7 @@ class FacultyRequest extends FormRequest
         return [
             'name.required' => 'El campo nombre es obligatorio.',
             'name.max' => 'El nombre de la facultad no debe exceder los 100 caracteres.',
-            'name.min' => 'El nombre de la facultads debe exceder los 10 caracteres.',
+            'name.min' => 'El nombre de la facultades debe exceder los 10 caracteres.',
             'name.unique' => 'Ya existe una facultad con este nombre.',
             'name.string' => 'El nombre de la facultad debe ser una cadena de texto.',
             'name.regex' => 'El nombre de la facultad debe contener solo caracteres alfanuméricos.'

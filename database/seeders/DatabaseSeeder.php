@@ -8,6 +8,7 @@ use App\Models\Faculty;
 use App\Models\NumGraduate;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -17,15 +18,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Campu::factory(10)->create();
-        Faculty::factory(19)->create();
-        Career::factory(355)->create();
-        NumGraduate::factory(10000)->create();
-        // User::factory(10)->create();
-
-        /*User::factory()->create([
-            'name' => 'David Murillo',
-            'email' => 'dm514821@gmail.com',
-        ]);*/
+        User::factory()->create([
+            'name' => 'test ',
+            'email' => 'test@test.com',
+            'password'=> Hash::make('password'),
+            'role' => 'admin'
+        ]);
+        
+        Campu::factory(3)->create();
+        Faculty::factory(6)->create();
+        Career::factory(18)->create();
+        NumGraduate::factory(36)->create();
+        User::factory(2)->create();
     }
 }

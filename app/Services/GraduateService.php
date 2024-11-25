@@ -7,15 +7,27 @@ use App\Models\NumGraduate;
 use App\Models\Campu;
 use App\Models\Career;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class GraduateService
 {
     /**
+     * Retrieves related data from a specific table through a model.
+     *
+     * @param string $model The model class to query.
+     * @param string $relation The relationship to load.
+     * @param int $id The primary key of the model to retrieve.
+     */
+    public function numGraduateRelatedData(string $relation, int $id) {
+        $data = NumGraduate::with($relation)->findOrFail($id);
+        return $data->$relation()->get();
+    }
+
+    /**
      * Verify if there are filters in the request
      * 
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \Illuminate\Http\Request $request
+     * @param Builder $query
+     * @param Request $request
      * @return Builder
      */
     public function verifyFilter(Builder $query, NumGraduatesRequest $request):Builder {
@@ -36,8 +48,8 @@ class GraduateService
      * Verify if exists campus and career 
      * if it exists, it return true, otherwise a exception is thrown.
      * 
-     * @param \App\Models\Campu $campus
-     * @param \App\Models\Career $career
+     * @param Campu $campus
+     * @param Career $career
      * @return bool
      */
     public function ifExistsCampusAndCareer(Campu $campus, Career $career):bool {
@@ -68,5 +80,45 @@ class GraduateService
             'campus_id' => $request->campus_id,
             'career_id' => $request->career_id
         ]);
+    }
+
+    /**
+     * Formats and returns custom data structure for NumGraduates with associated details.
+     *
+     * @param NumGraduate $numGraduates
+     * @return array
+     */
+    public function formatGraduatedData(NumGraduate $graduate): array
+    {
+        return [
+            'id' => $graduate->id,
+            'quantity' => $graduate->quantity,
+            'year' => $graduate->year,
+            'campus' => [
+                'id' => $graduate->campus->id,
+                'name' => $graduate->campus->name,
+            ],
+            'career' => [
+                'id' => $graduate->career->id,
+                'name' => $graduate->career->name,
+                'faculty' => [
+                    'id' => $graduate->career->faculty->id,
+                    'name' => $graduate->career->faculty->name,
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Format all data for the number of graduates
+     *
+     * @param NumGraduate $graduate
+     * @return array Datos formateados para la respuesta
+     */
+    public function formatNumGraduatedData($numGraduates)
+    {
+        return $numGraduates->map(function ($graduate) {
+            return $this->formatGraduatedData($graduate);
+        });
     }
 }
