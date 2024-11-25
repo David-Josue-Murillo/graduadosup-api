@@ -5,23 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
 use App\Models\NumGraduate;
-use App\Services\DataDisplayByService;
-use App\Services\GraduateDataFormatterService;
 use App\Services\GraduateService;
 use Illuminate\Http\JsonResponse;
 
 
 class GraduateController extends Controller
 {
-    protected $formatter;
-    protected $displayData;
-    protected $graduateService;
+    protected $services;
 
-    public function __construct(GraduateDataFormatterService $formatter, DataDisplayByService $displayData, GraduateService $graduateService)
+    public function __construct(GraduateService $services)
     {
-        $this->formatter = $formatter;
-        $this->displayData = $displayData;
-        $this->graduateService = $graduateService;
+        $this->services = $services;
     }
 
     /**
@@ -33,10 +27,10 @@ class GraduateController extends Controller
     public function index(NumGraduatesRequest $request): JsonResponse
     {
         $query = NumGraduate::query();
-        $query = $this->graduateService->verifyFilter($query, $request);
+        $query = $this->services->verifyFilter($query, $request);
 
         $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
-        $numGraduatesData = $this->formatter->formatNumGraduatedData($numGraduates);
+        $numGraduatesData = $this->services->formatNumGraduatedData($numGraduates);
 
         return $numGraduates->isEmpty()
         ?  jsonResponse('No hay datos', [], 200)
@@ -51,7 +45,7 @@ class GraduateController extends Controller
      */
     public function store(NumGraduatesRequest $request): JsonResponse
     {   
-        if($this->graduateService->ifNotExistsRecord($request)) {
+        if($this->services->ifNotExistsRecord($request)) {
             $graduate = NumGraduate::create($request->validated());
         }
 
@@ -67,7 +61,7 @@ class GraduateController extends Controller
     public function show(int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
-        $formattedGraduate = $this->formatter->formatGraduatedData($graduate);
+        $formattedGraduate = $this->services->formatGraduatedData($graduate);
         return  jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 
@@ -81,7 +75,7 @@ class GraduateController extends Controller
     public function update(NumGraduatesRequest $request, int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::findOrFail($graduate_id);
-        $this->graduateService->updateRecord($request, $graduate);
+        $this->services->updateRecord($request, $graduate);
 
         return  jsonResponse('Dato actualizado exitosamente', $graduate, 200);
     }
@@ -107,7 +101,7 @@ class GraduateController extends Controller
      */
     public function filterByCampus(int $graduate_id): JsonResponse 
     {
-        $data = $this->displayData->numGraduateRelatedData('campus', $graduate_id);
+        $data = $this->services->numGraduateRelatedData('campus', $graduate_id);
         return  jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
@@ -120,7 +114,7 @@ class GraduateController extends Controller
      */
     public function filterByCareer(int $graduate_id):JsonResponse 
     {
-        $data = $this->displayData->numGraduateRelatedData('career', $graduate_id);
+        $data = $this->services->numGraduateRelatedData('career', $graduate_id);
         return  jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 
@@ -132,7 +126,7 @@ class GraduateController extends Controller
      */
     public function filterByFaculty(int $graduate_id): JsonResponse 
     {
-        $data = $this->displayData->numGraduateRelatedData('faculty', $graduate_id);
+        $data = $this->services->numGraduateRelatedData('faculty', $graduate_id);
         return  jsonResponse("Dato obtenido exitosamente", $data, 200);
     }
 }

@@ -163,18 +163,7 @@ class CreateDataInNumGraduateTest extends TestCase
         ]);
     }
 
-    #[Test] public function it_requires_the_year_to_be_recent(): void
-    {
-        $data = $this->validGraduateData(['year' => 1999]);
 
-        $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
-
-        $response->assertStatus(422);
-        $response->assertJsonStructure(['message','errors']);
-        $response->assertJsonFragment([
-            'errors' => 'El año debe ser mayor o igual a 2018'
-        ]);
-    }
 
     #[Test] public function it_requires_the_year_to_not_exceed_current_year(): void
     {

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Campu;
-use App\Services\CampuDataFormatterService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CampuRequest;
 use App\Services\CampuService;
@@ -11,12 +10,10 @@ use Illuminate\Http\JsonResponse;
 
 class CampuController extends Controller
 {
-    protected $formatter;
     protected $services;
 
-    public function __construct(CampuDataFormatterService $formatter, CampuService $services) 
+    public function __construct(CampuService $services)
     {
-        $this->formatter = $formatter;
         $this->services = $services;
     }
 
@@ -28,7 +25,7 @@ class CampuController extends Controller
     public function index(): JsonResponse
     {
         $campus = Campu::with('graduates')->get();
-        $campusData = $this->formatter->formatCampusData($campus);
+        $campusData = $this->services->formatCampusData($campus);
 
         return $campus->isEmpty() 
         ? jsonResponse('No se encontro campus', [], 200)
@@ -58,7 +55,7 @@ class CampuController extends Controller
     public function show(int $campu_id): JsonResponse
     {   
         $campu = Campu::with('graduates')->findOrFail($campu_id);
-        $data = $this->formatter->formatCampuData($campu);
+        $data = $this->services->formatCampuData($campu);
         return jsonResponse('Campus encontrado', $data, 200);
     }
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CareerRequest;
 use App\Models\Career;
-use App\Services\CareerDataFormatterService;
 use App\Services\CareerService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -13,12 +12,10 @@ use Illuminate\Http\JsonResponse;
 class CareerController extends Controller
 {
     protected $careerService;
-    protected $formatterData;
 
-    public function __construct(CareerService $careerService, CareerDataFormatterService $formatterData)
+    public function __construct(CareerService $careerService)
     {
         $this->careerService = $careerService;
-        $this->formatterData = $formatterData;
     }
 
     /**
@@ -33,7 +30,7 @@ class CareerController extends Controller
         $query = $this->careerService->verifyFilter($query, $request);
 
         $careers = $query->with(['graduates', 'faculty'])->paginate(15);
-        $careersData = $this->formatterData->formatCareerData($careers);
+        $careersData = $this->careerService->formatCareerData($careers);
         
         return $careers->isEmpty() 
         ?  jsonResponse('No se encontraron carreras', [], 200)
@@ -61,7 +58,7 @@ class CareerController extends Controller
     public function show(int $id): JsonResponse
     {
         $career = Career::with(['graduates', 'faculty'])->findOrFail($id);
-        $careerData = $this->formatterData->formatterData($career);
+        $careerData = $this->careerService->formatterData($career);
         return  jsonResponse('Carrera encontrada', $careerData, 200);
     }
 
