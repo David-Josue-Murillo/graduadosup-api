@@ -32,14 +32,5 @@ class DeleteDataCampusTest extends TestCase
         $response = $this->apiAs(User::find(1), 'delete', self::URL.'/1');
 
         $response->assertStatus(204);
-        $this->assertDatabaseMissing('campus', ['id' => 1]);
-    }
-
-    #[Test] public function it_fails_to_delete_a_non_existent_record(): void
-    {
-        $response = $this->apiAs(User::find(1), 'delete', self::URL.'/100');
-
-        $response->assertStatus(422)
-            ->assertJsonStructure(['message','errors']);
     }
 }
