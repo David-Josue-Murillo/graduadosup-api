@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\FacultyResource;
 use App\Models\Faculty;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FacultyRequest;
@@ -25,7 +26,7 @@ class FacultyController extends Controller
     public function index(): JsonResponse
     {
         $faculties = Faculty::with('careers')->get();
-        $facultiesData = $this->services->formatFacultiesData($faculties);
+        $facultiesData = FacultyResource::collection($faculties);
 
         return $faculties->isEmpty()
             ?  jsonResponse('No se encontraron facultades', [], 200)
@@ -55,7 +56,7 @@ class FacultyController extends Controller
     public function show(int $id): JsonResponse
     {
         $faculty = Faculty::with('careers')->findOrFail($id);
-        $facultyData = $this->services->formatFacultyData($faculty);
+        $facultyData = FacultyResource::make($faculty);
         return  jsonResponse('Facultad encontrada', $facultyData, 200);
     }
 
