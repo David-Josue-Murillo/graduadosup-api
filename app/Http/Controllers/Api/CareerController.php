@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CareerRequest;
 use App\Http\Resources\CareerResource;
-use App\Http\Resources\FacultyResource;
 use App\Models\Career;
 use App\Services\CareerService;
 use Illuminate\Http\Request;
