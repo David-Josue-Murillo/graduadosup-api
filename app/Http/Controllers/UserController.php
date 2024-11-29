@@ -5,19 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-    protected $services;
-
-    public function __construct(UserService $services)
-    {
-        $this->services = $services;
-    }
-
     /**
      * Display a listing of the resource.
      * 
