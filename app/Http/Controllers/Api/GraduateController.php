@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NumGraduatesRequest;
+use App\Http\Resources\NumGraduateResource;
 use App\Models\NumGraduate;
 use App\Services\GraduateService;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +31,7 @@ class GraduateController extends Controller
         $query = $this->services->verifyFilter($query, $request);
 
         $numGraduates = $query->with(['campus', 'career', 'faculty'])->paginate(15);
-        $numGraduatesData = $this->services->formatNumGraduatedData($numGraduates);
+        $numGraduatesData = NumGraduateResource::collection($numGraduates);
 
         return $numGraduates->isEmpty()
         ?  jsonResponse('No hay datos', [], 200)
@@ -61,7 +62,7 @@ class GraduateController extends Controller
     public function show(int $graduate_id): JsonResponse
     {
         $graduate = NumGraduate::with('campus', 'career', 'faculty')->findOrFail($graduate_id);
-        $formattedGraduate = $this->services->formatGraduatedData($graduate);
+        $formattedGraduate = NumGraduateResource::make($graduate);
         return  jsonResponse('Dato obtenido exitosamente', $formattedGraduate, 200);
     }
 

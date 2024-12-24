@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\CampuResource;
 use App\Models\Campu;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CampuRequest;
@@ -25,7 +26,7 @@ class CampuController extends Controller
     public function index(): JsonResponse
     {
         $campus = Campu::with('graduates')->get();
-        $campusData = $this->services->formatCampusData($campus);
+        $campusData = CampuResource::collection($campus);
 
         return $campus->isEmpty() 
         ? jsonResponse('No se encontro campus', [], 200)
@@ -55,7 +56,7 @@ class CampuController extends Controller
     public function show(int $campu_id): JsonResponse
     {   
         $campu = Campu::with('graduates')->findOrFail($campu_id);
-        $data = $this->services->formatCampuData($campu);
+        $data = CampuResource::make($campu);
         return jsonResponse('Campus encontrado', $data, 200);
     }
 

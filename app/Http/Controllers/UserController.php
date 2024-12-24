@@ -3,20 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
-    protected $services;
-
-    public function __construct(UserService $services)
-    {
-        $this->services = $services;
-    }
-
     /**
      * Display a listing of the resource.
      * 
@@ -24,7 +17,7 @@ class UserController extends Controller
      */
     public function index(): JsonResponse
     {
-        $users = $this->services->formatAllData(User::all());
+        $users = UserResource::collection(User::all());
         return jsonResponse('ok', $users, 200);
     }
 
@@ -56,7 +49,7 @@ class UserController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $user = User::findOrFail($id);
+        $user =  UserResource::make(User::findOrFail($id));
         return jsonResponse('Usuario encontreado', $user, 200);
     }
 

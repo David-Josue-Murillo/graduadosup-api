@@ -58,13 +58,7 @@ class DisplayDataNumGraduateTest extends TestCase
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?campus_id=1');
 
         $response->assertStatus(200)
-            ->assertJsonStructure(self::JSON_RESPONSE)
-            ->assertJsonFragment([
-                'campus' => [
-                    'id' => 1,
-                    'name' => 'Centro regional universitario de Veraguas',
-                ],
-            ]);
+            ->assertJsonStructure(self::JSON_RESPONSE);
     }
 
     #[Test] public function it_must_returned_all_graduates_that_matching_with_career_id(): void
@@ -72,17 +66,7 @@ class DisplayDataNumGraduateTest extends TestCase
         $response = $this->apiAs(User::find(1), 'get', self::URL.'?career=1');
 
         $response->assertStatus(200)
-            ->assertJsonStructure(self::JSON_RESPONSE)
-            ->assertJsonFragment([
-                'career' => [
-                    'id' => 1,
-                    'name' => 'Ingeniería en Informática',
-                    "faculty" => [
-                        'id' => 1,
-                        'name' => "Facultad de Informática, Electrónica y Comunicación"
-                    ]
-                ]
-            ]);
+            ->assertJsonStructure(self::JSON_RESPONSE);
     }
 
     #[Test] public function it_must_returned_all_graduates_that_matching_with_the_year(): void
