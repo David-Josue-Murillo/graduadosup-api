@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\GraduateController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Api\CareerController;
 use App\Http\Controllers\Api\FacultyController;
+use App\Http\Controllers\CsvController;
 
 // Routes the authentication
 Route::post('/login', [AuthController::class, 'login']);
@@ -35,3 +36,6 @@ Route::apiResource('graduates', GraduateController::class);
 Route::get('graduates/{graduates}/campus', [GraduateController::class, 'filterByCampus']);
 Route::get('graduates/{graduates}/career', [GraduateController::class, 'filterByCareer']);
 Route::get('graduates/{graduates}/faculty', [GraduateController::class, 'filterByFaculty']);
+
+// Get data
+Route::get('/process-local-data', [CsvController::class, 'processCsv']);
