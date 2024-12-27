@@ -9,25 +9,21 @@ use League\Csv\Reader;
 
 class CsvController extends Controller
 {
-    //
+    private const CSV_PATH = 'app/csv/';
+
     public function processCsv(): void
     {
-        //$this->processCsvFaculty();
-        //$this->processCsvCampus();
+        $this->processCsvFaculty();
+        $this->processCsvCampus();
         $this->processCsvCareers();
     }
 
     private function processCsvFaculty(): void
     {
-        $filePath = storage_path('app/csv/faculties.csv');
-        if (!file_exists($filePath)) {
-            response()->json(['error' => 'El archivo no existe en el sistema.'], 404);
-            return;
-        }
+        $filePath = storage_path(self::CSV_PATH.'faculties.csv');
+        if(!$this->verifyIfExistFile($filePath)) return;
+        $records = $this->readCsv($filePath);
 
-        $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setHeaderOffset(0); // Define la primera fila como encabezado
-        $records = $csv->getRecords();
 
         foreach ($records as $record) {
             Faculty::create([
@@ -38,15 +34,10 @@ class CsvController extends Controller
 
     private function processCsvCampus(): void
     {
-        $filePath = storage_path('app/csv/campus.csv');
-        if (!file_exists($filePath)) {
-            response()->json(['error' => 'El archivo no existe en el sistema.'], 404);
-            return;
-        }
+        $filePath = storage_path(self::CSV_PATH.'campus.csv');
+        if(!$this->verifyIfExistFile($filePath)) return;
+        $records = $this->readCsv($filePath);
 
-        $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setHeaderOffset(0); // Define la primera fila como encabezado
-        $records = $csv->getRecords();
 
         foreach ($records as $record) {
             Campu::create([
@@ -57,15 +48,9 @@ class CsvController extends Controller
 
     private function processCsvCareers(): void
     {
-        $filePath = storage_path('app/csv/careers.csv');
-        if (!file_exists($filePath)) {
-            response()->json(['error' => 'El archivo no existe en el sistema.'], 404);
-            return;
-        }
-
-        $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setHeaderOffset(0); // Define la primera fila como encabezado
-        $records = $csv->getRecords();
+        $filePath = storage_path(self::CSV_PATH.'careers.csv');
+        if(!$this->verifyIfExistFile($filePath)) return;
+        $records = $this->readCsv($filePath);
 
         foreach ($records as $record) {
             Career::create([
@@ -73,5 +58,19 @@ class CsvController extends Controller
                 'faculty_id' => $record['faculty'],
             ]);
         }
+    }
+
+    private function verifyIfExistFile(string $file): bool
+    {
+        if (file_exists($file)) return true;
+        response()->json(['error' => 'El archivo no existe en el sistema.'], 404);
+        return false;
+    }
+
+    private function readCsv(string $path): \Iterator
+    {
+        $csv = Reader::createFromPath($path, 'r');
+        $csv->setHeaderOffset(0);
+        return $csv->getRecords();
     }
 }
