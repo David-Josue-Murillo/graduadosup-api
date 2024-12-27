@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Campu;
 use App\Models\Career;
 use App\Models\Faculty;
+use Illuminate\Support\Facades\DB;
 use League\Csv\Reader;
 
 class CsvController extends Controller
@@ -13,51 +14,32 @@ class CsvController extends Controller
 
     public function processCsv(): void
     {
-        $this->processCsvFaculty();
-        $this->processCsvCampus();
-        $this->processCsvCareers();
+        $this->processCsvData('faculties.csv', Faculty::class, ['name' => 'faculty']);
+        $this->processCsvData('campus.csv', Campu::class, ['name' => 'campus']);
+        $this->processCsvData('careers.csv', Career::class, [
+            'name' => 'career',
+            'faculty_id' => 'faculty'
+        ]);
     }
 
-    private function processCsvFaculty(): void
+    private function processCsvData(string $filename, string $model, array $columnMappings): void
     {
-        $filePath = storage_path(self::CSV_PATH.'faculties.csv');
-        if(!$this->verifyIfExistFile($filePath)) return;
+        $filePath = storage_path(self::CSV_PATH . $filename);
+        if (!$this->verifyIfExistFile($filePath)) return;
+
         $records = $this->readCsv($filePath);
 
+        DB::transaction(function() use ($records, $model, $columnMappings) {
+            foreach ($records as $record) {
+                $mappedData = collect($columnMappings)
+                    ->mapWithKeys(fn($csvColumn, $dbColumn) =>
+                    [$dbColumn => $record[$csvColumn]]
+                    )
+                    ->toArray();
 
-        foreach ($records as $record) {
-            Faculty::create([
-                'name' => $record['faculty'],
-            ]);
-        }
-    }
-
-    private function processCsvCampus(): void
-    {
-        $filePath = storage_path(self::CSV_PATH.'campus.csv');
-        if(!$this->verifyIfExistFile($filePath)) return;
-        $records = $this->readCsv($filePath);
-
-
-        foreach ($records as $record) {
-            Campu::create([
-                'name' => $record['campus'],
-            ]);
-        }
-    }
-
-    private function processCsvCareers(): void
-    {
-        $filePath = storage_path(self::CSV_PATH.'careers.csv');
-        if(!$this->verifyIfExistFile($filePath)) return;
-        $records = $this->readCsv($filePath);
-
-        foreach ($records as $record) {
-            Career::create([
-                'name' => $record['career'],
-                'faculty_id' => $record['faculty'],
-            ]);
-        }
+                $model::create($mappedData);
+            }
+        });
     }
 
     private function verifyIfExistFile(string $file): bool
