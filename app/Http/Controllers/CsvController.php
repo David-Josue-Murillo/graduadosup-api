@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Campu;
 use App\Models\Career;
 use App\Models\Faculty;
+use App\Models\NumGraduate;
 use App\Services\Csv\DataProcessor;
 
 class CsvController extends Controller
@@ -32,6 +33,12 @@ class CsvController extends Controller
         $this->dataProcessor->process('careers.csv', Career::class, [
             'name' => 'career',
             'faculty_id' => 'faculty'
+        ]);
+        $this->dataProcessor->process('num_graduates.csv', NumGraduate::class, [
+            'quantity' => 'quantity',
+            'year' => 'year',
+            'campus_id' => 'campus_id',
+            'career_id' => 'career_id'
         ]);
     }
 }
