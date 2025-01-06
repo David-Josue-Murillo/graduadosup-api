@@ -200,14 +200,14 @@ class UpdateRecordNumGraduateTest extends TestCase
 
     #[Test] public function it_fails_update_the_quantity_field_if_the_number_is_greater_than_allowed(): void
     {
-        $data = $this->validGraduateData(['year' => 2025]);
+        $data = $this->validGraduateData(['year' => 2026]);
 
         $response = $this->apiAs(User::find(1), 'put', self::URL.'/1', $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
         $response->assertJsonFragment([
-            'errors' => 'El año debe ser menor o igual a 2024'
+            'errors' => 'El año debe ser menor o igual a ' . date('Y')
         ]);
     }
 

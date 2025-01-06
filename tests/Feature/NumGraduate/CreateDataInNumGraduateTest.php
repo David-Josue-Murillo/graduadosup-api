@@ -167,14 +167,14 @@ class CreateDataInNumGraduateTest extends TestCase
 
     #[Test] public function it_requires_the_year_to_not_exceed_current_year(): void
     {
-        $data = $this->validGraduateData(['year' => 2025]);
+        $data = $this->validGraduateData(['year' => 2026]);
 
         $response = $this->apiAs(User::find(1), 'post', self::URL, $data);
 
         $response->assertStatus(422);
         $response->assertJsonStructure(['message','errors']);
         $response->assertJsonFragment([
-            'errors' => 'El año debe ser menor o igual a 2024'
+            'errors' => 'El año debe ser menor o igual a ' . date('Y')
         ]);
     }
 
