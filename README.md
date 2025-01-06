@@ -69,19 +69,19 @@ php artisan migrate
 
 Los endpoints disponibles para las `graduates` están organizados bajo el prefijo `api/graduates`:
 
-| Endpoint | Descripción |
-| --- | --- |
-| `GET /api/graduates` | Lista todas la cantidad de graduados |
-| `POST /api/graduates` | Crea una nueva cantidad de graduados |
-| `GET /api/graduates/{id}` | Muestra una cantidad de graduados específica |
-| `PUT /api/graduates/{id}` | Actualiza una cantidad de graduados específica |
-| `DELETE /api/graduados/{id}` | Elimina una cantidad de graduados específica |
-| `GET /api/graduates/{id}/campus` | Muestra el centro regional a que pertenece una cantidad de graduados específica |
-| `GET /api/graduates/{id}/campus` | Muestra la facultad la carrera a quepertenece una cantidad de graduados específica |
+| Endpoint                          | Descripción |
+|-----------------------------------| --- |
+| `GET /api/graduates`              | Lista todas la cantidad de graduados |
+| `POST /api/graduates`             | Crea una nueva cantidad de graduados |
+| `GET /api/graduates/{id}`         | Muestra una cantidad de graduados específica |
+| `PUT /api/graduates/{id}`         | Actualiza una cantidad de graduados específica |
+| `DELETE /api/graduados/{id}`      | Elimina una cantidad de graduados específica |
+| `GET /api/graduates/{id}/campus`  | Muestra el centro regional a que pertenece una cantidad de graduados específica |
+| `GET /api/graduates/{id}/career`  | Muestra la facultad la carrera a quepertenece una cantidad de graduados específica |
 | `GET /api/graduates/{id}/faculty` | Muestra la facultad a que pertenece una cantidad de graduados específica |
-| `GET /api/graduates?year=2024` | Filtrar por año |
-| `GET /api/graduates?campus_id=1` | Filtrar por centro regional |
-| `GET /api/graduates?career_id=1` | Filtrar por carrera |
+| `GET /api/graduates?year=2022`    | Filtrar por año |
+| `GET /api/graduates?campus_id=1`  | Filtrar por centro regional |
+| `GET /api/graduates?career_id=1`  | Filtrar por carrera |
 
 
 Los endpoints disponibles para las `faculties` están organizados bajo el prefijo `api/faculties`:
@@ -107,10 +107,20 @@ Los endpoints disponibles para las `careers` están organizados bajo el prefijo 
 | `DELETE /api/careers/{id}` | Elimina una carrera específica |
 | `GET /api/careers/{id}/faculty` | Muestra la facultad a que pertenece |
 
+Los endpoints disponibles para los `campus` están organizados bajo el prefijo `api/campus`:
+
+| Endpoint                  | Descripción                      |
+|---------------------------|----------------------------------|
+| `GET /api/campus`         | Lista todas las sedes regionales |
+| `POST /api/campus`        | Crea una nueva sede              |
+| `GET /api/campus/{id}`    | Muestra una sede en específica   |
+| `PUT /api/campus/{id}`    | Actualiza una sede específica    |
+| `DELETE /api/campus/{id}` | Elimina una sede específica      |
+
 
 ## Ejemplos de Uso
 
-### Facultades
+### Response JSON
 ```bash
 # Lista todas las facultades
 curl -X GET http://localhost:8000/api/graduates
@@ -118,65 +128,42 @@ curl -X GET http://localhost:8000/api/graduates
 
 ```json
 [
-    {
-        "id": 1,
-        "quantity": 38,
-        "year": 2024,
-        "campus": {
-            "id": 2,
-            "name": "Centro Regional Universitario de Penonome"
-        },
-        "career": {
-            "id": 16,
-            "name": "Lic. Informática para la Gestión Educativa y Empresarial",
-            "faculty": {
-                "id": 5,
-                "name": "Facultad de Informática, Electrónica y Comunicación"
-            }
+  {
+    "id": 2,
+    "quantity": 31,
+    "year": 2021,
+    "campus": {
+      "id": 1,
+      "name": "Ciudad Universitaria",
+      "graduates": {
+        "total_graduates": 19606,
+        "by_year": {
+          "2022": {
+            "quantity": 7231
+          },
+          "2021": {
+            "quantity": 5630
+          },
+          "2020": {
+            "quantity": 1627
+          },
+          "2019": {
+            "quantity": 5118
+          }
         }
+      }
     },
-    {
-        "id": 2,
-        "quantity": 56,
-        "year": 2023,
-        "campus": {
-            "id": 2,
-            "name": "Centro Regional Universitario de Veraguas"
-        },
-        "career": {
-            "id": 16,
-            "name": "Lic. Banca y Finanzas",
-            "faculty": {
-                "id": 5,
-                "name": "Facultad de Economía y Negocios"
-            }
-        }
-    } 
-]
-```
-
-### Carreras
-```bash
-# Lista todas las carreras
-curl -X GET http://localhost:8000/api/careers
-```
-
-```json
-[
-    {
+    "career": {
+      "id": 3,
+      "name": "Lic. en Administración de Empresas",
+      "faculty": {
         "id": 1,
-        "name": "Ingeniería",
-        "description": "Ingeniería",
-        "created_at": "2022-03-30T15:00:00.000000Z",
-        "updated_at": "2022-03-30T15:00:00.000000Z"
-    },
-    {
-        "id": 2,
-        "name": "Ciencias",
-        "description": "Ciencias",
-        "created_at": "2022-03-30T15:00:00.000000Z",
-        "updated_at": "2022-03-30T15:00:00.000000Z"
+        "name": "Administración de Empresas y Contabilidad",
+        "total_careers": 15
+      },
+      "total_graduates": 4
     }
+  },
 ]
 ```
 
@@ -187,6 +174,7 @@ Para ejecutar los tests, ejecuta el siguiente comando:
 ```bash
 php artisan test
 ```
+Hay un total de 120 pruebas, cada una diseñada para garantizar la funcionalidad, calidad y robustez del sistema. 
 
 
 ## Contribuciones
