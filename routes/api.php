@@ -13,29 +13,28 @@ use App\Http\Controllers\Api\FacultyController;
 use App\Http\Controllers\CsvController;
 
 // Routes the authentication
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/users', [UserController::class, 'store']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:5,1');
 
 // Emails
-Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail']);
-Route::put('/reset-password', [PasswordResetController::class, 'reset']);
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->middleware('throttle:5,1');
+Route::put('/reset-password', [PasswordResetController::class, 'reset'])->middleware('throttle:5,1');
 
-Route::apiResource('users', UserController::class)->middleware('auth:api');
-Route::patch('/user/update-password', [UpdatePasswordController::class, 'update'])->middleware(['auth:api']);
+Route::apiResource('users', UserController::class)->middleware(['auth:api', 'throttle:60,1']);
+Route::patch('/user/update-password', [UpdatePasswordController::class, 'update'])->middleware(['auth:api', 'throttle:5,1']);
 
-Route::apiResource('faculties', FacultyController::class);
-Route::get('faculties/{faculty}/career', [FacultyController::class, 'displayCareers']);
+Route::apiResource('faculties', FacultyController::class)->middleware('throttle:60,1');
+Route::get('faculties/{faculty}/career', [FacultyController::class, 'displayCareers'])->middleware('throttle:60,1');
 
-Route::apiResource('careers', CareerController::class);
-Route::get('careers/{career}/faculty', [CareerController::class, 'displayFaculty']);
+Route::apiResource('careers', CareerController::class)->middleware('throttle:60,1');
+Route::get('careers/{career}/faculty', [CareerController::class, 'displayFaculty'])->middleware('throttle:60,1');
 
-Route::apiResource('campus', CampuController::class);
+Route::apiResource('campus', CampuController::class)->middleware('throttle:60,1');
 
-Route::apiResource('graduates', GraduateController::class);
-Route::get('graduates/{graduates}/campus', [GraduateController::class, 'filterByCampus']);
-Route::get('graduates/{graduates}/career', [GraduateController::class, 'filterByCareer']);
-Route::get('graduates/{graduates}/faculty', [GraduateController::class, 'filterByFaculty']);
+Route::apiResource('graduates', GraduateController::class)->middleware('throttle:60,1');
+Route::get('graduates/{graduates}/campus', [GraduateController::class, 'filterByCampus'])->middleware('throttle:60,1');
+Route::get('graduates/{graduates}/career', [GraduateController::class, 'filterByCareer'])->middleware('throttle:60,1');
+Route::get('graduates/{graduates}/faculty', [GraduateController::class, 'filterByFaculty'])->middleware('throttle:60,1');
 
 // Get data
 Route::get('/process-local-data', [CsvController::class, 'processCsv']);
