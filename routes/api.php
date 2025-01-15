@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\GraduateController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Api\CareerController;
 use App\Http\Controllers\Api\FacultyController;
-use App\Http\Controllers\CsvController;
 
 // Routes the authentication
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
@@ -35,6 +34,3 @@ Route::apiResource('graduates', GraduateController::class)->middleware('throttle
 Route::get('graduates/{graduates}/campus', [GraduateController::class, 'filterByCampus'])->middleware('throttle:160,1');
 Route::get('graduates/{graduates}/career', [GraduateController::class, 'filterByCareer'])->middleware('throttle:160,1');
 Route::get('graduates/{graduates}/faculty', [GraduateController::class, 'filterByFaculty'])->middleware('throttle:160,1');
-
-// Get data
-Route::get('/process-local-data', [CsvController::class, 'processCsv']);
