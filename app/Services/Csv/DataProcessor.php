@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class DataProcessor
 {
-    private const CSV_PATH = 'app/private/';
+    private const CSV_PATH = 'app/public/';
     private FileValidator $fileValidator;
     private CsvReader $csvReader;
 
