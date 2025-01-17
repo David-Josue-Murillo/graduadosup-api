@@ -30,7 +30,6 @@ Homestead.json
 /public/storage
 /storage/*.key
 /storage/pail
-!/storage/app/public/*.csv
 /vendor
 .env
 .env.backup
