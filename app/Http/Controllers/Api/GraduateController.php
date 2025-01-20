@@ -38,6 +38,15 @@ class GraduateController extends Controller
         :  jsonResponse('Datos obtenidos exitosamente', $numGraduatesData, 200);
     }
 
+    public function allDataGraduates(): JsonResponse
+    {
+        $numGraduates = NumGraduate::with(['campus', 'career', 'faculty'])->get();
+        $data = NumGraduateResource::collection($numGraduates);
+        return $data->isEmpty()
+            ?  jsonResponse('No hay datos', [], 200)
+            :  jsonResponse('Datos obtenidos exitosamente', $data, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      * 
