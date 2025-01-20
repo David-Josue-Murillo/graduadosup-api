@@ -31,6 +31,7 @@ Route::get('careers/{career}/faculty', [CareerController::class, 'displayFaculty
 Route::apiResource('campus', CampuController::class)->middleware('throttle:160,1');
 
 Route::apiResource('graduates', GraduateController::class)->middleware('throttle:160,1');
+Route::get('graduates-all', [GraduateController::class, 'allDataGraduates'])->middleware('throttle:10,1');
 Route::get('graduates/{graduates}/campus', [GraduateController::class, 'filterByCampus'])->middleware('throttle:160,1');
 Route::get('graduates/{graduates}/career', [GraduateController::class, 'filterByCareer'])->middleware('throttle:160,1');
 Route::get('graduates/{graduates}/faculty', [GraduateController::class, 'filterByFaculty'])->middleware('throttle:160,1');
